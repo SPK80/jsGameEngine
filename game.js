@@ -53,7 +53,7 @@ const circle = new Circle({
     y : 100, 
     width : 20,
     lineWidth: 1,
-    fill : false,
+    fill : true,
     color : '#00A0F0',
     fillColor : '#F0A000',
 });
