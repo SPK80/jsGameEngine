@@ -46,6 +46,18 @@ const path = new Path({
     points : [{x:0, y:0}, {x:20, y:10},{x:0, y:25},{x:20, y:-5}]
 });
 
+
+const circle = new Circle({
+    context : game.context,
+    x : 100,
+    y : 100, 
+    width : 20,
+    lineWidth: 1,
+    fill : false,
+    color : '#00A0F0',
+    fillColor : '#F0A000',
+});
+
 const keyBoard = new KeyBoard();
 
 const mouse = new Mouse();
@@ -95,7 +107,7 @@ game.update = function () {
 
     path.draw();
 
-    
+    circle.draw();    
     
     // if (mouse.wereEvent('dblclick'))
     // {

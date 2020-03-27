@@ -122,3 +122,22 @@ class Text  extends Shape {
         this.context.fillText(this.text, this.x,this.y);
     };
 };
+
+class Circle extends Shape {
+    constructor(params) {
+        super(params)
+        this.fill = params.fill;
+    }
+
+    draw() {
+        super.applyStyle();
+        this.context.beginPath();
+        this.context.arc(this.x, this.y, this.width, 0, Math.PI*2);
+        if (this.fill) {
+            this.context.fill();
+        }
+        else {
+            this.context.stroke();
+        }
+    }
+};
