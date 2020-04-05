@@ -1,32 +1,47 @@
 'use strict';
 // var zLevel = 0; 
 
+function defaultIfUndefined(param, defVal) {
+   if (param==undefined) {
+       return defVal;
+   }
+   else {
+       return param;
+   }
+}
+
 class Primitive {
     constructor(params) {
-        this.context = params.context
-        this.x = params.x;
-        this.y = params.y;
-        this.color = params.color;        
-        // this.zLevel = params.zLevel
+        this.context = params.context;
+        this.x = defaultIfUndefined(params.x, 0);        
+        this.y = defaultIfUndefined(params.y, 0);
+        this.fill = defaultIfUndefined(params.fill, false);
+        this.color = defaultIfUndefined(params.color, 'FF0000');
+        this.lineWidth = defaultIfUndefined(params.lineWidth, 1);        
     }
-    
+
     applyStyle() {
-        this.context.color = this.color;
+        
+        if (this.fill) {
+            this.context.fillStyle = this.color;
+        }
+        else {
+            this.context.strokeStyle = this.color;
+            this.context.lineWidth  = this.lineWidth;
+        }
     }
+
+    draw() {
+        console.log('function draw undefined');        
+    }   
 }
 
 class Shape extends Primitive {
     constructor(params) {
         super(params)
-        this.width = params.width;
-        this.height = params.height;
-        this.fillColor = params.fillColor
-    }
-
-    applyStyle() {
-        super.applyStyle();
-        this.context.fillStyle = this.fillColor;
-    }
+        this.width = defaultIfUndefined(params.width, 100);
+        this.height = defaultIfUndefined(params.height, 100);
+    }     
 
     right() {
         return this.x+this.width
@@ -36,47 +51,57 @@ class Shape extends Primitive {
         return this.y+this.height
     }
 
-    includes(x, y) {
-        return  (x > this.x && x < this.right()) && 
-                (y > this.y && y < this.buttom())
-    }
-
-    includesX(x) {
-        return  (x > this.x && x < this.right());
-    }
-
-    includesY(y) {
-        return  (y > this.y && y < this.buttom());
-    }
-    
+    // includes(x, y) {
+    //     return  (x > this.x && x < this.right()) && 
+    //             (y > this.y && y < this.buttom())
+    // }
 }
 
 class Rect extends Shape {
     constructor(params) {
-        super(params)       
+        super(params) 
     }
 
     draw() {
         super.applyStyle();
-        this.context.fillRect(this.x, this.y, this.width, this.height);
-    }
-
-    intersect (obj) { 
-        return ((this.includesX(obj.x) || obj.insideX(this.x)) && (this.includesY(obj.y) || obj.insideY(this.y)))
+        if (this.fill){
+            this.context.fillRect(this.x, this.y, this.width, this.height);
+        } 
+        else {
+            this.context.strokeRect(this.x, this.y, this.width, this.height);
+        }        
     }
 }
+
+class Circle extends Shape {
+    constructor(params) {
+        super(params)
+    }
+
+    draw() {
+        super.applyStyle();
+        
+        this.context.beginPath();
+        this.context.arc(this.x, this.y, this.width, 0, Math.PI*2);
+        if (this.fill) {
+            this.context.fill();
+        }
+        else {
+            this.context.stroke();
+        }
+    }
+};
 
 class Path extends Primitive {
     constructor(params) {
         super(params)
-        this.points = params.points;
-        this.shifting = params.shifting;
-        this.lineWidth = params.lineWidth;
+        this.points = defaultIfUndefined(params.points, [{x:0, y:0}, {x:10, y:10}]);
+        this.shifting = defaultIfUndefined(params.shifting, false);
+        this.fill = false;
     }
 
     draw () {
         const _path = this;
-
         var x = this.x;
         var y = this.y;
 
@@ -91,11 +116,10 @@ class Path extends Primitive {
                 y = _path.y+_path.points[i].y;
             }
         }
-        // super.applyStyle();
+
+        super.applyStyle();
+
         this.context.beginPath();
-        this.context.lineWidth  = this.lineWidth;
-        
-        this.context.strokeStyle = this.color;
         calcXY(0);
         this.context.moveTo(x,y);
         
@@ -108,36 +132,28 @@ class Path extends Primitive {
     };
 }
 
-class Text  extends Shape {
+class Text  extends Primitive {
     constructor(params) {
         super(params)
-        this.text = params.text;
-
+        this.text = defaultIfUndefined(params.text, '');
+        this.font = defaultIfUndefined(params.font, '10px arial');
     };
-
     
-    draw(text = this.text) {
-        this.text = text;
+    applyStyle(){
         super.applyStyle();
-        this.context.fillText(this.text, this.x,this.y);
-    };
-};
-
-class Circle extends Shape {
-    constructor(params) {
-        super(params)
-        this.fill = params.fill;
+        this.context.font = this.font;            
     }
 
-    draw() {
-        super.applyStyle();
-        this.context.beginPath();
-        this.context.arc(this.x, this.y, this.width, 0, Math.PI*2);
+    draw(text = this.text) {
+
+        this.applyStyle();
+        this.text = text;
         if (this.fill) {
-            this.context.fill();
+            this.context.fillText(this.text, this.x, this.y);
         }
         else {
-            this.context.stroke();
-        }
-    }
+            this.context.strokeText(this.text, this.x, this.y);
+        }        
+    };
 };
+

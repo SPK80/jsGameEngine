@@ -11,7 +11,7 @@ class InputDevice {
     }
 }
 
-class KeyBoard extends InputDevice{
+class KeyBoard extends InputDevice {
     constructor(){
         super()
         var keys = {
@@ -36,34 +36,35 @@ class KeyBoard extends InputDevice{
     
 }
 
-class Mouse extends InputDevice{
-    constructor() {
+class Mouse extends InputDevice {
+    constructor(scale=1) {
         super()
         this.x = 0;
         this.y = 0;
         this.dx = 0;
         this.dy = 0;
+        this.scale = scale;
 
         var wereEvents = {};
 
-        var baseEventHandler = function(e, _mouse){
+        var baseEventHandler = function(e, _mouse) {
             wereEvents[e.type] = true;
-            _mouse.x = e.clientX;
-            _mouse.y = e.clientY;
+            _mouse.x = e.clientX/_mouse.scale;
+            _mouse.y = e.clientY/_mouse.scale;
         }
 
-        window.addEventListener('mousemove', e =>{
+        window.addEventListener('mousemove', e => {
             baseEventHandler(e, this);
-            this.dx = e.movementX;
-            this.dy = e.movementY;
+            this.dx = e.movementX/this.scale;
+            this.dy = e.movementY/this.scale;
         });
 
 
-        window.addEventListener('dblclick', e =>{
+        window.addEventListener('dblclick', e => {
             baseEventHandler(e, this);
         });
 
-        window.addEventListener('click', e =>{
+        window.addEventListener('click', e => {
             baseEventHandler(e, this);
         });
 
