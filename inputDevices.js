@@ -1,5 +1,3 @@
-'use strict';
-
 class InputDevice {
     constructor (){
         if(this.inited) {
@@ -7,7 +5,6 @@ class InputDevice {
             return
         }
         this.inited = true;
-
     }
 }
 
@@ -35,6 +32,8 @@ class KeyBoard extends InputDevice {
     }
     
 }
+
+export const getKeyBoard = function() {return new KeyBoard();}
 
 class Mouse extends InputDevice {
     constructor(scale=1) {
@@ -78,5 +77,10 @@ class Mouse extends InputDevice {
             return result;
         }
     }
+} 
+const _mouse = new Mouse();
+export const  getMouse = function(posScale) {
+    _mouse.scale = posScale;
+    return _mouse;
 }
 

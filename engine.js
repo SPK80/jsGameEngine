@@ -1,6 +1,4 @@
-'use strict';
-
-class Game {
+export class Engine {
     constructor(WIDTH, HEIGHT, BCLR, scale = 1.0) {
         
         this.width = WIDTH;
@@ -20,6 +18,7 @@ class Game {
 
         var _context = cnv.getContext('2d');
         this.context = _context;
+        this.debugView = null;
 
         this.update = function(){
             console.log('update not implemented')
@@ -27,8 +26,21 @@ class Game {
     
         var _game = this;
         var engine = function(){
+
             _context.clearRect(0, 0, WIDTH, HEIGHT);
             _game.update();
+
+            if (this.debugView) {
+
+                for (let i = 0; i < this.debugView.log.length; i++) {
+                    const txt = this.debugView.log[i];     
+
+                    _context.fillText(str, this.debugView.x, this.debugView.y+i*(this.debugView.font.height+1));
+                }
+                
+            
+            }
+            
             requestAnimationFrame(engine);
         }
 
@@ -36,6 +48,11 @@ class Game {
             engine();
         }
         
+    }
+
+    setDebugView(view){
+        this.debugView = view;
+        return view;
     }
     
 }

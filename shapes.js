@@ -1,6 +1,3 @@
-'use strict';
-// var zLevel = 0; 
-
 function defaultIfUndefined(param, defVal) {
    if (param==undefined) {
        return defVal;
@@ -57,7 +54,7 @@ class Shape extends Primitive {
     // }
 }
 
-class Rect extends Shape {
+export class Rect extends Shape {
     constructor(params) {
         super(params) 
     }
@@ -72,8 +69,7 @@ class Rect extends Shape {
         }        
     }
 }
-
-class Circle extends Shape {
+export class Circle extends Shape {
     constructor(params) {
         super(params)
     }
@@ -92,7 +88,7 @@ class Circle extends Shape {
     }
 };
 
-class Path extends Primitive {
+export class Path extends Primitive {
     constructor(params) {
         super(params)
         this.points = defaultIfUndefined(params.points, [{x:0, y:0}, {x:10, y:10}]);
@@ -132,7 +128,7 @@ class Path extends Primitive {
     };
 }
 
-class Text  extends Primitive {
+export class Text  extends Primitive {
     constructor(params) {
         super(params)
         this.text = defaultIfUndefined(params.text, '');

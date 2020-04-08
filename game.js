@@ -1,41 +1,14 @@
-'use strict';
+import {Engine} from './engine.js';
+import {getMouse, getKeyBoard} from './inputDevices.js';
+import {Pacman} from './pacman.js';
+import {Text} from './shapes.js';
 
-const game = new Game(800, 500, '#3D4D3D', 1);
+const engine = new Engine(640, 480, '#3D4D3D', 1.3333);
 
-// const shape = new Circle({
-//     context : game.context,
-//     x : 0,
-//     y : 0,
-//     width : 30,
-//     height : 50,
-//     color : '#0000F0',
-//     fill : true,
-//     lineWidth : 10,
-// });
-
-// const runRect = new Rect({
-//     context : game.context,
-//     x : 20,
-//     y : 20,
-//     width : 80,
-//     height : 70,
-//     color : '#3DA0F0',
-//     fill : true,
-// });
-
-// const rectText = new Text({
-//     context : game.context,
-//     x : 0,
-//     y : 40,        
-//     color : '#FF0000',
-//     text : 'Text',
-//     fill : false,
-//     font : '30px tahoma',
-//     lineWidth : 0.1
-// });
+const debugView = engine.setDebugView(new DebugView());
 
 const mousePos = new Text({
-    context : game.context,
+    context : engine.context,
     x : 0,
     y : 80,        
     color : '#FF00F0',
@@ -54,17 +27,18 @@ const mousePos = new Text({
 // });
 
 
-const keyBoard = new KeyBoard();
+const keyBoard = getKeyBoard();
+const mouse = getMouse(engine.scale);
 
-const mouse = new Mouse(game.scale);
 
 // const runRectIntersector = new RectIntersect(runRect);
-const pac = new Pacman();
+const pac = new Pacman(engine.context);
 
 const persons = [pac];
 
 var dlw = 0.1;
-game.update = function () {
+engine.update = function () {
+// console.log('update');
 
     persons.forEach(pers => {
         pers.operate();
@@ -136,4 +110,4 @@ game.update = function () {
    
 };
 
-game.start();
+engine.start();
