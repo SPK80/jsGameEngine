@@ -5,9 +5,14 @@ import {Text} from './shapes.js';
 import {Chain} from './chain.js';
 
 const ch = new Chain();
-ch.add(1);
-ch.add(2);
-ch.add(3);
+ch.push(1);
+ch.push(2);
+ch.push(3);
+
+// var ch3 = JSON.parse(JSON.stringify(ch));
+// Object.assign(ch3 , ch);
+console.log(JSON.stringify(ch));
+console.log(ch.cutLast());
 console.log(ch);
 
 
