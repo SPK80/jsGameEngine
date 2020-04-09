@@ -2,10 +2,17 @@ import {Engine} from './engine.js';
 import {getMouse, getKeyBoard} from './inputDevices.js';
 import {Pacman} from './pacman.js';
 import {Text} from './shapes.js';
+import {Chain} from './chain.js';
+
+const ch = new Chain();
+ch.add(1);
+ch.add(2);
+ch.add(3);
+console.log(ch);
+
+
 
 const engine = new Engine(640, 480, '#3D4D3D', 1.3333);
-
-const debugView = engine.setDebugView(new DebugView());
 
 const mousePos = new Text({
     context : engine.context,
@@ -36,7 +43,12 @@ const pac = new Pacman(engine.context);
 
 const persons = [pac];
 
-var dlw = 0.1;
+engine.log('log1');
+engine.log('log2');
+engine.log('log3');
+engine.log('log4');
+
+// var dlw = 0.1;
 engine.update = function () {
 // console.log('update');
 

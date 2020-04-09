@@ -18,28 +18,19 @@ export class Engine {
 
         var _context = cnv.getContext('2d');
         this.context = _context;
-        this.debugView = null;
+
+        var log = new Log(_context, 0,0);
 
         this.update = function(){
             console.log('update not implemented')
         }
     
-        var _game = this;
+        var _engine = this;
         var engine = function(){
 
             _context.clearRect(0, 0, WIDTH, HEIGHT);
-            _game.update();
-
-            if (this.debugView) {
-
-                for (let i = 0; i < this.debugView.log.length; i++) {
-                    const txt = this.debugView.log[i];     
-
-                    _context.fillText(str, this.debugView.x, this.debugView.y+i*(this.debugView.font.height+1));
-                }
-                
-            
-            }
+            _engine.update();
+            log.draw();           
             
             requestAnimationFrame(engine);
         }
@@ -48,11 +39,39 @@ export class Engine {
             engine();
         }
         
+        this.log = function(text){
+            log.add(text);        
+        }
+        this.clearLog = function(){
+            log.clear();
+        }
+        
     }
-
-    setDebugView(view){
-        this.debugView = view;
-        return view;
-    }
-    
 }
+
+class Log {
+    constructor(context, x, y, size, strHeight=10){
+        var _log = [];
+
+        this.add = function(text){
+            _log.push(text);
+        }
+
+        this.clear = function(){
+            _log = [];
+        }
+
+        this.draw = function(){
+            // for (let i = _log.length-1; i>=0 ; i--) {
+            for (let i = 0; i < _log.length; i++) {
+                
+                const str = _log[_log.length-i-1];
+                const _y = y+(i+1)*(strHeight+1);
+                
+                context.fillText(str, x, _y);
+            }
+        }
+
+    }
+}
+
