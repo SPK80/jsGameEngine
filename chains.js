@@ -1,12 +1,7 @@
 export class FifoChain {
-    constructor(maxCount){
-        this.#maxCount = maxCount;
-    }
-
-    #maxCount = 0;
+    
     #last = null;
     #first = null;
-    #count = 0;
 
     add(data){
 
@@ -14,19 +9,12 @@ export class FifoChain {
             this.#last = this.#first = new ChNode(data);
         }
         else this.#last = this.#last.joinNewNext(data);
-        
-        this.#count++;
-
-        // if(this.#count >= this.#maxCount){
-        //     cut();
-        // }
     }
     
     get(){        
         var first = this.#first;
         this.#first = first.next;
         first.next = null;
-        this.#count--;
         return first;
     }
 

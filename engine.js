@@ -1,5 +1,3 @@
-import {FifoChain} from './chains.js';
-
 export class Engine {
     constructor(WIDTH, HEIGHT, BCLR, scale = 1.0) {
         
@@ -44,37 +42,36 @@ export class Engine {
         this.log = function(text){
             log.add(text);        
         }
-        this.clearLog = function(){
-            log.clear();
-        }
+        // this.clearLog = function(){
+        //     log.clear();
+        // }
         
     }
 }
 
-class Log extends FifoChain
+import {FifoChain} from './chains.js';
+
+class Log 
 {
     constructor(context, x, y, size, strHeight=10){
-        var _log = [];
-
-        this.add = function(text){
-            _log.push(text);
-        }
-
-        this.clear = function(){
-            _log = [];
-        }
-
-        this.draw = function(){
-            // for (let i = _log.length-1; i>=0 ; i--) {
-            for (let i = 0; i < _log.length; i++) {
-                
-                const str = _log[_log.length-i-1];
-                const _y = y+(i+1)*(strHeight+1);
-                
-                context.fillText(str, x, _y);
-            }
-        }
-
+        
+        this.#log = new FifoChain();
     }
+
+    draw(){
+        var _log =this.#log.toArray();
+        for (let i = 0; i < _log.length; i++) {
+            
+            const str = _log[_log.length-i-1];
+            const _y = y+(i+1)*(strHeight+1);
+            
+            context.fillText(str, x, _y);
+        }
+    }
+
+    add(text){
+        this.#log.add(text);
+    }
+
 }
 
