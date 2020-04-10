@@ -34,10 +34,19 @@ export class FifoChain {
 }
 
 class ChNode {
+    #data = null;
+    #next = null;
+        
     constructor(data){
-        this.next = null;
-        this.data = data;
+        this.#data = data;
     }
+
+    get next(){
+        return this.#next;
+    }
+    get data(){
+        return this.#data;
+    }    
 
     joinNext(cnNode){
         if (typeof(cnNode) == ChNode){            
@@ -53,5 +62,9 @@ class ChNode {
     joinNewNext(data){
         this.next = new ChNode(data);
         return this.next;
+    }
+
+    unJoinNext(){
+        this.next =null;
     }
 }
