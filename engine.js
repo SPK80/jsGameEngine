@@ -1,3 +1,5 @@
+import {FifoChain} from './chains.js';
+
 export class Engine {
     constructor(WIDTH, HEIGHT, BCLR, scale = 1.0) {
         
@@ -49,7 +51,8 @@ export class Engine {
     }
 }
 
-class Log {
+class Log extends FifoChain
+{
     constructor(context, x, y, size, strHeight=10){
         var _log = [];
 

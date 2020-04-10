@@ -25,58 +25,34 @@ export class FifoChain {
     get(){        
         var first = this.#first;
         this.#first = first.next;
+        first.next = null;
+        this.#count--;
         return first;
     }
 
     toArray(){
         
-        if (this.#last == null) return [];
+        if (this.#first == null) return [];
 
-        const result = [this.#last.data];
-        var node = this.#last.pred;
+        const result = [this.#first.data];
+        var node = this.#first.next;
 
         while (node != null) {            
             result.push(node.data);
-            node = node.pred;            
+            node = node.next;            
         }
         return result;
     }
-
-
-    cut(newMaxCount){
-        if (this.#last == null || this.#first == null || newMaxCount>=this.#maxCount) return;
-        var count = newMaxCount;
-
-        while (count>this.#maxCount) {
-                        
-        }
-        this.#first
-        
-
-        // var node = this.#head.pred;
-
-        // while (node != null && count < newMaxCount) {            
-        //     count++;
-        //     node = node.pred;            
-        // }
-        // if (node != null)
-        // {
-        //     node.pred = null;
-        // }
-    }
-    
 }
 
 class ChNode {
-    constructor(data, pred = null, next = null){
-        this.pred = pred;
-        this.next = next;
+    constructor(data){
+        this.next = null;
         this.data = data;
     }
 
     joinNext(cnNode){
-        if (typeof(cnNode) == ChNode){
-            cnNode.pred = this;
+        if (typeof(cnNode) == ChNode){            
             this.next = cnNode;
             return this.next;
         }
@@ -87,7 +63,7 @@ class ChNode {
     }
 
     joinNewNext(data){
-        this.next = new ChNode(data, this);
+        this.next = new ChNode(data);
         return this.next;
     }
 }

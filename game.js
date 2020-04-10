@@ -2,19 +2,23 @@ import {Engine} from './engine.js';
 import {getMouse, getKeyBoard} from './inputDevices.js';
 import {Pacman} from './pacman.js';
 import {Text} from './shapes.js';
-import {Chain} from './chain.js';
+import {FifoChain} from './chains.js';
 
-const ch = new Chain();
-ch.push(1);
-ch.push(2);
-ch.push(3);
+const ch = new FifoChain();
+ch.add(0);
+ch.add(1);
+ch.add(2);
+ch.add(3);
 
 // var ch3 = JSON.parse(JSON.stringify(ch));
 // Object.assign(ch3 , ch);
-console.log(JSON.stringify(ch));
-console.log(ch.cutLast());
+// console.log(JSON.stringify(ch));
+// console.log(ch.cutLast());
 console.log(ch);
-
+console.log(ch.toArray());
+console.log(ch.get());
+console.log(ch.toArray());
+console.log(ch);
 
 
 const engine = new Engine(640, 480, '#3D4D3D', 1.3333);
