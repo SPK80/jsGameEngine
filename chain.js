@@ -1,19 +1,19 @@
-export class Chain {
+export class FifoChain {
     constructor(maxCount){
         this.#maxCount = maxCount;
     }
 
     #maxCount = 0;
-    #head = null;
     #last = null;
+    #first = null;
     #count = 0;
 
-    push(data){
+    add(data){
 
-        if (this.#head == null) {
-            this.#head = this.#last = new ChNode(data);
+        if (this.#first == null) {
+            this.#last = this.#first = new ChNode(data);
         }
-        else this.#head = this.#head.joinNewNext(data);
+        else this.#last = this.#last.joinNewNext(data);
         
         this.#count++;
 
@@ -22,11 +22,18 @@ export class Chain {
         // }
     }
     
-    get all(){
-        if (this.#head == null) return [];
+    get(){        
+        var first = this.#first;
+        this.#first = first.next;
+        return first;
+    }
 
-        const result = [this.#head.data];
-        var node = this.#head.pred;
+    toArray(){
+        
+        if (this.#last == null) return [];
+
+        const result = [this.#last.data];
+        var node = this.#last.pred;
 
         while (node != null) {            
             result.push(node.data);
@@ -35,23 +42,15 @@ export class Chain {
         return result;
     }
 
-    cutLast(){        
-        const last = this.#last;
-        this.#last = this.#last.next;
-        this.#last.next = null;
-        this.#count--;
-        last.next = last.pred = null;
-        return last;
-    }
 
     cut(newMaxCount){
-        if (this.#head == null || this.#last == null || newMaxCount>=this.#maxCount) return;
+        if (this.#last == null || this.#first == null || newMaxCount>=this.#maxCount) return;
         var count = newMaxCount;
 
         while (count>this.#maxCount) {
                         
         }
-        this.#last
+        this.#first
         
 
         // var node = this.#head.pred;
