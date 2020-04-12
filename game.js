@@ -1,22 +1,10 @@
 import {Engine} from './engine.js';
-// import {getMouse, getKeyBoard} from './inputDevices.js';
-// import {Pacman} from './pacman.js';
-// import {Text} from './shapes.js';
 
-// const _engine = engine(640, 480, '#3D4D3D', 1.3333);
 const engine = new Engine(640, 480, '#3D4D3D', 1.3333);
 
 const mousePos = engine.addText('mouse', '', 0, 80, '#FF00F0', '');
 const keys = engine.addText('keys', '', 0, 100, '#00FFF0', '');
 
-// const mousePos = new Text({
-//     context : ,
-//     x : 0,
-//     y : 80,        
-//     color : '#FF00F0',
-//     text : 'Text',
-//     fill : true,
-// });
 
 // const path = new Path({
 //     context : game.context,
@@ -27,7 +15,6 @@ const keys = engine.addText('keys', '', 0, 100, '#00FFF0', '');
 //     shifting: true,
 //     points : [{x:0, y:0}, {x:20, y:10},{x:0, y:25},{x:20, y:-5}]
 // });
-
 
 const keyBoard = engine.keyBoard;
 const mouse = engine.mouse;
@@ -40,7 +27,6 @@ const persons = [];
 
 // var dlw = 0.1;
 engine.update = function () {
-// console.log('update');
 
     persons.forEach(pers => {
         pers.operate();
@@ -92,19 +78,11 @@ engine.update = function () {
     mousePos.text = 'x:' + Math.round(mouse.x) +' ['+ Math.round(mouse.dx) + '] y:' + Math.round(mouse.y) +' ['+ Math.round(mouse.dy)+']';
     keys.text = `${keyBoard.lastDown.key} ${keyBoard.lastDown.code}`;
     
-    //.forEach(key=>keys.text +=key);
-    
-    //mousePos.draw('x:' + Math.round(mouse.x) +' ['+ Math.round(mouse.dx) + '] y:' + Math.round(mouse.y) +' ['+ Math.round(mouse.dy)+']' );
-        
-    // runRect.draw();
-    // path.draw();
-
     // if (mouse.wereEvent('click', false))
     // {
         // if (runRectIntersector.includes(mouse.x, mouse.y)){
         //     runRect.fill = !runRect.fill;
         // }
-        
         // console.log(runRect.fill);        
     // }
     

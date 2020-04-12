@@ -61,46 +61,60 @@ class KeyBoard extends InputDevice {
 export const getKeyBoard = function() {return new KeyBoard();}
 
 class Mouse extends InputDevice {
+    
+    #x = 0;
+    get x() {this.#x;}
+
+    #y = 0;
+    get y() {this.#y;}
+
+    #dx = 0;
+    get dx() {this.#dx;}
+
+    #dy = 0;
+    get dy() {this.#dy;}
+
+    #scale = 1;
+
+    #wereEvents = {};
+    
+    wereEvent(eventName, deleteEvent=true) {
+
+        var result = wereEvents[eventName];
+        if (result && deleteEvent)
+        {
+            this.#wereEvents[eventName]=false;
+        }
+        return result;
+    }
+
     constructor(scale=1) {
         super()
-        this.x = 0;
-        this.y = 0;
-        this.dx = 0;
-        this.dy = 0;
-        this.scale = scale;
-
-        var wereEvents = {};
-
-        var baseEventHandler = function(e, _mouse) {
-            wereEvents[e.type] = true;
-            _mouse.x = e.clientX/_mouse.scale;
-            _mouse.y = e.clientY/_mouse.scale;
+        this.#scale = scale;
+        const _this = this;
+    
+        var baseEventHandler = function(e) {
+            _this.#wereEvents[e.type] = true;
+            _this.#x = e.clientX/_this.#scale;
+            _this.#y = e.clientY/_this.#scale;
+            _this.#dx = e.movementX/_this.#scale;
+            _this.#dy = e.movementY/_this.#scale;
         }
 
         window.addEventListener('mousemove', e => {
-            baseEventHandler(e, this);
-            this.dx = e.movementX/this.scale;
-            this.dy = e.movementY/this.scale;
+            baseEventHandler(e);
+            // this.dx = e.movementX/this.scale;
+            // this.dy = e.movementY/this.scale;
         });
 
 
         window.addEventListener('dblclick', e => {
-            baseEventHandler(e, this);
+            baseEventHandler(e);
         });
 
         window.addEventListener('click', e => {
-            baseEventHandler(e, this);
-        });
-
-        this.wereEvent = function(eventName, deleteEvent=true) {
-
-            var result = wereEvents[eventName];
-            if (result && deleteEvent)
-            {
-                wereEvents[eventName]=false;
-            }
-            return result;
-        }
+            baseEventHandler(e);
+        });        
     }
 } 
 const _mouse = new Mouse();
