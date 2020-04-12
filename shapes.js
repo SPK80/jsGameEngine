@@ -9,7 +9,7 @@ function defaultIfUndefined(param, defVal) {
 
 class Primitive {
     constructor(params) {
-        this.context = params.context;
+        this._context = params.context;
         this.x = defaultIfUndefined(params.x, 0);        
         this.y = defaultIfUndefined(params.y, 0);
         this.fill = defaultIfUndefined(params.fill, false);
@@ -20,11 +20,11 @@ class Primitive {
     applyStyle() {
         
         if (this.fill) {
-            this.context.fillStyle = this.color;
+            this._context.fillStyle = this.color;
         }
         else {
-            this.context.strokeStyle = this.color;
-            this.context.lineWidth  = this.lineWidth;
+            this._context.strokeStyle = this.color;
+            this._context.lineWidth  = this.lineWidth;
         }
     }
 
@@ -40,11 +40,11 @@ class Shape extends Primitive {
         this.height = defaultIfUndefined(params.height, 100);
     }     
 
-    right() {
+    get right() {
         return this.x+this.width
     }
 
-    buttom() {
+    get buttom() {
         return this.y+this.height
     }
 
@@ -60,30 +60,31 @@ export class Rect extends Shape {
     }
 
     draw() {
-        super.applyStyle();
-        if (this.fill){
-            this.context.fillRect(this.x, this.y, this.width, this.height);
+        this.applyStyle();
+        if (this.fill){            
+            this._context.fillRect(this.x, this.y, this.width, this.height);
         } 
         else {
-            this.context.strokeRect(this.x, this.y, this.width, this.height);
+            this._context.strokeRect(this.x, this.y, this.width, this.height);
         }        
     }
 }
+
 export class Circle extends Shape {
     constructor(params) {
         super(params)
     }
 
     draw() {
-        super.applyStyle();
+        this.applyStyle();
         
-        this.context.beginPath();
-        this.context.arc(this.x, this.y, this.width, 0, Math.PI*2);
+        this._context.beginPath();
+        this._context.arc(this.x, this.y, this.width, 0, Math.PI*2);
         if (this.fill) {
-            this.context.fill();
+            this._context.fill();
         }
         else {
-            this.context.stroke();
+            this._context.stroke();
         }
     }
 };
@@ -115,15 +116,15 @@ export class Path extends Primitive {
 
         super.applyStyle();
 
-        this.context.beginPath();
+        this._context.beginPath();
         calcXY(0);
-        this.context.moveTo(x,y);
+        this._context.moveTo(x,y);
         
         for (let i = 1; i < this.points.length; i++) {
             calcXY(i);         
-            this.context.lineTo(x,y);                
+            this._context.lineTo(x,y);                
         }
-        this.context.stroke();            
+        this._context.stroke();            
 
     };
 }
@@ -137,7 +138,7 @@ export class Text  extends Primitive {
     
     applyStyle(){
         super.applyStyle();
-        this.context.font = this.font;            
+        this._context.font = this.font;            
     }
 
     draw(text = this.text) {
@@ -145,10 +146,10 @@ export class Text  extends Primitive {
         this.applyStyle();
         this.text = text;
         if (this.fill) {
-            this.context.fillText(this.text, this.x, this.y);
+            this._context.fillText(this.text, this.x, this.y);
         }
         else {
-            this.context.strokeText(this.text, this.x, this.y);
+            this._context.strokeText(this.text, this.x, this.y);
         }        
     };
 };

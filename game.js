@@ -7,7 +7,7 @@ import {Text} from './shapes.js';
 const engine = new Engine(640, 480, '#3D4D3D', 1.3333);
 
 const mousePos = new Text({
-    context : engine.context,
+    context : ,
     x : 0,
     y : 80,        
     color : '#FF00F0',
@@ -31,9 +31,9 @@ const mouse = getMouse(engine.scale);
 
 
 // const runRectIntersector = new RectIntersect(runRect);
-const pac = new Pacman(engine.context);
+// const pac = new Pacman(engine.context);
 
-const persons = [pac];
+const persons = [];
 
 // var dlw = 0.1;
 engine.update = function () {
@@ -44,6 +44,10 @@ engine.update = function () {
         pers.draw();
     });
 
+    if (keyBoard.isPress('ENTER')){ 
+        engine.stop();       
+        engine.updateContext(engine.width-10, engine.height+10, engine.backgroundColor+10, engine.scale);
+    }    
 
     if (keyBoard.isPress('ESC')){        
         engine.stop();
