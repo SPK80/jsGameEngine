@@ -37,8 +37,9 @@ class ChNode {
     #data = null;
     #next = null;
         
-    constructor(data){
+    constructor(data, next=null){
         this.#data = data;
+        this.#next = next;
     }
 
     get next(){
