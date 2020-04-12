@@ -45,6 +45,10 @@ engine.update = function () {
     });
 
 
+    if (keyBoard.isPress('ESC')){        
+        engine.stop();
+    }        
+
     if (keyBoard.isPress('UP')){        
         pac.toDo.push('moveUp');
         engine.log('UP')

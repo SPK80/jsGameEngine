@@ -16,6 +16,8 @@ class KeyBoard extends InputDevice {
             'DOWN'  : 40,
             'LEFT'  : 37,
             'RIGHT' : 39,
+            'ESC' : 39,
+            
         };
 
         var pressedKeys = {};
