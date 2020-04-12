@@ -1,5 +1,6 @@
 import {gameLog} from './gameLog.js';
-import {Rect} from './shapes.js';
+import {Rect, Text} from './shapes.js';
+import {getMouse, getKeyBoard} from './inputDevices.js';
 
 class GameContext{
     #width = 200;
@@ -59,29 +60,33 @@ class GameContext{
 
 }
 
-class Button {
-    #rect = null;
-    #text = null;
-    constructor(x, y, wi, he, color, text=''){
-        this.#rect = new Rect({
-            x:      x,
-            y:      y,
-            width:  wi,
-            height: he,
-            color:  color,
-        });
-        this.#text
-    }
+// class Button {
+//     #rect = null;
+//     #text = null;
+//     constructor(x, y, wi, he, color, text=''){
+//         this.#rect = new Rect({
+//             x:      x,
+//             y:      y,
+//             width:  wi,
+//             height: he,
+//             color:  color,
+//         });
+//         this.#text
+//     }
 
-}
+// }
 
 export class Engine {
     
     #gameContext = null;
 
-    // get context() {
+    // #context(){
     //     return this.#gameContext.context;
     // }
+
+    updateContext(_width, _height, _backgroundColor, _scale = 1.0) {
+        this.#gameContext = new GameContext(_width, _height, _backgroundColor, _scale);
+    }
 
     get width() {
         return this.#gameContext.width;
@@ -104,20 +109,20 @@ export class Engine {
     constructor(_width, _height, _backgroundColor, _scale = 1.0) {                
 
         this.updateContext(_width, _height, _backgroundColor, _scale);        
-        this.#log = new gameLog(this.context, 0, 0, 4);
+        this.#log = new gameLog(this.#gameContext.context, 0, 0, 4);
         this.clearLog();   
                
         this.update = () => console.log('update not implemented');
     }
 
-    updateContext(_width, _height, _backgroundColor, _scale = 1.0) {
-        this.#gameContext = new GameContext(_width, _height, _backgroundColor, _scale);
-    }
-
     #runing = false;
     #pause = false;
 
-    #userInterface = [];
+    #gameObjects = new GameObjects();
+
+    getGameObject(key){
+        return this.#gameObjects.get(key);
+    }
 
     start() {
         const _engine = this;
@@ -129,14 +134,12 @@ export class Engine {
             _engine.#gameContext.context.clearRect(0, 0, _engine.width, _engine.height);
             _engine.update();
 
-            _engine.#userInterface.forEach(element => {
-                element.draw();
-
-            });
+            _engine.#gameObjects.draw();
             _engine.#log.draw();        
             requestAnimationFrame(engine);
         });
     }
+
 
     pause(){
         this.#log.add('Engine.pause');
@@ -153,9 +156,42 @@ export class Engine {
     }
 
     clearLog(){
-        this.#log = new gameLog(this.context, 0, 0, 4);  
+        this.#log = new gameLog(this.#gameContext.context, 0, 0, 4);  
     }
 
+    #mouse=null;
+    get mouse(){
+        if (this.#mouse==null){
+            this.#mouse = getMouse(this.scale);
+        }
+        return this.#mouse;
+    }
+    
+    #keyBoard=null;
+    get keyBoard(){
+        if (this.#keyBoard==null){
+            this.#keyBoard = getKeyBoard();
+        }
+        return this.#keyBoard;
+    }
+    
+    
+    addText(key, text, x, y, color, font){
+        const result = new Text({
+            context: this.#gameContext.context,
+            x :     x,
+            y :     y,
+            color : color,
+            text :  text,
+            fill :  true,
+
+        });
+        this.#gameObjects.add(key, result);
+        return result;
+    }
+
+
+    
     // addRect(x, y, wi, he, color, fill){
     //     this.#userInterface.push(new Rect({
     //         context : this.context,
@@ -167,4 +203,27 @@ export class Engine {
     //         fill : fill,
     //     }));
     // }
+}
+
+class GameObjects{
+    #objects = {};
+
+    draw(){
+        for (var key in this.#objects){
+            this.#objects[key].draw();
+        }
+    }
+
+    add(key, obj){
+        this.#objects[key] = obj; 
+    }
+
+    remove(key){
+        delete this.#objects[key];
+    }
+
+    get(key){
+        return this.#objects[key];
+    }
+
 }
