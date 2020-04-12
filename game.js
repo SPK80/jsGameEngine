@@ -3,6 +3,7 @@ import {getMouse, getKeyBoard} from './inputDevices.js';
 import {Pacman} from './pacman.js';
 import {Text} from './shapes.js';
 
+// const _engine = engine(640, 480, '#3D4D3D', 1.3333);
 const engine = new Engine(640, 480, '#3D4D3D', 1.3333);
 
 const mousePos = new Text({
