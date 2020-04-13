@@ -79,7 +79,7 @@ engine.update = function () {
     // shape.draw();
     // console.log(mouse);
     
-    mousePos.text = 'x:' + Math.round(mouse.x) +' ['+ Math.round(mouse.dx) + '] y:' + Math.round(mouse.y) +' ['+ Math.round(mouse.dy)+']';
+    mousePos.text = `x: ${Math.round(mouse.x)} [${Math.round(mouse.dx)}] \r\n y: ${Math.round(mouse.y)} [${Math.round(mouse.dy)}]`;
     keys.text = `${keyBoard.lastDown.key} ${keyBoard.lastDown.code}`;
     
     // if (mouse.wereEvent('click', false))

@@ -130,9 +130,20 @@ export class Path extends Primitive {
 }
 
 export class Text  extends Primitive {
+    #text = '';
+    
+    get text() {return this.#text};
+    set text(value) {
+        this.#text = value;
+    }
+    
+    get lineHeight(){
+        const h = this.font.replace(//, '');
+    }
+
     constructor(params) {
-        super(params)
-        this.text = defaultIfUndefined(params.text, '');
+        super(params);
+        this.#text = defaultIfUndefined(params.text, '');
         this.font = defaultIfUndefined(params.font, '10px arial');
     };
     
@@ -141,16 +152,39 @@ export class Text  extends Primitive {
         this._context.font = this.font;            
     }
 
-    draw(text = this.text) {
-
-        this.applyStyle();
-        this.text = text;
+    _draw(_text, _x, _y){
         if (this.fill) {
-            this._context.fillText(this.text, this.x, this.y);
+            this._context.fillText(_text, _x, _y);
         }
         else {
-            this._context.strokeText(this.text, this.x, this.y);
-        }        
+            this._context.strokeText(_text, _x, _y);
+        }
+    }
+
+    draw(text) {
+        this.applyStyle();
+        if (text!=undefined) this.text = text;
+        this._draw(this.text, this.x, this.y);                
     };
 };
+
+class MLText extends Text{
+    // #lines = [];
+    // constructor(params){
+    //     super(params);
+    // }
+    draw(text) {
+        this.applyStyle();
+        if (text!=undefined) this.text = text;
+
+        const lines = this.text.split('\r\n');
+        var x = this.x;
+        var y = this.y;
+        lines.forEach(str => {
+            this._draw(str, x, y);
+            x+=this.
+        });
+        
+    };
+}
 
