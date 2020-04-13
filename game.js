@@ -23,15 +23,17 @@ const mouse = engine.mouse;
 // const runRectIntersector = new RectIntersect(runRect);
 // const pac = new Pacman(engine.context);
 
-const persons = [];
+// const persons = [];
 
 // var dlw = 0.1;
+console.log(mouse);
+
 engine.update = function () {
 
-    persons.forEach(pers => {
-        pers.operate();
-        pers.draw();
-    });
+    // persons.forEach(pers => {
+    //     pers.operate();
+    //     pers.draw();
+    // });
 
     if (keyBoard.isPress('ENTER')){ 
         engine.stop();       
@@ -75,6 +77,8 @@ engine.update = function () {
     // rectText.draw('x:' + Math.round(shape.x) + ' y:' + Math.round(shape.y)); 
 
     // shape.draw();
+    // console.log(mouse);
+    
     mousePos.text = 'x:' + Math.round(mouse.x) +' ['+ Math.round(mouse.dx) + '] y:' + Math.round(mouse.y) +' ['+ Math.round(mouse.dy)+']';
     keys.text = `${keyBoard.lastDown.key} ${keyBoard.lastDown.code}`;
     

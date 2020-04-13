@@ -8,7 +8,7 @@ class InputDevice {
     }
 }
 
-class KeyBoard extends InputDevice {
+export class KeyBoard extends InputDevice {
 
     #pressedKeys = {};
 
@@ -58,26 +58,25 @@ class KeyBoard extends InputDevice {
     isPress(keyName) { (this.#pressedKeys[this.#keys[keyName]]);}    
 }
 
-export const getKeyBoard = function() {return new KeyBoard();}
+// export const getKeyBoard = function() {return new KeyBoard();}
 
-class Mouse extends InputDevice {
+export class Mouse extends InputDevice {
     
     #x = 0;
-    get x() {this.#x;}
+    get x() {return this.#x;}
 
     #y = 0;
-    get y() {this.#y;}
+    get y() {return this.#y;}
 
     #dx = 0;
-    get dx() {this.#dx;}
+    get dx() {return this.#dx;}
 
     #dy = 0;
-    get dy() {this.#dy;}
+    get dy() {return this.#dy;}
 
     #scale = 1;
 
-    #wereEvents = {};
-    
+    #wereEvents = {};    
     wereEvent(eventName, deleteEvent=true) {
 
         var result = wereEvents[eventName];
@@ -91,35 +90,33 @@ class Mouse extends InputDevice {
     constructor(scale=1) {
         super()
         this.#scale = scale;
-        const _this = this;
+        //const _this = this;
     
-        var baseEventHandler = function(e) {
+        var baseEventHandler = function(e, _this) {
             _this.#wereEvents[e.type] = true;
             _this.#x = e.clientX/_this.#scale;
-            _this.#y = e.clientY/_this.#scale;
-            _this.#dx = e.movementX/_this.#scale;
-            _this.#dy = e.movementY/_this.#scale;
+            _this.#y = e.clientY/_this.#scale;            
         }
 
         window.addEventListener('mousemove', e => {
-            baseEventHandler(e);
-            // this.dx = e.movementX/this.scale;
-            // this.dy = e.movementY/this.scale;
+            baseEventHandler(e, this);
+            this.#dx = e.movementX/this.#scale;
+            this.#dy = e.movementY/this.#scale;
         });
 
 
         window.addEventListener('dblclick', e => {
-            baseEventHandler(e);
+            baseEventHandler(e, this);
         });
 
         window.addEventListener('click', e => {
-            baseEventHandler(e);
+            baseEventHandler(e, this);
         });        
     }
-} 
-const _mouse = new Mouse();
-export const  getMouse = function(posScale) {
-    _mouse.scale = posScale;
-    return _mouse;
 }
 
+// const _mouse = new Mouse();
+// export const  getMouse = function(posScale) {
+//     _mouse._scale = posScale;
+//     return _mouse;
+// }

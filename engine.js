@@ -1,6 +1,6 @@
 import {gameLog} from './gameLog.js';
 import {Rect, Text} from './shapes.js';
-import {getMouse, getKeyBoard} from './inputDevices.js';
+import {Mouse, KeyBoard} from './inputDevices.js';
 
 class GameContext{
     #width = 200;
@@ -56,6 +56,30 @@ class GameContext{
         document.body.appendChild(cnv);
 
         this.#context = cnv.getContext('2d');
+    }
+
+}
+
+
+class GameObjects{
+    #objects = {};
+
+    draw(){
+        for (var key in this.#objects){
+            this.#objects[key].draw();
+        }
+    }
+
+    add(key, obj){
+        this.#objects[key] = obj; 
+    }
+
+    remove(key){
+        delete this.#objects[key];
+    }
+
+    get(key){
+        return this.#objects[key];
     }
 
 }
@@ -128,6 +152,7 @@ export class Engine {
         const _engine = this;
         this.#runing = true;
         this.#pause = false;
+        console.log('start');
 
         requestAnimationFrame(function engine(){
             if (!_engine.#runing) return;
@@ -140,10 +165,9 @@ export class Engine {
         });
     }
 
-
     pause(){
         this.#log.add('Engine.pause');
-        this.#pause = false;
+        this.#pause = true;
     }
 
     stop(){
@@ -162,7 +186,7 @@ export class Engine {
     #mouse=null;
     get mouse(){
         if (this.#mouse==null){
-            this.#mouse = getMouse(this.scale);
+            this.#mouse = new Mouse(this.scale);
         }
         return this.#mouse;
     }
@@ -170,11 +194,10 @@ export class Engine {
     #keyBoard=null;
     get keyBoard(){
         if (this.#keyBoard==null){
-            this.#keyBoard = getKeyBoard();
+            this.#keyBoard = new KeyBoard();
         }
         return this.#keyBoard;
-    }
-    
+    }    
     
     addText(key, text, x, y, color, font){
         const result = new Text({
@@ -189,8 +212,6 @@ export class Engine {
         this.#gameObjects.add(key, result);
         return result;
     }
-
-
     
     // addRect(x, y, wi, he, color, fill){
     //     this.#userInterface.push(new Rect({
@@ -203,27 +224,4 @@ export class Engine {
     //         fill : fill,
     //     }));
     // }
-}
-
-class GameObjects{
-    #objects = {};
-
-    draw(){
-        for (var key in this.#objects){
-            this.#objects[key].draw();
-        }
-    }
-
-    add(key, obj){
-        this.#objects[key] = obj; 
-    }
-
-    remove(key){
-        delete this.#objects[key];
-    }
-
-    get(key){
-        return this.#objects[key];
-    }
-
 }
