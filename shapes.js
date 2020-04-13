@@ -138,7 +138,8 @@ export class Text  extends Primitive {
     }
     
     get lineHeight(){
-        const h = this.font.replace(//, '');
+        const r = /^[0-9]+/;
+        const h = this.font.match(r)[0];
     }
 
     constructor(params) {
@@ -182,7 +183,7 @@ class MLText extends Text{
         var y = this.y;
         lines.forEach(str => {
             this._draw(str, x, y);
-            x+=this.
+            x+=this.lineHeight;
         });
         
     };
