@@ -2,13 +2,13 @@ import {Personage} from './personage.js';
 import {Circle} from './shapes.js';
 
 export class Pacman extends Personage{
-    constructor(context){
+    constructor(params){
         super({
             x : 100,
             y : 100,
             drawContent : [
                 new Circle({
-                    context : context,
+                    context : params.context,
                     x : 0,
                     y : 0,
                     width : 30,
@@ -17,7 +17,7 @@ export class Pacman extends Personage{
                     lineWidth : 10,
                 }),
                 new Circle({
-                    context : context,
+                    context : params.context,
                     x : 0,
                     y : 0,
                     width : 30,

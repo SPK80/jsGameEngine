@@ -9,16 +9,16 @@ const mousePos = engine.createMLText('mouse', '', 20, 80, '#FF0000', '10px MV Bo
 const keys = engine.createText('keys', '', 10, 10);
 const rect = engine.createObject('rect','Rect', 
 {
-    x:10, 
-    y:10, 
+    x:200, 
+    y:200, 
     width: 50, 
     height: 80, 
     color: '#3D4DFF', 
     fill: true
 });
 
-// engine.addClass('pacman', Pacman);
-// const pac = engine.createObject('pac', 'pacman', {});
+engine.addClass('Pacman', Pacman);
+const pac = engine.createObject('pac', 'Pacman', {});
 engine.addClass('Circle', Circle);
 const circle = engine.createObject('circle', 'Circle', {
 
@@ -102,8 +102,8 @@ engine.update = function () {
 
     // shape.draw();
     // console.log(mouse);
-    rect.x = mouse.x+10;
-    rect.y = mouse.y+10;
+    pac.x = mouse.x;
+    pac.y = mouse.y;
 
     mousePos.text = `x: ${Math.round(mouse.x)} [${Math.round(mouse.dx)}]\r\ny: ${Math.round(mouse.y)} [${Math.round(mouse.dy)}]`;
     keys.text = `${keyBoard.lastDown.key}: ${keyBoard.lastDown.code}`;
