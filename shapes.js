@@ -130,22 +130,31 @@ export class Path extends Primitive {
 }
 
 export class Text  extends Primitive {
+
     #text = '';
-    
     get text() {return this.#text};
     set text(value) {
+        if (value == undefined) return;
         this.#text = value;
     }
-    
-    get lineHeight(){
-        const r = /^[0-9]+/;
-        const h = this.font.match(r)[0];
+
+    #font = '10px arial';    
+    get font() {return this.#font};
+    set font(value) {
+        if (value == undefined || value == '') return;
+        this.#font = value;
+        var h = Number(this.font.match(/^[0-9]+/)[0]);
+        if (h == NaN || h == undefined) return;
+        this.#lineHeight = h;
     }
+
+    #lineHeight = 0;
+    get lineHeight() { return this.#lineHeight; }
 
     constructor(params) {
         super(params);
-        this.#text = defaultIfUndefined(params.text, '');
-        this.font = defaultIfUndefined(params.font, '10px arial');
+        this.text = params.text;
+        this.font = params.font;
     };
     
     applyStyle(){
@@ -155,10 +164,10 @@ export class Text  extends Primitive {
 
     _draw(_text, _x, _y){
         if (this.fill) {
-            this._context.fillText(_text, _x, _y);
+            this._context.fillText(_text, _x, _y + this.#lineHeight);
         }
         else {
-            this._context.strokeText(_text, _x, _y);
+            this._context.strokeText(_text, _x, _y + this.#lineHeight);
         }
     }
 
@@ -169,7 +178,7 @@ export class Text  extends Primitive {
     };
 };
 
-class MLText extends Text{
+export class MLText extends Text{
     // #lines = [];
     // constructor(params){
     //     super(params);
@@ -179,13 +188,14 @@ class MLText extends Text{
         if (text!=undefined) this.text = text;
 
         const lines = this.text.split('\r\n');
+        // console.log(lines);
+        
         var x = this.x;
         var y = this.y;
         lines.forEach(str => {
             this._draw(str, x, y);
-            x+=this.lineHeight;
+            y+=this.lineHeight;
         });
         
     };
 }
-

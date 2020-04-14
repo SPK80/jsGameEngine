@@ -1,5 +1,5 @@
 import {gameLog} from './gameLog.js';
-import {Rect, Text} from './shapes.js';
+import {Rect, Text, MLText} from './shapes.js';
 import {Mouse, KeyBoard} from './inputDevices.js';
 
 class GameContext{
@@ -199,7 +199,24 @@ export class Engine {
         return this.#keyBoard;
     }    
     
-    addText(key, text, x, y, color, font){
+    #defaultFont = '10px times';
+    #defaultTextColor = '#FFFFFF';
+
+    addMLText(key, text, x, y, color = this.#defaultTextColor, font=this.#defaultFont){
+        const result = new MLText({
+            context: this.#gameContext.context,
+            x :     x,
+            y :     y,
+            color : color,
+            text :  text,
+            fill :  true,
+            font : font
+        });
+        this.#gameObjects.add(key, result);
+        return result;    
+    }
+
+    addText(key, text, x, y, color = this.#defaultTextColor, font=this.#defaultFont){
         const result = new Text({
             context: this.#gameContext.context,
             x :     x,
@@ -207,21 +224,38 @@ export class Engine {
             color : color,
             text :  text,
             fill :  true,
-
+            font : font
         });
         this.#gameObjects.add(key, result);
         return result;
     }
     
-    // addRect(x, y, wi, he, color, fill){
-    //     this.#userInterface.push(new Rect({
-    //         context : this.context,
-    //         x : x,
-    //         y : y, 
-    //         width : wi,       
-    //         height : he,       
-    //         color : color,
-    //         fill : fill,
-    //     }));
-    // }
+    addRect(key, x, y, wi, he, color, fill){
+        const result = new Rect({
+            context : this.#gameContext.context,
+            x : x,
+            y : y, 
+            width : wi,       
+            height : he,       
+            color : color,
+            fill : fill,
+        });
+        this.#gameObjects.add(key, result);
+        return result;
+    }
+
+    
+    addShape(key, className, params){
+        const shapeClasses = {
+            'Rect': Rect, 
+            'Text':  Text, 
+            'MLText': MLText
+        };
+        params.context = this.#gameContext.context;    
+        const result = new shapeClasses[className](params);
+        this.#gameObjects.add(key, result);
+        return result;
+
+    }
+    
 }

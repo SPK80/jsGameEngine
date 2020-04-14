@@ -2,8 +2,17 @@ import {Engine} from './engine.js';
 
 const engine = new Engine(640, 480, '#3D4D3D', 1.3333);
 
-const mousePos = engine.addText('mouse', '', 0, 80, '#FF00F0', '');
-const keys = engine.addText('keys', '', 0, 100, '#00FFF0', '');
+const mousePos = engine.addMLText('mouse', '', 20, 80, '#FF0000', '10px MV Boli');
+const keys = engine.addText('keys', '', 10, 10);
+const rect = engine.addShape('rect','Rect', 
+{
+    x:10, 
+    y:10, 
+    width: 50, 
+    height: 80, 
+    color: '#3D4DFF', 
+    fill: true
+});
 
 
 // const path = new Path({
@@ -78,9 +87,11 @@ engine.update = function () {
 
     // shape.draw();
     // console.log(mouse);
-    
-    mousePos.text = `x: ${Math.round(mouse.x)} [${Math.round(mouse.dx)}] \r\n y: ${Math.round(mouse.y)} [${Math.round(mouse.dy)}]`;
-    keys.text = `${keyBoard.lastDown.key} ${keyBoard.lastDown.code}`;
+    rect.x = mouse.x+10;
+    rect.y = mouse.y+10;
+
+    mousePos.text = `x: ${Math.round(mouse.x)} [${Math.round(mouse.dx)}]\r\ny: ${Math.round(mouse.y)} [${Math.round(mouse.dy)}]`;
+    keys.text = `${keyBoard.lastDown.key}: ${keyBoard.lastDown.code}`;
     
     // if (mouse.wereEvent('click', false))
     // {
