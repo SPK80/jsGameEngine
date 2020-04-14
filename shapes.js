@@ -1,3 +1,5 @@
+import {GameObject} from './gameObject.js';
+
 function defaultIfUndefined(param, defVal) {
    if (param==undefined) {
        return defVal;
@@ -7,38 +9,77 @@ function defaultIfUndefined(param, defVal) {
    }
 }
 
-class Primitive {
+// class Primitive {
+//     constructor(params) {
+//         this._context = params.context;
+//         this.x = defaultIfUndefined(params.x, 0);        
+//         this.y = defaultIfUndefined(params.y, 0);
+//         this.fill = defaultIfUndefined(params.fill, false);
+//         this.color = defaultIfUndefined(params.color, 'FF0000');
+//         this.lineWidth = defaultIfUndefined(params.lineWidth, 1);        
+//     }
+
+//     applyStyle() {
+        
+//         if (this.fill) {
+//             this._context.fillStyle = this.color;
+//         }
+//         else {
+//             this._context.strokeStyle = this.color;
+//             this._context.lineWidth  = this.lineWidth;
+//         }
+//     }
+
+//     draw() {
+//         console.log('function draw undefined');        
+//     }   
+// }
+
+class Shape extends GameObject {
+    #fill = true;
+    get fill(){return this.#fill}
+    
+    #lineWidth = 1;
+    get lineWidth(){return this.#lineWidth}
+
+    #color = '#FF0000';
+    get color(){return this.#color}
+
+    
     constructor(params) {
-        this._context = params.context;
-        this.x = defaultIfUndefined(params.x, 0);        
-        this.y = defaultIfUndefined(params.y, 0);
-        this.fill = defaultIfUndefined(params.fill, false);
-        this.color = defaultIfUndefined(params.color, 'FF0000');
-        this.lineWidth = defaultIfUndefined(params.lineWidth, 1);        
+        super(params);
+        if (params.lineWidth != undefined) this.#lineWidth = params.lineWidth;
+        if (params.fill != undefined) this.#fill = params.fill;
+        if (params.color != undefined) this.#color = params.color;
     }
 
     applyStyle() {
         
         if (this.fill) {
-            this._context.fillStyle = this.color;
+            this.context.fillStyle = this.color;
         }
         else {
-            this._context.strokeStyle = this.color;
-            this._context.lineWidth  = this.lineWidth;
+            this.context.strokeStyle = this.color;
+            this.context.lineWidth  = this.lineWidth;
         }
     }
 
-    draw() {
-        console.log('function draw undefined');        
-    }   
 }
 
-class Shape extends Primitive {
+export class Rect extends Shape {
+
+    #width = 100;
+    get width(){return this.#width}
+    
+    #height = 100;
+    get height(){return this.#height}
+    
+
     constructor(params) {
-        super(params)
-        this.width = defaultIfUndefined(params.width, 100);
-        this.height = defaultIfUndefined(params.height, 100);
-    }     
+        super(params);
+        if (params.width != undefined) this.#width = params.width;
+        if (params.height != undefined) this.#height = params.height;
+    }
 
     get right() {
         return this.x+this.width
@@ -48,54 +89,52 @@ class Shape extends Primitive {
         return this.y+this.height
     }
 
-    // includes(x, y) {
-    //     return  (x > this.x && x < this.right()) && 
-    //             (y > this.y && y < this.buttom())
-    // }
-}
-
-export class Rect extends Shape {
-    constructor(params) {
-        super(params) 
+    includes(x, y) {
+        return  (x > this.x && x < this.right()) && 
+                (y > this.y && y < this.buttom())
     }
 
     draw() {
         this.applyStyle();
         if (this.fill){            
-            this._context.fillRect(this.x, this.y, this.width, this.height);
+            this.context.fillRect(this.x, this.y, this.width, this.height);
         } 
         else {
-            this._context.strokeRect(this.x, this.y, this.width, this.height);
+            this.context.strokeRect(this.x, this.y, this.width, this.height);
         }        
     }
 }
 
 export class Circle extends Shape {
+    
+    #radius = 100;
+    get radius(){return this.#radius}
+
     constructor(params) {
-        super(params)
+        super(params);
+        if (params.radius != undefined) this.#radius = params.radius;
     }
 
     draw() {
         this.applyStyle();
         // console.log(this);       
         
-        this._context.beginPath();
-        this._context.arc(this.x, this.y, this.width, 0, Math.PI*2);
+        this.context.beginPath();
+        this.context.arc(this.x, this.y, this.radius, 0, Math.PI*2);
         if (this.fill) {
-            this._context.fill();
+            this.context.fill();
         }
         else {
-            this._context.stroke();
+            this.context.stroke();
         }
     }
 };
 
-export class Path extends Primitive {
+export class Path extends Shape {
     constructor(params) {
         super(params)
         this.points = defaultIfUndefined(params.points, [{x:0, y:0}, {x:10, y:10}]);
         this.shifting = defaultIfUndefined(params.shifting, false);
-        this.fill = false;
     }
 
     draw () {
@@ -117,20 +156,20 @@ export class Path extends Primitive {
 
         super.applyStyle();
 
-        this._context.beginPath();
+        this.context.beginPath();
         calcXY(0);
-        this._context.moveTo(x,y);
+        this.context.moveTo(x,y);
         
         for (let i = 1; i < this.points.length; i++) {
             calcXY(i);         
-            this._context.lineTo(x,y);                
+            this.context.lineTo(x,y);                
         }
-        this._context.stroke();            
+        this.context.stroke();            
 
     };
 }
 
-export class Text  extends Primitive {
+export class Text extends Shape {
 
     #text = '';
     get text() {return this.#text};
@@ -160,15 +199,15 @@ export class Text  extends Primitive {
     
     applyStyle(){
         super.applyStyle();
-        this._context.font = this.font;            
+        this.context.font = this.font;            
     }
 
     _draw(_text, _x, _y){
         if (this.fill) {
-            this._context.fillText(_text, _x, _y + this.#lineHeight);
+            this.context.fillText(_text, _x, _y + this.#lineHeight);
         }
         else {
-            this._context.strokeText(_text, _x, _y + this.#lineHeight);
+            this.context.strokeText(_text, _x, _y + this.#lineHeight);
         }
     }
 

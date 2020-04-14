@@ -102,8 +102,8 @@ engine.update = function () {
 
     // shape.draw();
     // console.log(mouse);
-    pac.x = mouse.x;
-    pac.y = mouse.y;
+    // pac.x = mouse.x;
+    // pac.y = mouse.y;
 
     mousePos.text = `x: ${Math.round(mouse.x)} [${Math.round(mouse.dx)}]\r\ny: ${Math.round(mouse.y)} [${Math.round(mouse.dy)}]`;
     keys.text = `${keyBoard.lastDown.key}: ${keyBoard.lastDown.code}`;

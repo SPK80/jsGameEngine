@@ -1,32 +1,24 @@
-import {Personage} from './personage.js';
+// import {Personage} from './personage.js';
+import {GameObject} from './gameObject.js';
+
 import {Circle} from './shapes.js';
 
-export class Pacman extends Personage{
+export class Pacman extends GameObject {
+    #phase = 0;
+
+    #color = '#A00090';
+    get color(){return this.#color}
+
+    
     constructor(params){
         super({
+            context : params.context, 
             x : 100,
             y : 100,
-            drawContent : [
-                new Circle({
-                    context : params.context,
-                    x : 0,
-                    y : 0,
-                    width : 30,
-                    color : '#0000F0',
-                    fill : true,
-                    lineWidth : 10,
-                }),
-                new Circle({
-                    context : params.context,
-                    x : 0,
-                    y : 0,
-                    width : 30,
-                    color : '#00F000',
-                    fill : true,
-                    lineWidth : 10,
-                }),
-            ],
         });
+
+        if (params.color != undefined) this.#color = params.color;
+
 
         this.actions = {
             moveForward : ()=> {
@@ -44,4 +36,18 @@ export class Pacman extends Personage{
             },
         }
     }
+
+    
+    #dph=0.02;
+    draw(){
+        this.#phase+=this.#dph;
+        if (this.#phase>0.25 || this.#phase<0) this.#dph = -this.#dph;
+
+        this.context.fillStyle = this.color;
+        this.context.beginPath();
+        this.context.arc(this.x, this.y, 20, Math.PI*this.#phase, Math.PI*(2-this.#phase));
+        this.context.lineTo(this.x, this.y);
+        this.context.fill();
+    }
+
 }
