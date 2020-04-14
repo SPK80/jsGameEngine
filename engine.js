@@ -1,6 +1,7 @@
 import {gameLog} from './gameLog.js';
 import {Rect, Text, MLText} from './shapes.js';
 import {Mouse, KeyBoard} from './inputDevices.js';
+// import {pacman} from './personage.js';
 
 class GameContext{
     #width = 200;
@@ -202,7 +203,7 @@ export class Engine {
     #defaultFont = '10px times';
     #defaultTextColor = '#FFFFFF';
 
-    addMLText(key, text, x, y, color = this.#defaultTextColor, font=this.#defaultFont){
+    createMLText(key, text, x, y, color = this.#defaultTextColor, font=this.#defaultFont){
         const result = new MLText({
             context: this.#gameContext.context,
             x :     x,
@@ -216,7 +217,7 @@ export class Engine {
         return result;    
     }
 
-    addText(key, text, x, y, color = this.#defaultTextColor, font=this.#defaultFont){
+    createText(key, text, x, y, color = this.#defaultTextColor, font=this.#defaultFont){
         const result = new Text({
             context: this.#gameContext.context,
             x :     x,
@@ -230,7 +231,7 @@ export class Engine {
         return result;
     }
     
-    addRect(key, x, y, wi, he, color, fill){
+    createRect(key, x, y, wi, he, color, fill){
         const result = new Rect({
             context : this.#gameContext.context,
             x : x,
@@ -244,18 +245,23 @@ export class Engine {
         return result;
     }
 
+    #classes = {
+        'Rect': Rect, 
+        'Text':  Text, 
+        'MLText': MLText,
+        // 'Circle' : Circle,
+    };
     
-    addShape(key, className, params){
-        const shapeClasses = {
-            'Rect': Rect, 
-            'Text':  Text, 
-            'MLText': MLText
-        };
+    createObject(key, className, params){
         params.context = this.#gameContext.context;    
-        const result = new shapeClasses[className](params);
+        const result = new this.#classes[className](params);
         this.#gameObjects.add(key, result);
         return result;
 
+    }
+
+    addClass(className, _class){
+        this.#classes[className]=_class;
     }
     
 }

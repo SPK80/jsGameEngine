@@ -77,6 +77,7 @@ export class Circle extends Shape {
 
     draw() {
         this.applyStyle();
+        // console.log(this);       
         
         this._context.beginPath();
         this._context.arc(this.x, this.y, this.width, 0, Math.PI*2);
@@ -179,23 +180,15 @@ export class Text  extends Primitive {
 };
 
 export class MLText extends Text{
-    // #lines = [];
-    // constructor(params){
-    //     super(params);
-    // }
     draw(text) {
         this.applyStyle();
         if (text!=undefined) this.text = text;
-
-        const lines = this.text.split('\r\n');
-        // console.log(lines);
-        
         var x = this.x;
         var y = this.y;
+        const lines = this.text.split('\r\n');
         lines.forEach(str => {
             this._draw(str, x, y);
             y+=this.lineHeight;
-        });
-        
+        });        
     };
 }

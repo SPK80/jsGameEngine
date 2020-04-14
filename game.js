@@ -1,10 +1,13 @@
 import {Engine} from './engine.js';
+import {Pacman} from './pacman.js';
+import {Circle} from './shapes.js';
 
 const engine = new Engine(640, 480, '#3D4D3D', 1.3333);
 
-const mousePos = engine.addMLText('mouse', '', 20, 80, '#FF0000', '10px MV Boli');
-const keys = engine.addText('keys', '', 10, 10);
-const rect = engine.addShape('rect','Rect', 
+
+const mousePos = engine.createMLText('mouse', '', 20, 80, '#FF0000', '10px MV Boli');
+const keys = engine.createText('keys', '', 10, 10);
+const rect = engine.createObject('rect','Rect', 
 {
     x:10, 
     y:10, 
@@ -14,6 +17,18 @@ const rect = engine.addShape('rect','Rect',
     fill: true
 });
 
+// engine.addClass('pacman', Pacman);
+// const pac = engine.createObject('pac', 'pacman', {});
+engine.addClass('Circle', Circle);
+const circle = engine.createObject('circle', 'Circle', {
+
+    x:100, 
+    y:200, 
+    width: 20, 
+    height: 80, 
+    color: '#FD4D00', 
+    fill: false
+});
 
 // const path = new Path({
 //     context : game.context,
