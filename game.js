@@ -4,7 +4,6 @@ import {Circle} from './shapes.js';
 
 const engine = new Engine(640, 480, '#3D4D3D', 1.3333);
 
-
 const mousePos = engine.createMLText('mouse', '', 20, 80, '#FF0000', '10px MV Boli');
 const keys = engine.createText('keys', '', 10, 10);
 const rect = engine.createObject('rect','Rect', 
@@ -58,10 +57,12 @@ engine.update = function () {
     //     pers.operate();
     //     pers.draw();
     // });
+    
 
     if (keyBoard.isPress('ENTER')){ 
         engine.stop();       
         engine.updateContext(engine.width-10, engine.height+10, engine.backgroundColor+10, engine.scale);
+    
     }    
 
     if (keyBoard.isPress('ESC')){        
@@ -69,23 +70,35 @@ engine.update = function () {
     }        
 
     if (keyBoard.isPress('UP')){        
-        pac.toDo.push('moveUp');
-        engine.log('UP')
+        // pac.toDo.push('moveUp');
+        pac.turn(pac.sides.up);
+        engine.log('UP');
+        console.log(pac.angle);
+        
     }        
 
     if (keyBoard.isPress('DOWN')){
-        pac.toDo.push('moveDown');
+        // pac.toDo.push('moveDown');
+        pac.turn(pac.sides.down);
         engine.log('DOWN');
+        console.log(pac.angle);
+
     }        
 
     if (keyBoard.isPress('RIGHT')){
-        pac.toDo.push('moveForward');
+        // pac.toDo.push('moveForward');
+        pac.turn(pac.sides.right);
         engine.log('RIGHT');
+        console.log(pac.angle);
+
     }        
 
     if (keyBoard.isPress('LEFT')){
-        pac.toDo.push('moveBack');
+        // pac.toDo.push('moveBack');
+        pac.turn(pac.sides.left);
         engine.log('LEFT');
+        console.log(pac.angle);
+
     }
     // console.log(pac.toDo);
     
