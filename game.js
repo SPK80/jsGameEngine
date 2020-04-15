@@ -26,6 +26,7 @@ const rect = engine.createObject('rect','Rect',
 
 engine.addClass('Pacman', Pacman);
 const pac = engine.createObject('pac', 'Pacman', {});
+
 engine.addClass('Circle', Circle);
 const circle = engine.createObject('circle', 'Circle', {
     x:100, 
@@ -35,16 +36,6 @@ const circle = engine.createObject('circle', 'Circle', {
     color: '#FD4D00', 
     fill: false
 });
-
-// const path = new Path({
-//     context : game.context,
-//     x : 200,
-//     y : 100,        
-//     color : '#AFA0F0',
-//     lineWidth: 3,
-//     shifting: true,
-//     points : [{x:0, y:0}, {x:20, y:10},{x:0, y:25},{x:20, y:-5}]
-// });
 
 const keyBoard = engine.keyBoard;
 const mouse = engine.mouse;
@@ -73,13 +64,13 @@ engine.update = function () {
     }        
 
     if (keyBoard.isPress('RIGHT')){
-        pac.turn(0.1);
+        pac.turnOn(0.1);
         // pac.moveForward();
         engine.log('RIGHT');
     }        
 
     if (keyBoard.isPress('LEFT')){
-        pac.turn(-0.1);
+        pac.turnOn(-0.1);
         // pac.moveForward();
         engine.log('LEFT');
     }

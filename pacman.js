@@ -1,14 +1,10 @@
-// import {Personage} from './personage.js';
 import {GameObject} from './gameObject.js';
-
-import {Circle} from './shapes.js';
 
 export class Pacman extends GameObject {
     #phase = 0;
 
     #color = '#A00090';
     get color(){return this.#color}
-
     
     constructor(params){
         super({
@@ -18,23 +14,6 @@ export class Pacman extends GameObject {
         });
 
         if (params.color != undefined) this.#color = params.color;
-
-
-        // this.actions = {
-        //     moveForward : ()=> {
-        //         this.x++;
-        //     },
-        //     moveBack : ()=> {
-        //         this.x--;
-        //     },
-
-        //     moveUp : ()=> {
-        //         this.y--;
-        //     },
-        //     moveDown : ()=> {
-        //         this.y++;
-        //     },
-        // }
     }
     
     #dph=0.02;
@@ -50,31 +29,32 @@ export class Pacman extends GameObject {
     }
 
     #moveSpeed = 1;
+    get moveSpeed(){return this.#moveSpeed};
+    set moveSpeed(value){this.#moveSpeed = value};
     
-    sides = {
-        right: 0.0, 
-        down: 0.5*Math.PI, 
-        left: Math.PI, 
-        up: 1.5*Math.PI
-    }
+    // sides = {
+    //     right: 0.0, 
+    //     down: 0.5*Math.PI, 
+    //     left: Math.PI, 
+    //     up: 1.5*Math.PI
+    // }
 
     #direction = {
         x: 0,
         y: 0
     }
-
-    #angle = 0;
-    get angle(){return this.#angle}
-
-    turn(delta){
-        this.#angle += delta;
-        this.direction;
-    }
-
     get direction(){
         this.#direction.y = Math.sin(this.#angle);
         this.#direction.x = Math.cos(this.#angle);
         return this.#direction;
+    }
+
+    #angle = 0;
+    get angle(){return this.#angle}
+
+    turnOn(delta){
+        this.#angle += delta;
+        this.direction;
     }
 
     moveForward() {
@@ -89,6 +69,5 @@ export class Pacman extends GameObject {
         var dy = this.#direction.y*this.#moveSpeed;
         this.x -= dx;
         this.y -= dy;
-    }    
-
+    }
 }
