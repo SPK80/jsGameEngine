@@ -30,7 +30,6 @@ export class KeyBoard extends InputDevice {
         return {key: '', code: this.#lastDownCode};
     }
 
-
     #keys = {
         'UP'    : 38,
         'DOWN'  : 40,
@@ -43,6 +42,7 @@ export class KeyBoard extends InputDevice {
     constructor(){
         super()
         const _keyBoard = this;
+
         window.addEventListener('keydown', e =>{
             _keyBoard.#lastDownCode = e.keyCode;
             _keyBoard.#pressedKeys[e.keyCode] = true;
@@ -55,7 +55,10 @@ export class KeyBoard extends InputDevice {
        
     }
 
-    isPress(keyName) { (this.#pressedKeys[this.#keys[keyName]]);}    
+    isPress(keyName) 
+    {
+        return this.#pressedKeys[this.#keys[keyName]];
+    }    
 }
 
 // export const getKeyBoard = function() {return new KeyBoard();}

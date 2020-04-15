@@ -20,21 +20,21 @@ export class Pacman extends GameObject {
         if (params.color != undefined) this.#color = params.color;
 
 
-        this.actions = {
-            moveForward : ()=> {
-                this.x++;
-            },
-            moveBack : ()=> {
-                this.x--;
-            },
+        // this.actions = {
+        //     moveForward : ()=> {
+        //         this.x++;
+        //     },
+        //     moveBack : ()=> {
+        //         this.x--;
+        //     },
 
-            moveUp : ()=> {
-                this.y--;
-            },
-            moveDown : ()=> {
-                this.y++;
-            },
-        }
+        //     moveUp : ()=> {
+        //         this.y--;
+        //     },
+        //     moveDown : ()=> {
+        //         this.y++;
+        //     },
+        // }
     }
     
     #dph=0.02;
@@ -66,15 +66,19 @@ export class Pacman extends GameObject {
     get angle(){return this.#angle}
 
     turn(angle){
+        // console.log('turn', angle);
+        
         this.#angle = angle;
-        this.#direction.x = Math.sin(this.#angle);
-        this.#direction.y = Math.cos(this.#angle);
+        this.#direction.y = Math.sin(this.#angle);
+        this.#direction.x = Math.cos(this.#angle);
     }
 
 
     moveForward() {
-        this.x += this.#direction.x*this.#moveSpeed;
-        this.y += this.#direction.y*this.#moveSpeed;
+        var dx = this.#direction.x*this.#moveSpeed;
+        var dy = this.#direction.y*this.#moveSpeed;
+        this.x += dx;
+        this.y += dy;
     }
 
 }
