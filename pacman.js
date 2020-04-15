@@ -62,17 +62,20 @@ export class Pacman extends GameObject {
         x: 0,
         y: 0
     }
+
     #angle = 0;
     get angle(){return this.#angle}
 
-    turn(angle){
-        // console.log('turn', angle);
-        
-        this.#angle = angle;
-        this.#direction.y = Math.sin(this.#angle);
-        this.#direction.x = Math.cos(this.#angle);
+    turn(delta){
+        this.#angle += delta;
+        this.direction;
     }
 
+    get direction(){
+        this.#direction.y = Math.sin(this.#angle);
+        this.#direction.x = Math.cos(this.#angle);
+        return this.#direction;
+    }
 
     moveForward() {
         var dx = this.#direction.x*this.#moveSpeed;
@@ -80,5 +83,12 @@ export class Pacman extends GameObject {
         this.x += dx;
         this.y += dy;
     }
+
+    moveBack() {
+        var dx = this.#direction.x*this.#moveSpeed;
+        var dy = this.#direction.y*this.#moveSpeed;
+        this.x -= dx;
+        this.y -= dy;
+    }    
 
 }

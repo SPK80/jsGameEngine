@@ -4,12 +4,20 @@ import {Circle} from './shapes.js';
 
 const engine = new Engine(640, 480, '#3D4D3D', 1.3333);
 
-const mousePos = engine.createMLText('mouse', '', 20, 80, '#FF0000', '10px MV Boli');
+const mousePos = engine.createMLText('mouse', '', 20, 80, '#FF0000');
 const keys = engine.createMLText('keys', '', 10, 10);
+const pacText = engine.createMLText('pacText', '', 400, 10);
+
+Number.prototype.round = function(places=0) {
+    if (places==0) return Math.round(this);
+    const p = Math.pow(10, places);
+    return Math.round( this * p  + Number.EPSILON ) / p;
+}
+
 const rect = engine.createObject('rect','Rect', 
 {
-    x:200, 
-    y:200, 
+    x: 200, 
+    y: 200, 
     width: 50, 
     height: 80, 
     color: '#3D4DFF', 
@@ -53,32 +61,32 @@ engine.update = function () {
     }        
 
     if (keyBoard.isPress('UP')){    
-        pac.turn(pac.sides.up);
+        // pac.turn(pac.sides.up);
         pac.moveForward();
         engine.log('UP');
     }        
 
     if (keyBoard.isPress('DOWN')){
-        pac.turn(pac.sides.down);
-        pac.moveForward();
+        // pac.turn(pac.sides.down);
+        pac.moveBack();
         engine.log('DOWN');
     }        
 
     if (keyBoard.isPress('RIGHT')){
-        pac.turn(pac.sides.right);
-        pac.moveForward();
+        pac.turn(0.1);
+        // pac.moveForward();
         engine.log('RIGHT');
     }        
 
     if (keyBoard.isPress('LEFT')){
-        pac.turn(pac.sides.left);
-        pac.moveForward();
+        pac.turn(-0.1);
+        // pac.moveForward();
         engine.log('LEFT');
     }
     
-    mousePos.text = `x: ${Math.round(mouse.x)} [${Math.round(mouse.dx)}]\r\ny: ${Math.round(mouse.y)} [${Math.round(mouse.dy)}]`;
-    keys.text = `${keyBoard.lastDown.key}: ${keyBoard.lastDown.code}\r\n${keyBoard.isPress('UP')} `;
-
+    mousePos.text = `x: ${mouse.x.round()} [${mouse.dx.round()}]\r\ny: ${mouse.y.round()} [${mouse.dy.round()}]`;
+    keys.text = `${keyBoard.lastDown.key}: ${keyBoard.lastDown.code}`;
+    pacText.text = `dir.x:${pac.direction.x.round(2)}\r\ndir.y:${pac.direction.y.round(2)}`;
     // if (mouse.wereEvent('click', false))
     // {
         // if (runRectIntersector.includes(mouse.x, mouse.y)){
