@@ -1,8 +1,3 @@
-function setIfDefined(param, value){
-    if (value == undefined) return;
-    param = value;
-}
-
 export class GameObject {
     
     #context = null;
@@ -12,24 +7,24 @@ export class GameObject {
 
     #x = 0;
     get x() {return this.#x};
-    set x(value) {setIfDefined(this.#x, value)};
+    set x(value) {if (value!=undefined) this.#x = value};
     
     #y = 0;
     get y() {return this.#y};
-    set y(value) {setIfDefined(this.#y, value)};
+    set y(value) {if (value!=undefined) this.#y = value};
     
     #z = 0;
     get z() {return this.#z};
-    set z(value) {setIfDefined(this.#z, value)};
+    set z(value) {if (value!=undefined) this.#z = value};    
     
     constructor(params) {
         if (params.context == undefined) 
             throw('params.context must be defined');
-
         this.#context = params.context;
-        this.x = params.x;
-        this.y = params.y;
-        this.z = params.z;
+        this.#x = params.x;
+        this.#y = params.y;
+        this.#z = params.z;
+
     }
 
     draw() {

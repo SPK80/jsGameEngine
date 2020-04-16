@@ -1,7 +1,6 @@
 import {gameLog} from './gameLog.js';
 import {Rect, Text, MLText} from './shapes.js';
 import {Mouse, KeyBoard} from './inputDevices.js';
-// import {pacman} from './personage.js';
 
 class GameContext{
     #width = 200;
@@ -9,10 +8,6 @@ class GameContext{
     #scale = 1;
     #backgroundColor = 0;
     #context = null;
-
-    get context() {
-        return this.#context;
-    }
 
     get context() {
         return this.#context;
@@ -58,7 +53,6 @@ class GameContext{
 
         this.#context = cnv.getContext('2d');
     }
-
 }
 
 
@@ -85,29 +79,9 @@ class GameObjects{
 
 }
 
-// class Button {
-//     #rect = null;
-//     #text = null;
-//     constructor(x, y, wi, he, color, text=''){
-//         this.#rect = new Rect({
-//             x:      x,
-//             y:      y,
-//             width:  wi,
-//             height: he,
-//             color:  color,
-//         });
-//         this.#text
-//     }
-
-// }
-
 export class Engine {
     
     #gameContext = null;
-
-    // #context(){
-    //     return this.#gameContext.context;
-    // }
 
     updateContext(_width, _height, _backgroundColor, _scale = 1.0) {
         this.#gameContext = new GameContext(_width, _height, _backgroundColor, _scale);
@@ -167,11 +141,13 @@ export class Engine {
     }
 
     pause(){
+        if (this.#pause) return;
         this.#log.add('Engine.pause');
         this.#pause = true;
     }
 
     stop(){
+        if (this.stop) return;
         this.#log.add('Engine.stop');
         this.#runing = false;
     }
