@@ -48,7 +48,9 @@ engine.update = function () {
     // }    
 
     if (keyBoard.isPress('ESC')){        
-        engine.stop();
+        engine.pause();
+        console.log('pause');
+        
     }        
 
     if (keyBoard.isPress('UP')){    

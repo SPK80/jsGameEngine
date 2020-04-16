@@ -55,7 +55,6 @@ class GameContext{
     }
 }
 
-
 class GameObjects{
     #objects = {};
 
@@ -114,7 +113,6 @@ export class Engine {
         this.update = () => console.log('update not implemented');
     }
 
-    #runing = false;
     #pause = false;
 
     #gameObjects = new GameObjects();
@@ -125,17 +123,23 @@ export class Engine {
 
     start() {
         const _engine = this;
-        this.#runing = true;
         this.#pause = false;
         console.log('start');
 
+        
         requestAnimationFrame(function engine(){
-            if (!_engine.#runing) return;
-            _engine.#gameContext.context.clearRect(0, 0, _engine.width, _engine.height);
-            _engine.update();
-
-            _engine.#gameObjects.draw();
-            _engine.#log.draw();        
+            if (!_engine.#pause) {
+                _engine.#gameContext.context.clearRect(0, 0, _engine.width, _engine.height);
+                _engine.update(); //implemented outside
+                _engine.#gameObjects.draw();
+                _engine.#log.draw();        
+            }
+            else{
+                if (_engine.keyBoard.isPress('ESC')){        
+                    _engine.#pause = false;                    
+                } 
+            }
+            
             requestAnimationFrame(engine);
         });
     }
@@ -144,12 +148,6 @@ export class Engine {
         if (this.#pause) return;
         this.#log.add('Engine.pause');
         this.#pause = true;
-    }
-
-    stop(){
-        if (this.stop) return;
-        this.#log.add('Engine.stop');
-        this.#runing = false;
     }
 
     log(text){
