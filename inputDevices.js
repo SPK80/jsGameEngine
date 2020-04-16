@@ -39,21 +39,55 @@ export class KeyBoard extends InputDevice {
         'ENTER' : 13,        
     };
 
+    #keyUp = false;
+    #keyDown = false;
+
     constructor(){
         super()
         const _keyBoard = this;
 
-        window.addEventListener('keydown', e =>{
+        window.addEventListener('keydown', e => { 
+            if (_keyBoard.#keyDownListeners[e.keyCode]!=undefined)
+                _keyBoard.#keyDownListeners[e.keyCode]();           
             _keyBoard.#lastDownCode = e.keyCode;
             _keyBoard.#pressedKeys[e.keyCode] = true;
         });
 
-        window.addEventListener('keyup', function (e){
+        window.addEventListener('keyup', e => {
+            if (_keyBoard.#keyUpListeners[e.keyCode]!=undefined)
+                _keyBoard.#keyUpListeners[e.keyCode]();
             _keyBoard.#lastUpCode = e.keyCode;
             _keyBoard.#pressedKeys[e.keyCode] = false;
-        }); 
-       
+        });
     }
+
+    #keyUpListeners = { };
+    #keyDownListeners = { };
+
+    getKeyCode(key){
+        const code = 0;
+        if (typeof(key)==String)
+            code = this.#keys[key];
+        else if (typeof(key)==Number)
+            cose = key;
+        else return;
+        if (code == NaN || code == undefined) return undefined
+        return code;
+        
+    }
+
+    listenKeyDown(key, listener) { 
+        const code = this.getKeyCode(key);
+        if (code == undefined) return;
+        this.#keyDownListeners[code] = listener;
+    }
+
+    listenKeyUp(key, listener) {
+        const code = this.getKeyCode(key);
+        if (code == undefined) return;      
+        this.#keyUpListeners[code] = listener;
+    }
+    
 
     isPress(keyName) 
     {

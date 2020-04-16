@@ -126,6 +126,8 @@ export class Engine {
         this.#pause = false;
         console.log('start');
 
+        this.keyBoard.listenKeyUp('ESC', ()=> console.log('ESC'));
+
         
         requestAnimationFrame(function engine(){
             if (!_engine.#pause) {
