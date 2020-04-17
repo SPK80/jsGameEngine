@@ -53,14 +53,14 @@ class Shape extends GameObject {
         if (params.color != undefined) this.#color = params.color;
     }
 
-    applyStyle() {
+    applyStyle(context) {
         
         if (this.fill) {
-            this.context.fillStyle = this.color;
+            context.fillStyle = this.color;
         }
         else {
-            this.context.strokeStyle = this.color;
-            this.context.lineWidth  = this.lineWidth;
+            context.strokeStyle = this.color;
+            context.lineWidth  = this.lineWidth;
         }
     }
 
@@ -94,13 +94,13 @@ export class Rect extends Shape {
                 (y > this.y && y < this.buttom())
     }
 
-    draw() {
-        this.applyStyle();
+    draw(context) {
+        this.applyStyle(context);
         if (this.fill){            
-            this.context.fillRect(this.x, this.y, this.width, this.height);
+            context.fillRect(this.x, this.y, this.width, this.height);
         } 
         else {
-            this.context.strokeRect(this.x, this.y, this.width, this.height);
+            context.strokeRect(this.x, this.y, this.width, this.height);
         }        
     }
 }
@@ -115,17 +115,17 @@ export class Circle extends Shape {
         if (params.radius != undefined) this.#radius = params.radius;
     }
 
-    draw() {
-        this.applyStyle();
+    draw(context) {
+        this.applyStyle(context);
         // console.log(this);       
         
-        this.context.beginPath();
-        this.context.arc(this.x, this.y, this.radius, 0, Math.PI*2);
+        context.beginPath();
+        context.arc(this.x, this.y, this.radius, 0, Math.PI*2);
         if (this.fill) {
-            this.context.fill();
+            context.fill();
         }
         else {
-            this.context.stroke();
+            context.stroke();
         }
     }
 };
@@ -188,45 +188,43 @@ export class Text extends Shape {
         this.#lineHeight = h;
     }
 
-    #lineHeight = 0;
+    #lineHeight = 10;
     get lineHeight() { return this.#lineHeight; }
 
     constructor(params) {
         super(params);
-        this.text = params.text;
-        this.font = params.font;
+        this.text = params.text==undefined ? this.#text : params.text;
+        this.font = params.font==undefined ? this.#font : params.font;
     };
     
-    applyStyle(){
-        super.applyStyle();
-        this.context.font = this.font;            
+    applyStyle(context){
+        super.applyStyle(context);
+        context.font = this.font;            
     }
 
-    _draw(_text, _x, _y){
+    _draw(context, _text, _x, _y){
         if (this.fill) {
-            this.context.fillText(_text, _x, _y + this.#lineHeight);
+            context.fillText(_text, _x, _y + this.#lineHeight);
         }
         else {
-            this.context.strokeText(_text, _x, _y + this.#lineHeight);
+            context.strokeText(_text, _x, _y + this.#lineHeight);
         }
     }
 
-    draw(text) {
-        this.applyStyle();
-        if (text!=undefined) this.text = text;
-        this._draw(this.text, this.x, this.y);                
+    draw(context) {
+        this.applyStyle(context);
+        this._draw(context, this.text, this.x, this.y);                
     };
 };
 
 export class MLText extends Text{
-    draw(text) {
-        this.applyStyle();
-        if (text!=undefined) this.text = text;
+    draw(context) {
+        this.applyStyle(context);
         var x = this.x;
         var y = this.y;
         const lines = this.text.split('\r\n');
         lines.forEach(str => {
-            this._draw(str, x, y);
+            this._draw(context, str, x, y);
             y+=this.lineHeight;
         });        
     };

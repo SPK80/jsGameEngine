@@ -2,30 +2,29 @@ import {GameObject} from './gameObject.js';
 
 export class Pacman extends GameObject {
     #phase = 0;
-
-    #color = '#A00090';
+    #color;
     get color(){return this.#color}
     
-    constructor(params){
+    constructor(x, y, color){
         super({
-            context : params.context, 
-            x : 100,
-            y : 100,
+            // context : params.context, 
+            x : x==undefined ? 100 : x,
+            y : y==undefined ? 100 : y,
         });
 
-        if (params.color != undefined) this.#color = params.color;
+        this.#color = color==undefined ? '#A00090' : color;
     }
     
     #dph=0.02;
-    draw(){
+    draw(context){
         this.#phase+=this.#dph;
         if (this.#phase>0.25 || this.#phase<0) this.#dph = -this.#dph;
 
-        this.context.fillStyle = this.color;
-        this.context.beginPath();
-        this.context.arc(this.x, this.y, 20, this.#angle + Math.PI*this.#phase, this.#angle + Math.PI*(2-this.#phase));
-        this.context.lineTo(this.x, this.y);
-        this.context.fill();
+        context.fillStyle = this.color;
+        context.beginPath();
+        context.arc(this.x, this.y, 20, this.#angle + Math.PI*this.#phase, this.#angle + Math.PI*(2-this.#phase));
+        context.lineTo(this.x, this.y);
+        context.fill();
     }
 
     #moveSpeed = 1;
