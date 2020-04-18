@@ -9,32 +9,6 @@ function defaultIfUndefined(param, defVal) {
    }
 }
 
-// class Primitive {
-//     constructor(params) {
-//         this._context = params.context;
-//         this.x = defaultIfUndefined(params.x, 0);        
-//         this.y = defaultIfUndefined(params.y, 0);
-//         this.fill = defaultIfUndefined(params.fill, false);
-//         this.color = defaultIfUndefined(params.color, 'FF0000');
-//         this.lineWidth = defaultIfUndefined(params.lineWidth, 1);        
-//     }
-
-//     applyStyle() {
-        
-//         if (this.fill) {
-//             this._context.fillStyle = this.color;
-//         }
-//         else {
-//             this._context.strokeStyle = this.color;
-//             this._context.lineWidth  = this.lineWidth;
-//         }
-//     }
-
-//     draw() {
-//         console.log('function draw undefined');        
-//     }   
-// }
-
 class Shape extends GameObject {
     #fill = true;
     get fill(){return this.#fill}
@@ -63,7 +37,6 @@ class Shape extends GameObject {
             context.lineWidth  = this.lineWidth;
         }
     }
-
 }
 
 export class Rect extends Shape {

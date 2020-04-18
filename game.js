@@ -1,8 +1,7 @@
 import {Engine} from './engine.js';
 import {Pacman} from './pacman.js';
-import {Circle} from './shapes.js';
+import {Circle, Path, Rect, Text, MLText} from './shapes.js';
 import {GameLog} from './gameLog.js';
-import {Rect, Text, MLText} from './shapes.js';
 import {Mouse, KeyBoard} from './inputDevices.js';
 const scale = 1.3333;
 const engine = new Engine(640, 480, '#3D4D3D', scale);
@@ -57,6 +56,14 @@ const circle = new Circle({
     fill: true
 });
 
+const path = new Path({
+    x:100, 
+    y:200, 
+    color: '#FD4D00', 
+    fill: true,
+    points: [{x:0, y:0}, {x:10, y:10}, {x:100, y:200},],
+    shifting : false
+});
 
 engine.update = function (context) {
     engine.clearContext();
@@ -75,6 +82,8 @@ engine.update = function (context) {
 
     pacText.draw(context);
     mousePos.draw(context);
+
+    path.draw(context);
 
     // if (keyBoard.isPress('ENTER')){ 
     //     engine.stop();       
