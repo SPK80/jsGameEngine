@@ -137,7 +137,7 @@ export class Path extends Shape {
         this.shifting = defaultIfUndefined(params.shifting, false);
     }
 
-    draw () {
+    draw (context) {
         const _path = this;
         var x = this.x;
         var y = this.y;
@@ -154,17 +154,17 @@ export class Path extends Shape {
             }
         }
 
-        super.applyStyle();
+        super.applyStyle(context);
 
-        this.context.beginPath();
+        context.beginPath();
         calcXY(0);
-        this.context.moveTo(x,y);
+        context.moveTo(x,y);
         
         for (let i = 1; i < this.points.length; i++) {
             calcXY(i);         
-            this.context.lineTo(x,y);                
+            context.lineTo(x,y);                
         }
-        this.context.stroke();            
+        context.stroke();            
 
     };
 }
