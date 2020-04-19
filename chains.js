@@ -1,71 +1,70 @@
 export class FifoChain {
-    
-    #last = null;
-    #first = null;
 
-    add(data){
+	#last = null;
+	#first = null;
 
-        if (this.#first == null) {
-            this.#last = this.#first = new ChNode(data);
-        }
-        else this.#last = this.#last.joinNewNext(data);
-    }
-    
-    get(){        
-        var first = this.#first;
-        this.#first = first.next;
-        first.unJoinNext();
-        return first;
-    }
+	add(data) {
 
-    toArray(){
-        
-        if (this.#first == null) return [];
+		if (this.#first == null) {
+			this.#last = this.#first = new ChNode(data);
+		}
+		else this.#last = this.#last.joinNewNext(data);
+	}
 
-        const result = [this.#first.data];
-        var node = this.#first.next;
+	get() {
+		var first = this.#first;
+		this.#first = first.next;
+		first.unJoinNext();
+		return first;
+	}
 
-        while (node != null) {            
-            result.push(node.data);
-            node = node.next;            
-        }
-        return result;
-    }
+	toArray() {
+
+		if (this.#first == null) return [];
+
+		const result = [this.#first.data];
+		var node = this.#first.next;
+
+		while (node != null) {
+			result.push(node.data);
+			node = node.next;
+		}
+		return result;
+	}
 }
 
 class ChNode {
-    #data = null;
-    #next = null;
-        
-    constructor(data, next=null) {
-        this.#data = data;
-        this.#next = next;
-    }
+	#data = null;
+	#next = null;
 
-    get next() {
-        return this.#next;
-    }
-    get data() {
-        return this.#data;
-    }    
+	constructor(data, next = null) {
+		this.#data = data;
+		this.#next = next;
+	}
 
-    joinNext(cnNode) {
-        if (typeof(cnNode) == ChNode){            
-            this.next = cnNode;
-            return this.next;
-        }
-        else
-        {
-            return joinNewNext(cnNode)
-        }
-    }
+	get next() {
+		return this.#next;
+	}
+	get data() {
+		return this.#data;
+	}
 
-    joinNewNext(data) {
-        this.#next = new ChNode(data);
-        return this.#next;
-    }
+	joinNext(cnNode) {
+		if (typeof (cnNode) == ChNode) {
+			this.next = cnNode;
+			return this.next;
+		}
+		else {
+			return joinNewNext(cnNode)
+		}
+	}
 
-    unJoinNext() {
-        this.#next =null;
-    }
+	joinNewNext(data) {
+		this.#next = new ChNode(data);
+		return this.#next;
+	}
+
+	unJoinNext() {
+		this.#next = null;
+	}
 }

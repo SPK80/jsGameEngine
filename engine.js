@@ -1,208 +1,111 @@
 export class Engine {
-    
-    // #gameContext = null;   
-    #width = 200;
-    #height = 200;
-    #scale = 1;
-    #backgroundColor = 0;
-    #context = null;
+
+	// #gameContext = null;   
+	#width = 200;
+	#height = 200;
+	#scale = 1;
+	#backgroundColor = 0;
+	#context = null;
 
 
-    updateContext(params) {
-        function isValidNumber(value){
-            return (Number(value) != NaN);
-        }
-        function isValidHex(value) {
-            if(value[0] != '#') return false;
-            return (parseInt(value.replace('#', ''), 16) != NaN)
-        }
+	updateContext(params) {
+		function isValidNumber(value) {
+			return (Number(value) != NaN);
+		}
+		function isValidHex(value) {
+			if (value[0] != '#') return false;
+			return (parseInt(value.replace('#', ''), 16) != NaN)
+		}
 
-        var haveParam = false;
+		var haveParam = false;
 
-        if (isValidNumber(params.width)) {this.#width = params.width; haveParam =true;}
-        if (isValidNumber(params.height)) {this.#height = params.height; haveParam =true;}
-        if (isValidNumber(params.scale)) {this.#scale = params.scale; haveParam =true;}
-        if (isValidHex(params.backgroundColor)) {this.#backgroundColor = params.backgroundColor; haveParam =true;}
-        if (!haveParam) return; //no one param!
+		if (isValidNumber(params.width)) { this.#width = params.width; haveParam = true; }
+		if (isValidNumber(params.height)) { this.#height = params.height; haveParam = true; }
+		if (isValidNumber(params.scale)) { this.#scale = params.scale; haveParam = true; }
+		if (isValidHex(params.backgroundColor)) { this.#backgroundColor = params.backgroundColor; haveParam = true; }
+		if (!haveParam) return; //no one param!
 
-        var cnv = null;
-        var cnvs = document.getElementsByTagName('canvas');
-        if (cnvs==undefined || cnvs.length<1) cnv = document.createElement('canvas');
-        else cnv = cnvs[0];
+		var cnv = null;
+		var cnvs = document.getElementsByTagName('canvas');
+		if (cnvs == undefined || cnvs.length < 1) cnv = document.createElement('canvas');
+		else cnv = cnvs[0];
 
-        cnv.width = this.#width;
-        cnv.height = this.#height;
-        cnv.style.position = 'fixed';
-        cnv.style.left = 0;
-        cnv.style.top = 0;
-        cnv.style.width = this.#width * this.#scale + 'px';
-        cnv.style.height = this.#height * this.#scale + 'px';
-        cnv.style.backgroundColor = this.#backgroundColor;        
-        document.body.appendChild(cnv);
 
-        this.#context = cnv.getContext('2d');
+		cnv.width = this.#width;
+		cnv.height = this.#height;
+		cnv.style.position = 'fixed';
+		cnv.style.left = 0;
+		cnv.style.top = 0;
+		cnv.style.width = this.#width * this.#scale + 'px';
+		cnv.style.height = this.#height * this.#scale + 'px';
+		cnv.style.backgroundColor = this.#backgroundColor;
+		document.body.appendChild(cnv);
 
-        // this.#gameContext = new GameContext(_width, _height, _backgroundColor, _scale);
-    }
+		this.#context = cnv.getContext('2d');
 
-    // get width() {
-    //     return this.#gameContext.width;
-    // }
+		// this.#gameContext = new GameContext(_width, _height, _backgroundColor, _scale);
+	}
 
-    // get height() {
-    //     return this.#gameContext.height;
-    // }
+	// get width() {
+	//     return this.#gameContext.width;
+	// }
 
-    // get scale() {
-    //     return this.#gameContext.scale;
-    // }
+	// get height() {
+	//     return this.#gameContext.height;
+	// }
 
-    // get backgroundColor() {
-    //     return this.#gameContext.backgroundColor;
-    // }
+	// get scale() {
+	//     return this.#gameContext.scale;
+	// }
 
-    // #log = null;
+	// get backgroundColor() {
+	//     return this.#gameContext.backgroundColor;
+	// }
 
-    constructor(_width, _height, _backgroundColor, _scale = 1.0) {                
+	// #log = null;
 
-        this.updateContext({
-            width : _width, 
-            height : _height, 
-            backgroundColor : _backgroundColor, 
-            scale : _scale
-        });        
-        // this.#log = new gameLog(this.#gameContext.context, 0, 0, 4);
-        // this.clearLog();   
-               
-        this.update = (context) => console.log('update not implemented');
-    }
+	constructor(_width, _height, _backgroundColor, _scale = 1.0) {
 
-    #pause = false;
+		this.updateContext({
+			width: _width,
+			height: _height,
+			backgroundColor: _backgroundColor,
+			scale: _scale
+		});
+		// this.#log = new gameLog(this.#gameContext.context, 0, 0, 4);
+		// this.clearLog();   
 
-    // #gameObjects = new GameObjects();
+		this.update = (context) => console.log('update not implemented');
+	}
 
-    // getGameObject(key){
-    //     return this.#gameObjects.get(key);
-    // }
+	#pause = false;
 
-    start() {
-        const _engine = this;
-        this.#pause = false;
-        // console.log('start');
+	// #gameObjects = new GameObjects();
 
-        requestAnimationFrame(function engine(){
-            if (!_engine.#pause) {
-            //     _engine.#gameContext.context.clearRect(0, 0, _engine.width, _engine.height);
-                _engine.update(_engine.#context); //implemented outside
-            //     _engine.#gameObjects.draw();
-            //     _engine.#log.draw();        
-            }
-            // else{
-            //     if (_engine.keyBoard.isPress('ESC')){        
-            //         _engine.#pause = false;                    
-            //     } 
-            // }
-            
-            requestAnimationFrame(engine);
-        });
-    }
+	// getGameObject(key){
+	//     return this.#gameObjects.get(key);
+	// }
 
-    clearContext(){
-        this.#context.clearRect(0, 0, this.#width, this.#height);
-    }
+	start() {
+		const _engine = this;
+		this.#pause = false;
+		// console.log('start');
 
-    pause(){
-        if (this.#pause) return;
-        // this.#log.add('Engine.pause');
-        this.#pause = true;
-    }
+		requestAnimationFrame(function engine() {
+			if (!_engine.#pause) {
+				_engine.update(_engine.#context); //implemented outside
+			}
+			requestAnimationFrame(engine);
+		});
+	}
 
-    // log(text){
-    //     this.#log.add(text);        
-    // }
+	clearContext() {
+		this.#context.clearRect(0, 0, this.#width, this.#height);
+	}
 
-    // clearLog(){
-    //     this.#log = new gameLog(this.#gameContext.context, 0, 0, 4);  
-    // }
-
-    // #mouse=null;
-    // get mouse(){
-    //     if (this.#mouse==null){
-    //         this.#mouse = new Mouse(this.scale);
-    //     }
-    //     return this.#mouse;
-    // }
-    
-    // #keyBoard=null;
-    // get keyBoard(){
-    //     if (this.#keyBoard==null){
-    //         this.#keyBoard = new KeyBoard();
-    //     }
-    //     return this.#keyBoard;
-    // }    
-    
-    // #defaultFont = '10px times';
-    // #defaultTextColor = '#FFFFFF';
-
-    // createMLText(key, text, x, y, color = this.#defaultTextColor, font=this.#defaultFont){
-    //     const result = new MLText({
-    //         context: this.#gameContext.context,
-    //         x :     x,
-    //         y :     y,
-    //         color : color,
-    //         text :  text,
-    //         fill :  true,
-    //         font : font
-    //     });
-    //     this.#gameObjects.add(key, result);
-    //     return result;    
-    // }
-
-    // createText(key, text, x, y, color = this.#defaultTextColor, font=this.#defaultFont){
-    //     const result = new Text({
-    //         context: this.#gameContext.context,
-    //         x :     x,
-    //         y :     y,
-    //         color : color,
-    //         text :  text,
-    //         fill :  true,
-    //         font : font
-    //     });
-    //     this.#gameObjects.add(key, result);
-    //     return result;
-    // }
-    
-    // createRect(key, x, y, wi, he, color, fill){
-    //     const result = new Rect({
-    //         context : this.#gameContext.context,
-    //         x : x,
-    //         y : y, 
-    //         width : wi,       
-    //         height : he,       
-    //         color : color,
-    //         fill : fill,
-    //     });
-    //     this.#gameObjects.add(key, result);
-    //     return result;
-    // }
-
-    // #classes = {
-    //     'Rect': Rect, 
-    //     'Text':  Text, 
-    //     'MLText': MLText,
-    //     // 'Circle' : Circle,
-    // };
-    
-    // createObject(key, className, params){
-    //     params.context = this.#gameContext.context;    
-    //     const result = new this.#classes[className](params);
-    //     this.#gameObjects.add(key, result);
-    //     return result;
-
-    // }
-
-    // addClass(className, _class){
-    //     this.#classes[className]=_class;
-    // }
-    
+	pause() {
+		if (this.#pause) return;
+		// this.#log.add('Engine.pause');
+		this.#pause = true;
+	}
 }
