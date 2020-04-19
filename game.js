@@ -1,10 +1,10 @@
-import { Engine } from './engine.js';
+import { Render } from './render.js';
 import { Pacman } from './pacman.js';
 import { Circle, Path, Rect, Text, MLText } from './shapes.js';
 import { GameLog } from './gameLog.js';
 import { Mouse, KeyBoard } from './inputDevices.js';
 const scale = 1.3333;
-const engine = new Engine(640, 480, '#3D4D3D', scale);
+const render = new Render(640, 480, '#3D4D3D', scale);
 
 const keyBoard = new KeyBoard();
 const mouse = new Mouse(scale);
@@ -65,8 +65,8 @@ const path = new Path({
 	shifting: false
 });
 
-engine.update = function (context) {
-	engine.clearContext();
+render.update = function (context) {
+	render.clearContext();
 
 	context.fillStyle = '#FF00FF';
 	context.beginPath();
@@ -91,7 +91,7 @@ engine.update = function (context) {
 	// }    
 
 	if (keyBoard.isPress('ESC')) {
-		engine.pause();
+		render.pause();
 		gLog.add('pause');
 	}
 
@@ -147,4 +147,4 @@ engine.update = function (context) {
 
 }
 
-engine.start();
+render.start();
