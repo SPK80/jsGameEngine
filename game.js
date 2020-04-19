@@ -3,6 +3,7 @@ import { Pacman } from './pacman.js';
 import { Circle, Path, Rect, Text, MLText } from './shapes.js';
 import { GameLog } from './gameLog.js';
 import { Mouse, KeyBoard } from './inputDevices.js';
+
 const scale = 1.3333;
 const render = new Render(640, 480, '#3D4D3D', scale);
 

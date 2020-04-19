@@ -13,10 +13,10 @@ export class Settings {
 	}
 
 	save() {
-
+		console.log('save this.#path not implemented');
 	}
 
 	load() {
-
+		console.log('load this.#path not implemented');
 	}
 }
