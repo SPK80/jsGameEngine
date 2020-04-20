@@ -1,4 +1,8 @@
-export class Render {
+class Render {
+
+}
+
+export class CanvasRender extends Render {
 
 	// #gameContext = null;
 	#width = 200;
@@ -47,7 +51,7 @@ export class Render {
 	}
 
 	constructor(_width, _height, _backgroundColor, _scale = 1.0) {
-
+		super();
 		this.updateContext({
 			width: _width,
 			height: _height,
