@@ -4,6 +4,7 @@
 // import { Mouse, KeyBoard } from './inputDevices.js';
 
 import { CanvasRender } from "./graphics/canvasRender.js";
+import { Scene } from "./scene.js";
 
 // const render = new CanvasRender(640, 480, '#3D4D3D', scale);
 
@@ -57,10 +58,15 @@ import { CanvasRender } from "./graphics/canvasRender.js";
 // 	shifting: false
 // });
 
-new CanvasRender(640, 480, '#3D4D3D', 4/3).start(function (render) {
+const scenes = [new Scene()];
+const activeScene = scenes[0];
+
+new CanvasRender(640, 480, '#3D4D3D', 4 / 3).start(function (render) {
+	
 	render.clear();
 	render.circle({ x: 100, y: 200, radius: 50, color: '#FF0000', fill: true });
 	render.text({ text: 'test', x: 200, y: 20, color: '#FF00F0', fill: true });
+
 	// context.fillStyle = '#FF00FF';
 	// context.beginPath();
 	// context.arc(200, 200, 50, 0, Math.PI);
