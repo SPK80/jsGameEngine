@@ -1,10 +1,5 @@
 export class GameObject {
 
-	// #context = null;
-	// get context(){
-	//     return this.#context;
-	// }
-
 	#x = 0;
 	get x() { return this.#x };
 	set x(value) { if (value != undefined) this.#x = value };
@@ -18,13 +13,9 @@ export class GameObject {
 	set z(value) { if (value != undefined) this.#z = value };
 
 	constructor(params) {
-		// if (params.context == undefined)
-		//     throw('params.context must be defined');
-		// this.#context = params.context;
 		this.#x = params.x;
 		this.#y = params.y;
 		this.#z = params.z;
-
 	}
 
 	draw(context) {
