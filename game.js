@@ -3,9 +3,8 @@
 // import { GameLog } from './gameLog.js';
 // import { Mouse, KeyBoard } from './inputDevices.js';
 
-import { CanvasRender } from "./canvasRender.js";
+import { CanvasRender } from "./graphics/canvasRender.js";
 
-const scale = 1.3333;
 // const render = new CanvasRender(640, 480, '#3D4D3D', scale);
 
 // const keyBoard = new KeyBoard();
@@ -29,15 +28,6 @@ const scale = 1.3333;
 // 	color: '#FFF000'
 // });
 
-Number.prototype.round = function (places = 0) {
-	if (places == 0) return Math.round(this);
-	const p = Math.pow(10, places);
-	return Math.round(this * p + Number.EPSILON) / p;
-}
-
-Number.prototype.parseHex = function (value) {
-	return parseInt(value.replace('#', ''), 16);
-}
 
 // const rect = new Rect(
 // 	{
@@ -67,7 +57,7 @@ Number.prototype.parseHex = function (value) {
 // 	shifting: false
 // });
 
-new CanvasRender(640, 480, '#3D4D3D', scale).start(function (render) {
+new CanvasRender(640, 480, '#3D4D3D', 4/3).start(function (render) {
 	render.clear();
 	render.circle({ x: 100, y: 200, radius: 50, color: '#FF0000', fill: true });
 	render.text({ text: 'test', x: 200, y: 20, color: '#FF00F0', fill: true });
