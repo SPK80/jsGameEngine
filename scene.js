@@ -4,17 +4,18 @@ export class Scene {
 	#decors = [];
 	#persons = [];
 	#render = null;
-	constructor(render) {
-		this.#settings = settings.engine;
+	constructor(id, settings) {
+		this.#settings = settings.scenes[id];
+
 	}
 
 	draw() {
 		this.#decors.forEach(decor => {
-			decor.draw(render);
+			decor.draw(this.#render);
 		});
 
 		this.#persons.forEach(person => {
-			person.draw(render);
+			person.draw(this.#render);
 		});
 	}
 }
