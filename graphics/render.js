@@ -1,22 +1,22 @@
 export class Render {
-	start(gameLoop) {
-		const _this = this;
-		this.#pause = false;
-		requestAnimationFrame(function render() {
-			if (!_this.#pause) {
-				gameLoop(_this);
-			}
-			requestAnimationFrame(render);
-		});
-	}
+	// start(gameLoop) {
+	// 	const _this = this;
+	// 	this.#pause = false;
+	// 	requestAnimationFrame(function render() {
+	// 		if (!_this.#pause) {
+	// 			gameLoop(_this);
+	// 		}
+	// 		requestAnimationFrame(render);
+	// 	});
+	// }
 
-	#pause = false;
-	pause() {
-		this.#pause = true;
-	}
-	resume() {
-		this.#pause = false;
-	}
+	// #pause = false;
+	// pause() {
+	// 	this.#pause = true;
+	// }
+	// resume() {
+	// 	this.#pause = false;
+	// }
 
 	clear(params) { throw ('clear not implemented') }
 	text(params) { throw ('text not implemented') }

@@ -1,9 +1,11 @@
 export class Scene {
+	#settings = null;
+
 	#decors = [];
 	#persons = [];
 	#render = null;
 	constructor(render) {
-		this.#render = render;
+		this.#settings = settings.engine;
 	}
 
 	draw() {

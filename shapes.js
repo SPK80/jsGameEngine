@@ -1,12 +1,12 @@
 import {GameObject} from './gameObject.js';
 
 function defaultIfUndefined(param, defVal) {
-   if (param==undefined) {
-	   return defVal;
-   }
-   else {
-	   return param;
-   }
+	if (param==undefined) {
+		return defVal;
+	}
+	else {
+		return param;
+	}
 }
 
 class Shape extends GameObject {
