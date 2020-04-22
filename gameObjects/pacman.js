@@ -16,15 +16,23 @@ export class Pacman extends GameObject {
 	}
 
 	#dph = 0.02;
-	draw(context) {
+	draw(render) {
 		this.#phase += this.#dph;
 		if (this.#phase > 0.25 || this.#phase < 0) this.#dph = -this.#dph;
 
-		context.fillStyle = this.color;
-		context.beginPath();
-		context.arc(this.x, this.y, 20, this.#angle + Math.PI * this.#phase, this.#angle + Math.PI * (2 - this.#phase));
-		context.lineTo(this.x, this.y);
-		context.fill();
+		render.context.fillStyle = this.color;
+		render.context.beginPath();
+		render.context.arc(this.x, this.y, 20, this.#angle + Math.PI * this.#phase, this.#angle + Math.PI * (2 - this.#phase));
+		render.context.lineTo(this.x, this.y);
+		render.context.fill();
+	}
+
+	input(inputDriver) {
+		if (inputDriver.keyPressed('UP')) this.moveForward();
+		if (inputDriver.keyPressed('DOWN')) this.moveBack();
+		if (inputDriver.keyPressed('LEFT')) this.turnOn(-0.1);
+		if (inputDriver.keyPressed('RIGHT')) this.turnOn(0.1);
+
 	}
 
 	#moveSpeed = 1;

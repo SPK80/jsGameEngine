@@ -1,6 +1,7 @@
 import { Engine } from "./engine.js";
 import { Settings } from "./settings.js";
-import { Scene } from "./scene.js";
+import { Scene } from "./scenes/scene.js";
+import { PacScene } from "./scenes/pacScene.js";
 
 const settings = new Settings();
 const engine = new Engine(settings);
@@ -16,4 +17,4 @@ window.onclose = () => {
 // const scenes = [new Scene(render)];
 // const activeScene = scenes[0];
 
-engine.start(new Scene(settings));
+engine.start(new PacScene('Pacman scene', settings));

@@ -7,6 +7,7 @@ export class CanvasRender extends Render {
 	#scale = 1;
 	#backgroundColor = 0;
 	#context = null;
+	get context() { return this.#context }
 
 	updateContext(params) {
 		function isValidNumber(value) {

@@ -1,9 +1,9 @@
 export class Settings {
 	render = {
-		width: 200,
-		height: 200,
+		width: 600,
+		height: 400,
 		scale: 1,
-		backgroundColor: 0,
+		backgroundColor: '#004020',
 	}
 
 	#path = 'settings.json';
