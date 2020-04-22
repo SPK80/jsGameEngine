@@ -26,10 +26,9 @@ export class Engine {
 		this.#pause = false;
 		requestAnimationFrame(function render() {
 			if (!_this.#pause) {
-				scene.input();
-				scene.animate();
-				scene.draw();
-				scene.sound();
+				scene.input(inputDriver);
+				scene.draw(render);
+				scene.sound(soundDriver);
 			}
 			requestAnimationFrame(render);
 		});

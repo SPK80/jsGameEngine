@@ -1,21 +1,29 @@
 export class Scene {
 	#settings = null;
-
 	#decors = [];
 	#persons = [];
-	#render = null;
+
+	#controlled = [];
 	constructor(id, settings) {
 		this.#settings = settings.scenes[id];
-
 	}
 
-	draw() {
+	draw(render) {
 		this.#decors.forEach(decor => {
-			decor.draw(this.#render);
+			decor.draw(render);
 		});
 
 		this.#persons.forEach(person => {
-			person.draw(this.#render);
+			person.draw(render);
 		});
 	}
+
+	input(inputDriver) {
+
+	}
+
+	sound(soundDriver) {
+
+	}
+
 }
