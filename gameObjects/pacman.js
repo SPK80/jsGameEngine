@@ -1,4 +1,5 @@
 import { GameObject } from './gameObject.js';
+import { all } from '../extentions.js';
 
 export class Pacman extends GameObject {
 	#phase = 0;
@@ -65,15 +66,19 @@ export class Pacman extends GameObject {
 	}
 
 	moveForward() {
-		var dx = this.#direction.x * this.#moveSpeed;
-		var dy = this.#direction.y * this.#moveSpeed;
+		// console.log('moveForward', this);
+		const dir = this.direction;
+		var dx = dir.x * this.#moveSpeed;
+		var dy = dir.y * this.#moveSpeed;
 		this.x += dx;
 		this.y += dy;
 	}
 
 	moveBack() {
-		var dx = this.#direction.x * this.#moveSpeed;
-		var dy = this.#direction.y * this.#moveSpeed;
+		// console.log('moveBack', this);
+		const dir = this.direction;
+		var dx = dir.x * this.#moveSpeed;
+		var dy = dir.y * this.#moveSpeed;
 		this.x -= dx;
 		this.y -= dy;
 	}
