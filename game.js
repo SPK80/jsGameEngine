@@ -1,6 +1,5 @@
 import { Engine } from "./engine.js";
 import { Settings } from "./settings.js";
-import { Scene } from "./scenes/scene.js";
 import { PacScene } from "./scenes/pacScene.js";
 
 const settings = new Settings();

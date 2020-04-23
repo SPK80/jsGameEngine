@@ -81,4 +81,10 @@ export class CanvasRender extends Render {
 		if (params.fill) this.#context.fillText(params.text, params.x, params.y);
 		else this.#context.strokeText(params.text, params.x, params.y);
 	}
+
+	sprite(params) {
+
+	}
+
+
 }
