@@ -1,7 +1,10 @@
 import { GameObject } from './gameObject.js';
+import { RolCounter } from '../counters.js';
 
 export class Pacman extends GameObject {
-	#phase = 0;
+
+	#phase = new RolCounter(0, 0.25, 0.02);
+
 	#color;
 	get color() { return this.#color }
 
@@ -14,18 +17,16 @@ export class Pacman extends GameObject {
 		this.#color = color == undefined ? '#A00090' : color;
 		// var c = Number.parseHex(this.#color);
 		// console.log(c);
-
 	}
 
-	#dph = 0.02;
+	// #dph = 0.02;
 	draw(render) {
-		this.#phase += this.#dph;
-		if (this.#phase > 0.25 || this.#phase < 0) this.#dph = -this.#dph;
-
+		// this.#phase += this.#dph;
+		// if (this.#phase > 0.25 || this.#phase < 0) this.#dph = -this.#dph;
+		const phase = this.#phase.getNext();
 		render.context.fillStyle = this.color;
-
 		render.context.beginPath();
-		render.context.arc(this.x, this.y, 20, this.#angle + Math.PI * this.#phase, this.#angle + Math.PI * (2 - this.#phase));
+		render.context.arc(this.x, this.y, 20, this.#angle + Math.PI * phase, this.#angle + Math.PI * (2 - phase));
 		render.context.lineTo(this.x, this.y);
 		render.context.fill();
 	}
@@ -41,6 +42,7 @@ export class Pacman extends GameObject {
 		x: 0,
 		y: 0
 	}
+
 	get direction() {
 		this.#direction.y = Math.sin(this.#angle);
 		this.#direction.x = Math.cos(this.#angle);

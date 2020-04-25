@@ -18,15 +18,9 @@ export class GameObject {
 		this.#z = params.z;
 	}
 
-	draw(render) {
-		throw ('draw not implemented');
-	}
+	draw(render) { throw ('draw not implemented') }
 
-	input(inputDriver) {
-		throw ('input not implemented');
-	}
+	input(inputDriver) { throw ('input not implemented') }
 
-	sound(soundDriver) {
-		throw ('sound not implemented');
-	}
+	sound(soundDriver) { throw ('sound not implemented') }
 }

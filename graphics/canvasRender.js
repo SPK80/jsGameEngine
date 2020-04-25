@@ -83,7 +83,9 @@ export class CanvasRender extends Render {
 	}
 
 	sprite(params) {
-
+		// var image = new Image();		
+		// image.src = params.path;
+		ctx.drawImage(params.image, 0, params.height * params.currentFrame, params.width, params.height, 0, 0, params.width, params.height);
 	}
 
 
