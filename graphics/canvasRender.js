@@ -83,10 +83,27 @@ export class CanvasRender extends Render {
 	}
 
 	sprite(params) {
-		// var image = new Image();		
-		// image.src = params.path;
-		ctx.drawImage(params.image, 0, params.height * params.currentFrame, params.width, params.height, 0, 0, params.width, params.height);
+		this.#context.drawImage(params.image, 0, params.height * params.currentFrame, params.width, params.height, 0, 0, params.width, params.height);
 	}
 
+	path(params) {
+		function _style(element) {
+			if (element.color) this.#context.strokeStyle = element.color;
+			if (element.lineWidth) this.#context.lineWidth = element.lineWidth;
+		}
+		this.#context.beginPath();
+		params.forEach(element => {
+
+			if (element.type == 'lineTo') {
+				_style(element);
+				this.#context.lineTo(element.x, element.y);
+			}
+			else if (element.type == 'arc') {
+				_style(element);
+				this.#context.arc(element.x, element.y, element.startAngle, element.angle1, element.endAngle);
+			}
+		});
+		this.#context.stroke();
+	}
 
 }
