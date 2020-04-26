@@ -24,11 +24,27 @@ export class Pacman extends GameObject {
 		// this.#phase += this.#dph;
 		// if (this.#phase > 0.25 || this.#phase < 0) this.#dph = -this.#dph;
 		const phase = this.#phase.getNext();
-		render.context.fillStyle = this.color;
-		render.context.beginPath();
-		render.context.arc(this.x, this.y, 20, this.#angle + Math.PI * phase, this.#angle + Math.PI * (2 - phase));
-		render.context.lineTo(this.x, this.y);
-		render.context.fill();
+		render.path({
+			color: this.color,
+			fill: true,
+			elements: [{
+				type: 'arc',
+				x: this.x,
+				y: this.y,
+				radius: 20,
+				startAngle: this.#angle + Math.PI * phase,
+				endAngle: this.#angle + Math.PI * (2 - phase)
+			}, {
+				type: 'lineTo',
+				x: this.x,
+				y: this.y
+			}]
+		});
+		// render.context.fillStyle = this.color;
+		// render.context.beginPath();
+		// render.context.arc(this.x, this.y, 20, this.#angle + Math.PI * phase, this.#angle + Math.PI * (2 - phase));
+		// render.context.lineTo(this.x, this.y);
+		// render.context.fill();
 	}
 
 	input(inputDriver) {

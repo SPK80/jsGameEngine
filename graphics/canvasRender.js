@@ -76,12 +76,12 @@ export class CanvasRender extends Render {
 		else this.#context.stroke();
 	}
 
-	path(params){
+	path(params) {
 		this.#stile(params);
 		this.#context.beginPath();
 		params.forEach(element => {
-			if (element.type == 'line'){
-				
+			if (element.type == 'line') {
+
 			}
 		});
 
@@ -100,23 +100,34 @@ export class CanvasRender extends Render {
 	}
 
 	path(params) {
-		function _style(element) {
-			if (element.color) this.#context.strokeStyle = element.color;
-			if (element.lineWidth) this.#context.lineWidth = element.lineWidth;
+		const _context = this.#context;
+
+		function _fill() {
+			return (typeof params.fill == "boolean" && params.fill)
 		}
+
+		function _lineStyle(element) {
+			if (element.color) _context.strokeStyle = element.color;
+			if (element.lineWidth) _context.lineWidth = element.lineWidth;
+
+		}
+		this.#stile(params);
 		this.#context.beginPath();
-		params.forEach(element => {
+
+		params.elements.forEach(element => {
 
 			if (element.type == 'lineTo') {
-				_style(element);
+				_lineStyle(element);
 				this.#context.lineTo(element.x, element.y);
 			}
 			else if (element.type == 'arc') {
-				_style(element);
-				this.#context.arc(element.x, element.y, element.startAngle, element.angle1, element.endAngle);
+				_lineStyle(element);
+				this.#context.arc(element.x, element.y, element.radius, element.startAngle, element.endAngle);
 			}
 		});
-		this.#context.stroke();
+
+		if (_fill()) _context.fill();
+		else _context.stroke();
 	}
 
 }
