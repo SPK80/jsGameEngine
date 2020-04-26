@@ -1,5 +1,6 @@
 import { Scene } from "./scene.js";
 import { Pacman } from "../gameObjects/pacman.js";
+import { walkMan } from "../gameObjects/walkMan.js";
 
 export class PacScene extends Scene {
 
@@ -9,6 +10,11 @@ export class PacScene extends Scene {
 		super.addControlled(pacman);
 		super.addDisplayed(pacman);
 		super.addSounding(pacman);
+
+		const walcMan = new walkMan(100, 200, '#00F0FF');
+		super.addControlled(walcMan);
+		super.addDisplayed(walcMan);
+		super.addSounding(walcMan);
 
 		// super.#controlled.push(pacman);
 		// super.#displayed.push(pacman);

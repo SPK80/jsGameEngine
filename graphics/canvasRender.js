@@ -76,6 +76,19 @@ export class CanvasRender extends Render {
 		else this.#context.stroke();
 	}
 
+	path(params){
+		this.#stile(params);
+		this.#context.beginPath();
+		params.forEach(element => {
+			if (element.type == 'line'){
+				
+			}
+		});
+
+		this.#context.stroke();
+
+	}
+
 	text(params) {
 		this.#stile(params);
 		if (params.fill) this.#context.fillText(params.text, params.x, params.y);
@@ -85,7 +98,7 @@ export class CanvasRender extends Render {
 	sprite(params) {
 		// var image = new Image();		
 		// image.src = params.path;
-		ctx.drawImage(params.image, 0, params.height * params.currentFrame, params.width, params.height, 0, 0, params.width, params.height);
+		this.#context.drawImage(params.image, 0, params.height * params.currentFrame, params.width, params.height, 0, 0, params.width, params.height);
 	}
 
 
