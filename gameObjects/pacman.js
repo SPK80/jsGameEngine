@@ -6,40 +6,58 @@ export class Pacman extends GameObject {
 	#phase = new RolCounter(0, 0.25, 0.02);
 
 	#color;
+	#radius;
 	get color() { return this.#color }
 
-	constructor(x, y, color) {
+	constructor(x, y, color, size) {
 		super({
 			x: x == undefined ? 100 : x,
 			y: y == undefined ? 100 : y,
 		});
-
 		this.#color = color == undefined ? '#A00090' : color;
-		// var c = Number.parseHex(this.#color);
-		// console.log(c);
+		this.#radius = size == undefined ? 20 : size / 2;
+
 	}
 
-	// #dph = 0.02;
 	draw(render) {
-		// this.#phase += this.#dph;
-		// if (this.#phase > 0.25 || this.#phase < 0) this.#dph = -this.#dph;
 		const phase = this.#phase.getNext();
+		const _endAngle = this.#angle + Math.PI * (2 - phase);
+		const _startAngle = this.#angle + Math.PI * phase;
 		render.path({
 			color: this.color,
 			fill: true,
-			elements: [{
-				type: 'arc',
-				x: this.x,
-				y: this.y,
-				radius: 20,
-				startAngle: this.#angle + Math.PI * phase,
-				endAngle: this.#angle + Math.PI * (2 - phase)
-			}, {
-				type: 'lineTo',
-				x: this.x,
-				y: this.y
-			}]
+			elements: [
+				{
+					type: 'arc',
+					x: this.x,
+					y: this.y,
+					radius: this.#radius,
+					startAngle: _startAngle,
+					endAngle: _endAngle,
+				},
+				{
+					type: 'lineTo',
+					x: this.x,
+					y: this.y,
+				},
+				{
+					type: 'lineTo',
+					x: this.x + this.#radius * Math.cos(_startAngle),
+					y: this.y + this.#radius * Math.sin(_startAngle),
+				},
+			]
 		});
+
+		var eyeAngle = _endAngle - 0.4;
+		// if (this.#angle > Math.PI) eyeAngle = eyeAngle - Math.PI;
+
+		render.circle({
+			fill: true,
+			color: '#B000A0',
+			x: this.x + this.#radius * Math.cos(eyeAngle) * 0.6,
+			y: this.y + this.#radius * Math.sin(eyeAngle) * 0.6,
+			radius: 3
+		})
 		// render.context.fillStyle = this.color;
 		// render.context.beginPath();
 		// render.context.arc(this.x, this.y, 20, this.#angle + Math.PI * phase, this.#angle + Math.PI * (2 - phase));

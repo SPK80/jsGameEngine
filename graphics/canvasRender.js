@@ -95,38 +95,38 @@ export class CanvasRender extends Render {
 		else this.#context.strokeText(params.text, params.x, params.y);
 	}
 
-	sprite(params) {
-		this.#context.drawImage(params.image, 0, params.height * params.currentFrame, params.width, params.height, 0, 0, params.width, params.height);
+	tiling(params) {
+		const tileX = (params.tileX) ? params.tileX : 0;
+		const tileY = (params.tileY) ? params.tileY : 0;
+		const tileWidth = (params.tileWidth) ? params.tileWidth : params.width;
+		const tileHeight = (params.tileHeight) ? params.tileHeight : params.height;
+
+		this.#context.drawImage(params.image, tileWidth * tileX, tileHeight * tileY, params.width, params.height, params.x, params.y, params.width, params.height);
 	}
 
 	path(params) {
 		const _context = this.#context;
 
-		function _fill() {
-			return (typeof params.fill == "boolean" && params.fill)
-		}
-
-		function _lineStyle(element) {
-			if (element.color) _context.strokeStyle = element.color;
-			if (element.lineWidth) _context.lineWidth = element.lineWidth;
-
-		}
 		this.#stile(params);
 		this.#context.beginPath();
 
-		params.elements.forEach(element => {
+		params.elements.forEach(el => {
 
-			if (element.type == 'lineTo') {
-				_lineStyle(element);
-				this.#context.lineTo(element.x, element.y);
+			if (el.type == 'moveTo') {
+				this.#context.moveTo(el.x, el.y);
 			}
-			else if (element.type == 'arc') {
-				_lineStyle(element);
-				this.#context.arc(element.x, element.y, element.radius, element.startAngle, element.endAngle);
+			else if (el.type == 'lineTo') {
+				this.#context.lineTo(el.x, el.y);
+			}
+			else if (el.type == 'arc') {
+				this.#context.arc(el.x, el.y, el.radius, el.startAngle, el.endAngle);
+			}
+			else if (el.type == 'arcTo') {
+				this.#context.arcTo(el.x1, el.y1, el.x2, el.y2, el.radius);
 			}
 		});
 
-		if (_fill()) _context.fill();
+		if (params.fill) _context.fill();
 		else _context.stroke();
 	}
 

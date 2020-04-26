@@ -8,12 +8,21 @@ export class walkMan extends GameObject {
 
 	#phase = new CircleCounter(0, (this.#frames - 1) * this.#delay, 1);
 	#image = new Image();
+	#imageLoaded = false;
 
 	constructor(x, y) {
 		super({
 			x: x == undefined ? 100 : x,
 			y: y == undefined ? 100 : y,
 		});
+
+		const _this = this;
+		this.#image.addEventListener("load", function () {
+			// console.log('Loaded');
+			_this.#imageLoaded = true;
+			// console.log(_this);
+
+		}, false);
 
 		this.#image.src = 'sprite.png';
 
@@ -29,13 +38,15 @@ export class walkMan extends GameObject {
 
 	draw(render) {
 		const p = this.#phase.getNext();
-
-
-		render.sprite({
+		if (!this.#imageLoaded) return;
+		render.tiling({
 			image: this.#image,
+			x: this.x,
+			y: this.y,
 			width: this.#width,
 			height: this.#height,
-			currentFrame: Math.round(p / this.#delay)
+			// tileX: 0,
+			tileY: Math.round(p / this.#delay)
 		})
 	}
 
