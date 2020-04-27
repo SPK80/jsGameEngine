@@ -101,7 +101,17 @@ export class CanvasRender extends Render {
 		const tileWidth = (params.tileWidth) ? params.tileWidth : params.width;
 		const tileHeight = (params.tileHeight) ? params.tileHeight : params.height;
 
-		this.#context.drawImage(params.image, tileWidth * tileX, tileHeight * tileY, params.width, params.height, params.x, params.y, params.width, params.height);
+		this.#context.drawImage(
+			params.image,
+			tileWidth * tileX,
+			tileHeight * tileY,
+			tileWidth,
+			tileHeight,
+			params.x,
+			params.y,
+			params.width,
+			params.height
+		);
 	}
 
 	path(params) {
