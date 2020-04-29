@@ -9,20 +9,25 @@ export class Pacman extends GameObject {
 	#radius;
 	get color() { return this.#color }
 
-	constructor(x, y, color, size) {
-		super({
-			x: x == undefined ? 100 : x,
-			y: y == undefined ? 100 : y,
-		});
-		this.#color = color == undefined ? '#A00090' : color;
-		this.#radius = size == undefined ? 20 : size / 2;
-
+	// constructor(x, y, color, size) {
+	// 	super({
+	// 		x: x == undefined ? 100 : x,
+	// 		y: y == undefined ? 100 : y,
+	// 	});
+	// 	this.#color = color == undefined ? '#A00090' : color;
+	// 	this.#radius = size == undefined ? 20 : size / 2;
+	// }
+	init(params){
+		super
 	}
 
-	draw(render) {
+	update(params) {
 		const phase = this.#phase.getNext();
 		const _endAngle = this.#angle + Math.PI * (2 - phase);
 		const _startAngle = this.#angle + Math.PI * phase;
+
+		const render = params.render;
+
 		render.path({
 			color: this.color,
 			fill: true,
@@ -58,14 +63,14 @@ export class Pacman extends GameObject {
 			y: this.y + this.#radius * Math.sin(eyeAngle) * 0.6,
 			radius: 3
 		})
+
 		// render.context.fillStyle = this.color;
 		// render.context.beginPath();
 		// render.context.arc(this.x, this.y, 20, this.#angle + Math.PI * phase, this.#angle + Math.PI * (2 - phase));
 		// render.context.lineTo(this.x, this.y);
 		// render.context.fill();
-	}
 
-	input(inputDriver) {
+		const inputDriver = params.input;
 		if (inputDriver.keyPressed('UP')) this.moveForward(1);
 		if (inputDriver.keyPressed('DOWN')) this.moveBack(1);
 		if (inputDriver.keyPressed('LEFT')) this.turnOn(-0.1);

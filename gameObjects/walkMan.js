@@ -33,12 +33,14 @@ export class walkMan extends GameObject {
 	#width = 0;
 	#height = 0;
 
-	draw(render) {
+	update(params) {
+
 		const p = this.#phase.getNext();
 		if (!this.#imageLoaded) {
 			return;
 		}
-		render.tiling({
+
+		params.render.tiling({
 			image: this.#image,
 			x: this.x,
 			y: this.y,
@@ -50,9 +52,5 @@ export class walkMan extends GameObject {
 			tileY: Math.round(p / this.#delay)
 		})
 	}
-
-	input(inputDriver) { }
-
-	sound(soundDriver) { }
 
 }

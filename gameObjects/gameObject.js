@@ -16,11 +16,9 @@ export class GameObject {
 		this.#x = params.x;
 		this.#y = params.y;
 		this.#z = params.z;
+		this.init(params);
 	}
+	init(params) { throw ('update not implemented') }
 
-	draw(render) { throw ('draw not implemented') }
-
-	input(inputDriver) { throw ('input not implemented') }
-
-	sound(soundDriver) { throw ('sound not implemented') }
+	update(params) { throw ('update not implemented') }
 }

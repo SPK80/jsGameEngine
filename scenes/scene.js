@@ -1,14 +1,20 @@
+import { GameObject } from "../gameObjects/gameObject.js";
+
 export class Scene {
 	// #settings = null;
-	#displayed = [];
-	#controlled = [];
-	#sounding = [];
+	// #displayed = [];
+	// #controlled = [];
+	// #sounding = [];
+
 	constructor(id, settings) {
 		// this.#settings = settings.scenes[id];
 	}
+
 	#objects = [];
+
 	add(gameObject) {
-		this.#objects.push(gameObject);
+		if (gameObject instanceof GameObject)
+			this.#objects.push(gameObject);
 	}
 
 	init(params) {
@@ -20,32 +26,9 @@ export class Scene {
 	}
 
 	update(params) {
-		if (params.render) {
-			render.clear();
-			this.#objects.forEach(obj => {
-				if (obj.draw) obj.draw(render);
-			});
-		}
-
-	}
-
-	draw(render) {
-		render.clear();
+		if (params.render) params.render.clear();
 		this.#objects.forEach(obj => {
-			if (obj.draw) obj.draw(render);
-		});
-	}
-
-	input(inputDriver) {
-		this.#objects.forEach(obj => {
-			if (obj.input) obj.input(inputDriver);
-		});
-
-	}
-
-	sound(soundDriver) {
-		this.#objects.forEach(obj => {
-			if (obj.sound) obj.sound(soundDriver);
+			obj.update(params);
 		});
 	}
 }

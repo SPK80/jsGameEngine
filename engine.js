@@ -1,5 +1,6 @@
 import { InputDriver } from "./inputs/inputDriver.js";
 import { CanvasRender } from "./graphics/canvasRender.js";
+import { Scene } from "./scenes/scene.js";
 
 export class Engine {
 	// #settings = null;
@@ -18,26 +19,32 @@ export class Engine {
 			settings.render.scale
 		);
 
-		// this.#scene = new Scene(this.#render);
 		this.#input = new InputDriver(true, false);
 	}
 
 	start(scene) {
+		if (!(scene instanceof Scene)) throw (`${scene} is not Scene`);
+
 		const _this = this;
 		this.#pause = false;
 		requestAnimationFrame(function render() {
-			if (!_this.#pause) {				
-				scene.input(_this.#input);
-				scene.draw(_this.#render);
-				// scene.sound(soundDriver);
+			if (!_this.#pause) {
+				scene.update({
+					render: _this.#render,
+					input: _this.#input,
+					// phisics: _this.#phisics,
+					// sound : soundDriver,
+				});
 			}
 			requestAnimationFrame(render);
 		});
 	}
+
 	#pause = false;
 	pause() {
 		this.#pause = true;
 	}
+
 	resume() {
 		this.#pause = false;
 	}
