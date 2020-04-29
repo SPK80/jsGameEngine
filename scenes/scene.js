@@ -11,17 +11,13 @@ export class Scene {
 		this.#objects.push(gameObject);
 	}
 
-	// addControlled(personage) {
-	// 	this.#controlled.push(personage);
-	// }
+	init(params) {
 
-	// addDisplayed(personage) {
-	// 	this.#displayed.push(personage);
-	// }
+	}
 
-	// addSounding(personage) {
-	// 	this.#sounding.push(personage);
-	// }
+	close(params) {
+
+	}
 
 	update(params) {
 		if (params.render) {
