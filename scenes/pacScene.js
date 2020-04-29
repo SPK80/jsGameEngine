@@ -7,14 +7,10 @@ export class PacScene extends Scene {
 	constructor(id, settings) {
 		super(id, settings);
 		const pacman = new Pacman(100, 100, '#00F0FF', 50);
-		super.addControlled(pacman);
-		super.addDisplayed(pacman);
-		super.addSounding(pacman);
+		super.add(pacman);
 
 		const walcMan = new walkMan(10, 100, '#00F0FF');
-		super.addControlled(walcMan);
-		super.addDisplayed(walcMan);
-		super.addSounding(walcMan);
+		super.add(walcMan);
 
 		// super.#controlled.push(pacman);
 		// super.#displayed.push(pacman);
