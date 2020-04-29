@@ -18,7 +18,8 @@ export class GameObject {
 		this.#z = params.z;
 		this.init(params);
 	}
-	init(params) { throw ('update not implemented') }
+
+	init(params) { throw ('init not implemented') }
 
 	update(params) { throw ('update not implemented') }
 }

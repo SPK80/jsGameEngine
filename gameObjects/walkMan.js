@@ -30,6 +30,11 @@ export class walkMan extends GameObject {
 		this.#image.src = 'sprite.png';
 	}
 
+
+	init(params) {
+		console.log('walkMan init');
+	}
+
 	#width = 0;
 	#height = 0;
 

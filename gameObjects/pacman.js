@@ -9,16 +9,17 @@ export class Pacman extends GameObject {
 	#radius;
 	get color() { return this.#color }
 
-	// constructor(x, y, color, size) {
-	// 	super({
-	// 		x: x == undefined ? 100 : x,
-	// 		y: y == undefined ? 100 : y,
-	// 	});
-	// 	this.#color = color == undefined ? '#A00090' : color;
-	// 	this.#radius = size == undefined ? 20 : size / 2;
-	// }
-	init(params){
-		super
+	constructor(x, y, color, size) {
+		super({
+			x: x == undefined ? 100 : x,
+			y: y == undefined ? 100 : y,
+		});
+		this.#color = color == undefined ? '#A00090' : color;
+		this.#radius = size == undefined ? 20 : size / 2;
+	}
+
+	init(params) {
+		console.log('Pacman init');
 	}
 
 	update(params) {
