@@ -7,46 +7,49 @@ export class Scene {
 	#name = '';
 	get name() { return this.#name };
 
-	constructor(name, settings) {
-		// this.#settings = settings.scenes[id];
+	#objects = null;
+
+	constructor(name, abilities, objects) {
 		this.#name = name;
-	}
-
-	#objects = [];
-
-	add(gameObject) {
-		if (gameObject instanceof GameObject)
-			this.#objects.push(gameObject);
+		this.#render = abilities.render;
+		this.#input = abilities.input;
+		this.#objects = new Objects(objects);
 	}
 
 	#render = null;
 	#input = null;
 
-	#inited = false;
-	init(params) {
-		if (!(params.render instanceof Render)) throw (`${params.render} is not Render`);
-		if (!(params.input instanceof InputDriver)) throw (`${params.input} is not InputDriver`);
-
-		this.#render = params.render;
-		this.#input = params.input;
-
-		this.#inited = true;
+	add(gameObject) {
+		if (gameObject instanceof GameObject) {
+			gameObject.init({
+				render: this.#render,
+				input: this.#input
+			})
+			this.#objects.push(gameObject);
+		}
 	}
 
-	close(params) {
-		this.#inited = false;
-	}
+	// #inited = false;
+	// init(params) {
+	// 	if (!(params.render instanceof Render)) throw (`${params.render} is not Render`);
+	// 	if (!(params.input instanceof InputDriver)) throw (`${params.input} is not InputDriver`);
+
+	// 	this.#render = params.render;
+	// 	this.#input = params.input;
+
+	// 	this.#inited = true;
+	// }
+
+	// close(params) {
+	// 	this.#inited = false;
+	// }
 
 	update() {
-		if (!this.#inited) return;
+		// if (!this.#inited) return;
 
 		this.#render.clear();
-		const _this = this;
 		this.#objects.forEach(obj => {
-			obj.update({
-				render: _this.#render,
-				input: _this.#input
-			});
+			obj.update();
 		});
 	}
 }

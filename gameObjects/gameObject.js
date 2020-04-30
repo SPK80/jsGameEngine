@@ -1,3 +1,11 @@
+import { Render } from "../graphics/render.js";
+import { InputDriver } from "../inputs/inputDriver.js";
+
+class BaseObject {
+	init(params) { }
+	update() { throw ('update not implemented') }
+
+}
 export class GameObject {
 
 	#x = 0;
@@ -19,7 +27,29 @@ export class GameObject {
 		this.init(params);
 	}
 
-	init(params) { throw ('init not implemented') }
+	#inited = false;
+	get inited() { return this.#inited }
 
-	update(params) { throw ('update not implemented') }
+	#render = null;
+	get render() { return this.#render }
+
+	#input = null;
+	get input() { return this.#input }
+
+	init(params) {
+
+		if ((params.render instanceof Render))
+			this.#render = params.render;
+
+		if ((params.input instanceof InputDriver))
+			this.#input = params.input;
+
+		this.#inited = true;
+	}
+
+	kill(params) {
+		this.#inited = false;
+	}
+
+	update() { throw ('update not implemented') }
 }

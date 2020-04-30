@@ -19,17 +19,18 @@ export class Pacman extends GameObject {
 	}
 
 	init(params) {
-		console.log('Pacman init');
+		if (!(params.render instanceof Render)) throw (`${params.render} is not Render`);
+		if (!(params.input instanceof InputDriver)) throw (`${params.input} is not InputDriver`);
+
+		super.init(params);
+		console.log('Pacman inited');
 	}
 
-	update(params) {
+	update() {
 		const phase = this.#phase.getNext();
 		const _endAngle = this.#angle + Math.PI * (2 - phase);
 		const _startAngle = this.#angle + Math.PI * phase;
-
-		const render = params.render;
-
-		render.path({
+		this.render.path({
 			color: this.color,
 			fill: true,
 			elements: [
@@ -57,7 +58,7 @@ export class Pacman extends GameObject {
 		var eyeAngle = _endAngle - 0.4;
 		// if (this.#angle > Math.PI) eyeAngle = eyeAngle - Math.PI;
 
-		render.circle({
+		this.render.circle({
 			fill: true,
 			color: '#B000A0',
 			x: this.x + this.#radius * Math.cos(eyeAngle) * 0.6,
@@ -71,11 +72,10 @@ export class Pacman extends GameObject {
 		// render.context.lineTo(this.x, this.y);
 		// render.context.fill();
 
-		const inputDriver = params.input;
-		if (inputDriver.keyPressed('UP')) this.moveForward(1);
-		if (inputDriver.keyPressed('DOWN')) this.moveBack(1);
-		if (inputDriver.keyPressed('LEFT')) this.turnOn(-0.1);
-		if (inputDriver.keyPressed('RIGHT')) this.turnOn(0.1);
+		if (this.input.keyPressed('UP')) this.moveForward(1);
+		if (this.input.keyPressed('DOWN')) this.moveBack(1);
+		if (this.input.keyPressed('LEFT')) this.turnOn(-0.1);
+		if (this.input.keyPressed('RIGHT')) this.turnOn(0.1);
 	}
 
 	#direction = {

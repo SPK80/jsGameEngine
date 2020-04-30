@@ -1,23 +1,12 @@
 import { InputDriver } from "./inputs/inputDriver.js";
 import { CanvasRender } from "./graphics/canvasRender.js";
-
-class Scenes {
-	#items = {};
-	get(name) {
-		return this.#items[name];
-	}
-	add(scene) {
-		if (!this.get(scene.name)) {
-			this.#items[scene.name] = scene;
-		}
-	}
-}
+import { Objects } from "./objects.js";
 
 export class Engine {
 	// #settings = null;
 	#render = null;
 	#input = null;
-	#scenes = new Scenes();
+	#scenes = null;
 
 	constructor(settings, scenes) {
 		// this.#settings = settings.engine;
@@ -30,12 +19,9 @@ export class Engine {
 			settings.render.backgroundColor,
 			settings.render.scale
 		);
+
 		this.#input = new InputDriver(true, false);
-
-		scenes.forEach(s => {
-			this.#scenes.add(s);
-		});
-
+		this.#scenes = new Objects(scenes);
 	}
 
 	start(sceneName) {
