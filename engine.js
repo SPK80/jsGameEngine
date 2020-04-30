@@ -1,13 +1,25 @@
 import { InputDriver } from "./inputs/inputDriver.js";
 import { CanvasRender } from "./graphics/canvasRender.js";
-import { Scene } from "./scenes/scene.js";
+
+class Scenes {
+	#items = {};
+	get(name) {
+		return this.#items[name];
+	}
+	add(scene) {
+		if (!this.get(scene.name)) {
+			this.#items[scene.name] = scene;
+		}
+	}
+}
 
 export class Engine {
 	// #settings = null;
 	#render = null;
 	#input = null;
+	#scenes = new Scenes();
 
-	constructor(settings) {
+	constructor(settings, scenes) {
 		// this.#settings = settings.engine;
 		// this.#keyBoard = new KeyBoard();
 		// this.#mouse = new Mouse(this.settings.render.scale);
@@ -18,23 +30,29 @@ export class Engine {
 			settings.render.backgroundColor,
 			settings.render.scale
 		);
-
 		this.#input = new InputDriver(true, false);
+
+		scenes.forEach(s => {
+			this.#scenes.add(s);
+		});
+
 	}
 
-	start(scene) {
-		if (!(scene instanceof Scene)) throw (`${scene} is not Scene`);
+	start(sceneName) {
+
+		const activeScene = this.#scenes.get(sceneName);
+		activeScene.init({
+			render: this.#render,
+			input: this.#input,
+			// phisics: _this.#phisics,
+			// sound : soundDriver,
+		});
 
 		const _this = this;
 		this.#pause = false;
 		requestAnimationFrame(function render() {
 			if (!_this.#pause) {
-				scene.update({
-					render: _this.#render,
-					input: _this.#input,
-					// phisics: _this.#phisics,
-					// sound : soundDriver,
-				});
+				activeScene.update();
 			}
 			requestAnimationFrame(render);
 		});
