@@ -17,24 +17,27 @@ export class Scene extends BaseObject {
 		this.#objects.push(gameObject);
 	}
 
+	#controls = [];
+
 	update() {
 
 		this.#controls.forEach(con => {
 			const obj = this.#objects.get(con.name);
-			
-			con.input
-
+			var com = con.input.pop();
+			while (com) {
+				obj.do(com);
+				com = con.input.pop();
+			}
 		});
 
-
 		this.render.clear();
+
 		const objects = this.#objects.get();
 		objects.forEach(obj => {
 			obj.update();
 		});
 	}
 
-	#controls = [];
 	setControl(name, input) {
 		this.#controls.push({
 			name: name,

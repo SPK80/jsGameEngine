@@ -1,7 +1,7 @@
-import { GameObject } from './gameObject.js';
+import { DrivenObgect } from './gameObject.js';
 import { RolCounter } from '../counters.js';
 
-export class Pacman extends GameObject {
+export class Pacman extends DrivenObgect {
 
 	#phase = new RolCounter(0, 0.25, 0.02);
 	#color;
@@ -18,6 +18,16 @@ export class Pacman extends GameObject {
 		this.#color = color == undefined ? '#A00090' : color;
 		this.#radius = size == undefined ? 20 : size / 2;
 	}
+
+	do(command) {
+		// if(command == 'moveForward')
+		// if (this.input.keyPressed('UP')) this.moveForward(1);
+		// if (this.input.keyPressed('DOWN')) this.moveBack(1);
+		// if (this.input.keyPressed('LEFT')) this.turnOn(-0.1);
+		// if (this.input.keyPressed('RIGHT')) this.turnOn(0.1);
+		this[command]();
+	}
+
 
 	update() {
 		const phase = this.#phase.getNext();
@@ -59,10 +69,6 @@ export class Pacman extends GameObject {
 			radius: 3
 		})
 
-		if (this.input.keyPressed('UP')) this.moveForward(1);
-		if (this.input.keyPressed('DOWN')) this.moveBack(1);
-		if (this.input.keyPressed('LEFT')) this.turnOn(-0.1);
-		if (this.input.keyPressed('RIGHT')) this.turnOn(0.1);
 	}
 
 	#direction = {
@@ -79,12 +85,20 @@ export class Pacman extends GameObject {
 	#angle = 0;
 	get angle() { return this.#angle }
 
+	turnRight() {
+		this.turnOn(0.1);
+	}
+
+	turnLeft() {
+		this.turnOn(-0.1);
+	}
+
 	turnOn(delta) {
 		this.#angle += delta;
 		this.direction;
 	}
 
-	moveForward(moveSpeed) {
+	moveForward(moveSpeed = 1) {
 		// console.log('moveForward', this);
 		const dir = this.direction;
 		var dx = dir.x * moveSpeed;
@@ -93,7 +107,7 @@ export class Pacman extends GameObject {
 		this.y += dy;
 	}
 
-	moveBack(moveSpeed) {
+	moveBack(moveSpeed = 1) {
 		// console.log('moveBack', this);
 		const dir = this.direction;
 		var dx = dir.x * moveSpeed;

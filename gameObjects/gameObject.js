@@ -55,5 +55,10 @@ export class GameObject extends BaseObject {
 		this.#y = params.y;
 		this.#z = params.z;
 	}
+}
 
+export class DrivenObgect extends {
+	do() {
+		throw ('do must be implemented')
+	}
 }
