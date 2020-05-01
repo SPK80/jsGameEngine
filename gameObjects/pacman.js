@@ -4,26 +4,20 @@ import { RolCounter } from '../counters.js';
 export class Pacman extends GameObject {
 
 	#phase = new RolCounter(0, 0.25, 0.02);
-
 	#color;
 	#radius;
 	get color() { return this.#color }
 
-	constructor(x, y, color, size) {
+	constructor(name, x, y, color, size, abilities) {
+		console.log(abilities)
 		super({
+			abilities: abilities,
+			name: name,
 			x: x == undefined ? 100 : x,
 			y: y == undefined ? 100 : y,
 		});
 		this.#color = color == undefined ? '#A00090' : color;
 		this.#radius = size == undefined ? 20 : size / 2;
-	}
-
-	init(params) {
-		if (!(params.render instanceof Render)) throw (`${params.render} is not Render`);
-		if (!(params.input instanceof InputDriver)) throw (`${params.input} is not InputDriver`);
-
-		super.init(params);
-		console.log('Pacman inited');
 	}
 
 	update() {
@@ -65,12 +59,6 @@ export class Pacman extends GameObject {
 			y: this.y + this.#radius * Math.sin(eyeAngle) * 0.6,
 			radius: 3
 		})
-
-		// render.context.fillStyle = this.color;
-		// render.context.beginPath();
-		// render.context.arc(this.x, this.y, 20, this.#angle + Math.PI * phase, this.#angle + Math.PI * (2 - phase));
-		// render.context.lineTo(this.x, this.y);
-		// render.context.fill();
 
 		if (this.input.keyPressed('UP')) this.moveForward(1);
 		if (this.input.keyPressed('DOWN')) this.moveBack(1);

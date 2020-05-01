@@ -1,55 +1,38 @@
-import { GameObject } from "../gameObjects/gameObject.js";
-import { Render } from "../graphics/render.js";
-import { InputDriver } from "../inputs/inputDriver.js";
+import { BaseObject } from "../gameObjects/gameObject.js";
+import { Objects } from "../objects.js";
 
-export class Scene {
+export class Scene extends BaseObject {
 	// #settings = null;
 	#name = '';
 	get name() { return this.#name };
 
 	#objects = null;
 
-	constructor(name, abilities, objects) {
-		this.#name = name;
-		this.#render = abilities.render;
-		this.#input = abilities.input;
+	constructor(params, objects) {
+		super(params);
 		this.#objects = new Objects(objects);
 	}
 
-	#render = null;
-	#input = null;
-
 	add(gameObject) {
-		if (gameObject instanceof GameObject) {
-			gameObject.init({
-				render: this.#render,
-				input: this.#input
-			})
-			this.#objects.push(gameObject);
-		}
+		this.#objects.add(gameObject);
 	}
 
-	// #inited = false;
-	// init(params) {
-	// 	if (!(params.render instanceof Render)) throw (`${params.render} is not Render`);
-	// 	if (!(params.input instanceof InputDriver)) throw (`${params.input} is not InputDriver`);
-
-	// 	this.#render = params.render;
-	// 	this.#input = params.input;
-
-	// 	this.#inited = true;
-	// }
-
-	// close(params) {
-	// 	this.#inited = false;
-	// }
-
 	update() {
-		// if (!this.#inited) return;
+		this.render.clear();
+		const objects = this.#objects.get();
+		// console.log(objects);
 
-		this.#render.clear();
-		this.#objects.forEach(obj => {
-			obj.update();
-		});
+		// for (const obj of objects) {
+		// 	obj.update();
+		// }
+		for (const key in objects) {
+			if (objects.hasOwnProperty(key)) {
+				const obj = objects[key];
+				obj.update();
+			}
+		}
+		// objects.forEach(obj => {
+		// 	obj.update();
+		// });
 	}
 }

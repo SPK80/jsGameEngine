@@ -15,9 +15,9 @@ const abilities = {
 	input: new InputDriver(true, false)
 };
 
-const scenes = [new PacScene('Pacman scene', abilities)];
+// const scenes = [new PacScene('Pacman scene', abilities)];
 
-const engine = new Engine(settings, scenes);
+const engine = new Engine(settings);
 
 window.onclose = () => {
 	console.log('pause', engine);
@@ -29,4 +29,4 @@ window.onclose = () => {
 
 // const activeScene = scenes[0];
 
-engine.start('Pacman scene');
+engine.start(new PacScene('Pacman scene', abilities));

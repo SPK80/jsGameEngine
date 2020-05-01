@@ -6,9 +6,9 @@ export class Engine {
 	// #settings = null;
 	#render = null;
 	#input = null;
-	#scenes = null;
+	// #scenes = null;
 
-	constructor(settings, scenes) {
+	constructor(settings) {
 		// this.#settings = settings.engine;
 		// this.#keyBoard = new KeyBoard();
 		// this.#mouse = new Mouse(this.settings.render.scale);
@@ -21,18 +21,20 @@ export class Engine {
 		);
 
 		this.#input = new InputDriver(true, false);
-		this.#scenes = new Objects(scenes);
+		// this.#scenes = new Objects(scenes);
 	}
 
-	start(sceneName) {
+	start(activeScene) {
 
-		const activeScene = this.#scenes.get(sceneName);
-		activeScene.init({
-			render: this.#render,
-			input: this.#input,
-			// phisics: _this.#phisics,
-			// sound : soundDriver,
-		});
+		// const activeScene = this.#scenes.get(sceneName);
+		// console.log(sceneName);
+
+		// activeScene.init({
+		// 	render: this.#render,
+		// 	input: this.#input,
+		// 	// phisics: _this.#phisics,
+		// 	// sound : soundDriver,
+		// });
 
 		const _this = this;
 		this.#pause = false;

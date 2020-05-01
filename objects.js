@@ -8,11 +8,16 @@ export class Objects {
 	}
 
 	get(name) {
-		return this.#items[name];
+		if (name == undefined)
+			return this.#items;
+		else
+			return this.#items[name];
 	}
+
 	add(item) {
 		if (!this.get(item.name)) {
 			this.#items[item.name] = item;
 		}
 	}
+
 }

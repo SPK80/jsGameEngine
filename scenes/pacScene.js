@@ -5,16 +5,20 @@ import { walkMan } from "../gameObjects/walkMan.js";
 export class PacScene extends Scene {
 
 	constructor(name, abilities) {
-		super(name, abilities);
+		super({
+			name: name,
+			abilities: abilities,
+		},
+			[new Pacman('Pacman', 100, 100, '#00F0FF', 50,
+				{
+					render: abilities.render,
+					input: abilities.input
+				})]
+		);
+		// const pacman = ;
+		// super.add(pacman);
+		// const walcMan = new walkMan(10, 100, '#00F0FF');
+		// super.add(walcMan);
 	}
 
-	init(params) {
-		super.init(params);
-
-		const pacman = new Pacman(100, 100, '#00F0FF', 50);
-		super.add(pacman);
-
-		const walcMan = new walkMan(10, 100, '#00F0FF');
-		super.add(walcMan);
-	}
 }
