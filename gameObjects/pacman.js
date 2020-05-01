@@ -9,7 +9,6 @@ export class Pacman extends GameObject {
 	get color() { return this.#color }
 
 	constructor(name, x, y, color, size, abilities) {
-		console.log(abilities)
 		super({
 			abilities: abilities,
 			name: name,

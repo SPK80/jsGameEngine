@@ -1,5 +1,5 @@
 import { BaseObject } from "../gameObjects/gameObject.js";
-import { Objects } from "../objects.js";
+import { GameObjects } from "../objects.js";
 
 export class Scene extends BaseObject {
 	// #settings = null;
@@ -10,29 +10,36 @@ export class Scene extends BaseObject {
 
 	constructor(params, objects) {
 		super(params);
-		this.#objects = new Objects(objects);
+		this.#objects = new GameObjects(objects);
 	}
 
 	add(gameObject) {
-		this.#objects.add(gameObject);
+		this.#objects.push(gameObject);
 	}
 
 	update() {
+
+		this.#controls.forEach(con => {
+			const obj = this.#objects.get(con.name);
+			
+			con.input
+
+		});
+
+
 		this.render.clear();
 		const objects = this.#objects.get();
-		// console.log(objects);
-
-		// for (const obj of objects) {
-		// 	obj.update();
-		// }
-		for (const key in objects) {
-			if (objects.hasOwnProperty(key)) {
-				const obj = objects[key];
-				obj.update();
-			}
-		}
-		// objects.forEach(obj => {
-		// 	obj.update();
-		// });
+		objects.forEach(obj => {
+			obj.update();
+		});
 	}
+
+	#controls = [];
+	setControl(name, input) {
+		this.#controls.push({
+			name: name,
+			input: input
+		})
+	}
+
 }

@@ -1,7 +1,7 @@
 import { CircleCounter, RolCounter } from "../counters.js";
 import { GameObject } from './gameObject.js';
 
-export class walkMan extends GameObject {
+export class WalkMan extends GameObject {
 
 	#delay = 8;
 	#frames = 5;
@@ -12,8 +12,12 @@ export class walkMan extends GameObject {
 	#tileWidth = 0;
 	#tileHeight = 0;
 
-	constructor(x, y) {
+	constructor(name, x, y, abilities) {
+		console.log(abilities);
+
 		super({
+			abilities: abilities,
+			name: name,
 			x: x == undefined ? 100 : x,
 			y: y == undefined ? 100 : y,
 		});
@@ -30,22 +34,17 @@ export class walkMan extends GameObject {
 		this.#image.src = 'sprite.png';
 	}
 
-
-	init(params) {
-		console.log('walkMan init');
-	}
-
 	#width = 0;
 	#height = 0;
 
-	update(params) {
+	update() {
 
 		const p = this.#phase.getNext();
 		if (!this.#imageLoaded) {
 			return;
 		}
 
-		params.render.tiling({
+		this.render.tiling({
 			image: this.#image,
 			x: this.x,
 			y: this.y,

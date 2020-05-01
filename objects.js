@@ -1,9 +1,11 @@
-export class Objects {
-	#items = {};
+import { BaseObject } from "./gameObjects/gameObject.js";
+
+export class GameObjects {
+	#items = [];
 
 	constructor(items) {
 		items.forEach(it => {
-			this.add(it);
+			this.push(it);
 		});
 	}
 
@@ -11,13 +13,13 @@ export class Objects {
 		if (name == undefined)
 			return this.#items;
 		else
-			return this.#items[name];
+			return this.#items.find(it => it.name == name);
 	}
 
-	add(item) {
-		if (!this.get(item.name)) {
-			this.#items[item.name] = item;
+	push(item) {
+		if (item instanceof BaseObject) {
+			if (this.get(item.name)) return;
+			this.#items.push(item);
 		}
 	}
-
 }

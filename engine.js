@@ -1,6 +1,6 @@
 import { InputDriver } from "./inputs/inputDriver.js";
 import { CanvasRender } from "./graphics/canvasRender.js";
-import { Objects } from "./objects.js";
+// import { GameObjects } from "./objects.js";
 
 export class Engine {
 	// #settings = null;
