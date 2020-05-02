@@ -27,12 +27,15 @@ export class Scene extends BaseObject {
 	// }
 
 	setInput(objectName, input) {
-		const driver = new ObjectInputDriver(this.#objects.get(objectName), input);
+		const obj = this.#objects.get(objectName);
+		const driver = new ObjectInputDriver(obj, input);
+		console.log(driver);
+
 		this.#objectInputDrivers.push(driver);
 	}
 
 	update(drivers) {
-		this.#inputDrivers.forEach(driver => {
+		this.#objectInputDrivers.forEach(driver => {
 			driver.do();
 		});
 		const render = drivers.render;
@@ -48,6 +51,7 @@ export class Scene extends BaseObject {
 class ObjectInputDriver {
 	#object = null;
 	#input = null;
+
 	constructor(object, input) {
 		this.#object = object;
 		this.#input = input;

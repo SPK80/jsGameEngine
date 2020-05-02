@@ -29,7 +29,7 @@ export class Pacman extends GameObject {
 
 	update(drivers) {
 
-		render = drivers.render;
+		const render = drivers.render;
 
 		const phase = this.#phase.getNext();
 		const _endAngle = this.#angle + Math.PI * (2 - phase);

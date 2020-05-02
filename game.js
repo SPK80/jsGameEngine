@@ -1,19 +1,17 @@
 import { Engine } from "./engine.js";
 import { Settings } from "./settings.js";
 import { PacScene } from "./scenes/pacScene.js";
-import { CanvasRender } from "./graphics/canvasRender.js";
-import { InputDriver } from "./inputs/inputDriver.js";
 
 const settings = new Settings();
-const abilities = {
-	render: new CanvasRender(
-		settings.render.width,
-		settings.render.height,
-		settings.render.backgroundColor,
-		settings.render.scale
-	),
-	input: new InputDriver(true, false)
-};
+// const abilities = {
+// 	render: new CanvasRender(
+// 		settings.render.width,
+// 		settings.render.height,
+// 		settings.render.backgroundColor,
+// 		settings.render.scale
+// 	),
+// 	input: new InputDriver(true, false)
+// };
 
 // const scenes = [new PacScene('Pacman scene', abilities)];
 
@@ -29,4 +27,4 @@ window.onclose = () => {
 
 // const activeScene = scenes[0];
 
-engine.start(new PacScene('Pacman scene', abilities));
+engine.start(new PacScene('Pacman scene'));
