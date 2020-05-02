@@ -5,7 +5,7 @@ export class GameObjects {
 
 	constructor(items) {
 		items.forEach(it => {
-			this.push(it);
+			this.add(it);
 		});
 	}
 
@@ -16,7 +16,7 @@ export class GameObjects {
 			return this.#items.find(it => it.name == name);
 	}
 
-	push(item) {
+	add(item) {
 		if (item instanceof BaseObject) {
 			if (this.get(item.name)) return;
 			this.#items.push(item);

@@ -1,16 +1,15 @@
-import { DrivenObgect } from './gameObject.js';
+import { GameObject } from './gameObject.js';
 import { RolCounter } from '../counters.js';
 
-export class Pacman extends DrivenObgect {
+export class Pacman extends GameObject {
 
 	#phase = new RolCounter(0, 0.25, 0.02);
 	#color;
 	#radius;
 	get color() { return this.#color }
 
-	constructor(name, x, y, color, size, abilities) {
+	constructor(name, x, y, color, size) {
 		super({
-			abilities: abilities,
 			name: name,
 			x: x == undefined ? 100 : x,
 			y: y == undefined ? 100 : y,
@@ -19,21 +18,23 @@ export class Pacman extends DrivenObgect {
 		this.#radius = size == undefined ? 20 : size / 2;
 	}
 
-	do(command) {
-		// if(command == 'moveForward')
-		// if (this.input.keyPressed('UP')) this.moveForward(1);
-		// if (this.input.keyPressed('DOWN')) this.moveBack(1);
-		// if (this.input.keyPressed('LEFT')) this.turnOn(-0.1);
-		// if (this.input.keyPressed('RIGHT')) this.turnOn(0.1);
-		this[command]();
-	}
+	// do(command) {
+	// if(command == 'moveForward')
+	// if (this.input.keyPressed('UP')) this.moveForward(1);
+	// if (this.input.keyPressed('DOWN')) this.moveBack(1);
+	// if (this.input.keyPressed('LEFT')) this.turnOn(-0.1);
+	// if (this.input.keyPressed('RIGHT')) this.turnOn(0.1);
+	// 	this[command]();
+	// }
 
+	update(drivers) {
 
-	update() {
+		render = drivers.render;
+
 		const phase = this.#phase.getNext();
 		const _endAngle = this.#angle + Math.PI * (2 - phase);
 		const _startAngle = this.#angle + Math.PI * phase;
-		this.render.path({
+		render.path({
 			color: this.color,
 			fill: true,
 			elements: [
@@ -61,7 +62,7 @@ export class Pacman extends DrivenObgect {
 		var eyeAngle = _endAngle - 0.4;
 		// if (this.#angle > Math.PI) eyeAngle = eyeAngle - Math.PI;
 
-		this.render.circle({
+		render.circle({
 			fill: true,
 			color: '#B000A0',
 			x: this.x + this.#radius * Math.cos(eyeAngle) * 0.6,
@@ -108,7 +109,6 @@ export class Pacman extends DrivenObgect {
 	}
 
 	moveBack(moveSpeed = 1) {
-		// console.log('moveBack', this);
 		const dir = this.direction;
 		var dx = dir.x * moveSpeed;
 		var dy = dir.y * moveSpeed;

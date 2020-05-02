@@ -7,5 +7,4 @@ export class Render {
 	line(params) { throw ('line not implemented') }
 	path(params) { throw ('path not implemented') }
 	tiling(params) { throw ('sprite not implemented') }
-
 }

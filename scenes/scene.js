@@ -7,42 +7,56 @@ export class Scene extends BaseObject {
 	get name() { return this.#name };
 
 	#objects = null;
+	#objectInputDrivers = [];
 
 	constructor(params, objects) {
 		super(params);
 		this.#objects = new GameObjects(objects);
+
+		// objectInputDrivers.forEach(driver => {
+		// 	addObjectInputDriver(driver);
+		// });
 	}
 
-	add(gameObject) {
-		this.#objects.push(gameObject);
+	addObject(gameObject) {
+		this.#objects.add(gameObject);
 	}
 
-	#controls = [];
+	// addObjectInputDriver(driver) {
+	// 	this.#objectInputDrivers.push(driver);
+	// }
 
-	update() {
+	setInput(objectName, input) {
+		const driver = new ObjectInputDriver(this.#objects.get(objectName), input);
+		this.#objectInputDrivers.push(driver);
+	}
 
-		this.#controls.forEach(con => {
-			const obj = this.#objects.get(con.name);
-			var com = con.input.pop();
-			while (com) {
-				obj.do(com);
-				com = con.input.pop();
-			}
+	update(drivers) {
+		this.#inputDrivers.forEach(driver => {
+			driver.do();
 		});
-
-		this.render.clear();
+		const render = drivers.render;
+		render.clear();
 
 		const objects = this.#objects.get();
 		objects.forEach(obj => {
-			obj.update();
+			obj.update(drivers);
 		});
 	}
+}
 
-	setControl(name, input) {
-		this.#controls.push({
-			name: name,
-			input: input
-		})
+class ObjectInputDriver {
+	#object = null;
+	#input = null;
+	constructor(object, input) {
+		this.#object = object;
+		this.#input = input;
 	}
 
+	do() {
+		const commands = this.#input.get();
+		commands.forEach(comm => {
+			this.#object[comm]();
+		});
+	}
 }
