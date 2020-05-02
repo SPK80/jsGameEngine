@@ -51,6 +51,8 @@ export class Engine {
 
 		requestAnimationFrame(function render() {
 			if (!_this.#pause) {
+				// console.log(_this.#keyBoardInput);
+
 				activeScene.update({ render: _this.#render });
 			}
 			requestAnimationFrame(render);

@@ -2,18 +2,10 @@ import { Engine } from "./engine.js";
 import { Settings } from "./settings.js";
 import { PacScene } from "./scenes/pacScene.js";
 
-const settings = new Settings();
-// const abilities = {
-// 	render: new CanvasRender(
-// 		settings.render.width,
-// 		settings.render.height,
-// 		settings.render.backgroundColor,
-// 		settings.render.scale
-// 	),
-// 	input: new InputDriver(true, false)
-// };
+// import { PressedKeys, KeyBoardInput } from "./inputs/input.js";
+// import { KeyMap } from "./inputs/keyMap.js";
 
-// const scenes = [new PacScene('Pacman scene', abilities)];
+const settings = new Settings();
 
 const engine = new Engine(settings);
 
@@ -25,6 +17,17 @@ window.onclose = () => {
 	settings.save();
 }
 
-// const activeScene = scenes[0];
-
 engine.start(new PacScene('Pacman scene'));
+
+// const kmap = new KeyMap([
+// 	{ action: 'moveForward', keys: [KeyMap.KEYS.UP] },
+// 	{ action: 'moveBack', keys: [KeyMap.KEYS.DOWN] },
+// ]);
+// console.log(kmap);
+
+// const inp = new KeyBoardInput(kmap);
+
+// setInterval(function render() {
+// 	console.log(inp.get());
+
+// }, 1000);

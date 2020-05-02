@@ -12,19 +12,11 @@ export class Scene extends BaseObject {
 	constructor(params, objects) {
 		super(params);
 		this.#objects = new GameObjects(objects);
-
-		// objectInputDrivers.forEach(driver => {
-		// 	addObjectInputDriver(driver);
-		// });
 	}
 
 	addObject(gameObject) {
 		this.#objects.add(gameObject);
 	}
-
-	// addObjectInputDriver(driver) {
-	// 	this.#objectInputDrivers.push(driver);
-	// }
 
 	setInput(objectName, input) {
 		const obj = this.#objects.get(objectName);

@@ -6,7 +6,6 @@ export class Input {
 
 export class KeyBoardInput extends Input {
 
-
 	#pressedKeys = new PressedKeys();
 	#keyMap = null;
 
@@ -20,17 +19,21 @@ export class KeyBoardInput extends Input {
 		});
 
 		window.addEventListener('keyup', e => {
-			console.log(e.keyCode);
-			console.log(this.#pressedKeys);
-			this.#pressedKeys.remove(e.keyCode);
-			console.log(this.#pressedKeys);
+			// console.log(e.keyCode);
+			// console.log(this.#pressedKeys);
 
+			this.#pressedKeys.remove(e.keyCode);
+			// console.log(this.#pressedKeys);
 		});
 	}
 
 	get() {
 		const actions = [];
-		this.#pressedKeys.items.forEach(key => actions.push(this.#keyMap.get(key)));
+		this.#pressedKeys.items.forEach(key => {
+			const act = this.#keyMap.get(key);
+			if (act)
+				actions.push(act);
+		});
 		return actions;
 	}
 
@@ -43,7 +46,7 @@ export class KeyBoardInput extends Input {
 	// }
 }
 
-class PressedKeys {
+export class PressedKeys {
 	#items = [];
 	add(key) {
 		if (!this.#items.includes(key))
@@ -51,7 +54,16 @@ class PressedKeys {
 	}
 
 	remove(key) {
-		delete this.#items[key];
+		const i = this.#items.indexOf(key);
+		// console.log(i, key, this.#items);
+
+		delete this.#items[i];
+		const items = [];
+		this.#items.forEach(it => {
+			this.#items.push(it);
+		});
+		// console.log(items);
+		this.#items = items;
 	}
 
 	get(key) {
