@@ -70,9 +70,18 @@ export class CanvasRender extends Render {
 		}
 	}
 
+	rect(params) {
+		this.#stile(params);
+		// if (!params.fill) this.#context.beginPath();
+		this.#context.rect(params.x, params.y, params.width, params.height);
+		if (params.fill) this.#context.fill();
+		else this.#context.stroke();
+
+	}
+
 	circle(params) {
 		this.#stile(params);
-		this.#context.beginPath();
+		// if (!params.fill) this.#context.beginPath();
 		this.#context.arc(params.x, params.y, params.radius, 0, Math.PI * 2);
 		if (params.fill) this.#context.fill();
 		else this.#context.stroke();
@@ -86,9 +95,7 @@ export class CanvasRender extends Render {
 
 			}
 		});
-
 		this.#context.stroke();
-
 	}
 
 	text(params) {
