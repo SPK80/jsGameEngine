@@ -8,19 +8,14 @@ export class PacScene extends Scene {
 
 		const pac = new Pacman('Pacman', 100, 100, '#00F0FF', 50);
 
-		// const walcMan = new WalkMan('WalkMan', 10, 100, {
-		// 	render: abilities.render,
-		// });
+		const walcMan = new WalkMan('WalkMan', 10, 100);
 
 		super({
 			name: name,
 			drivers: drivers,
-		}, [pac]
+		}, [pac, walcMan]
 		);
-		// const pacman = ;
-		// super.add(pacman);
 
-		// super.add(walcMan);
 	}
 
 }

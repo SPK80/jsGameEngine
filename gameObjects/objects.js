@@ -1,4 +1,4 @@
-import { BaseObject } from "./gameObjects/gameObject.js";
+import { BaseObject } from "./gameObject.js";
 
 export class GameObjects {
 	#items = [];

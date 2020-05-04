@@ -18,20 +18,11 @@ export class Pacman extends GameObject {
 		this.#radius = size == undefined ? 20 : size / 2;
 	}
 
-	// do(command) {
-	// if(command == 'moveForward')
-	// if (this.input.keyPressed('UP')) this.moveForward(1);
-	// if (this.input.keyPressed('DOWN')) this.moveBack(1);
-	// if (this.input.keyPressed('LEFT')) this.turnOn(-0.1);
-	// if (this.input.keyPressed('RIGHT')) this.turnOn(0.1);
-	// 	this[command]();
-	// }
-
 	update(drivers) {
 
 		const render = drivers.render;
 
-		const phase = this.#phase.getNext();
+		const phase = this.#phase.next;
 		const _endAngle = this.#angle + Math.PI * (2 - phase);
 		const _startAngle = this.#angle + Math.PI * phase;
 		render.path({
@@ -60,7 +51,6 @@ export class Pacman extends GameObject {
 		});
 
 		var eyeAngle = _endAngle - 0.4;
-		// if (this.#angle > Math.PI) eyeAngle = eyeAngle - Math.PI;
 
 		render.circle({
 			fill: true,
@@ -100,7 +90,6 @@ export class Pacman extends GameObject {
 	}
 
 	moveForward(moveSpeed = 1) {
-		// console.log('moveForward', this);
 		const dir = this.direction;
 		var dx = dir.x * moveSpeed;
 		var dy = dir.y * moveSpeed;

@@ -10,7 +10,7 @@ export class CircleCounter {
 		this.#increment = increment;
 	}
 
-	getNext() {
+	get next() {
 		this.#value += this.#increment;
 		if (this.#increment > 0)
 			if (this.#value > this.#max) this.#value = this.#start;
@@ -32,7 +32,7 @@ export class RolCounter {
 		this.#increment = increment;
 	}
 
-	getNext() {
+	get next() {
 		this.#value += this.#increment;
 		if (this.#value > this.#max || this.#value < this.#start) this.#increment = -this.#increment;
 

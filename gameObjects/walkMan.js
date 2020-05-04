@@ -1,22 +1,18 @@
-import { CircleCounter, RolCounter } from "../counters.js";
+import { CircleCounter } from "../counters.js";
 import { GameObject } from './gameObject.js';
 
 export class WalkMan extends GameObject {
 
 	#delay = 8;
 	#frames = 5;
-
 	#phase = new CircleCounter(0, (this.#frames - 1) * this.#delay, 1);
 	#image = new Image();
 	#imageLoaded = false;
 	#tileWidth = 0;
 	#tileHeight = 0;
 
-	constructor(name, x, y, abilities) {
-		console.log(abilities);
-
+	constructor(name, x, y) {
 		super({
-			abilities: abilities,
 			name: name,
 			x: x == undefined ? 100 : x,
 			y: y == undefined ? 100 : y,
@@ -37,14 +33,14 @@ export class WalkMan extends GameObject {
 	#width = 0;
 	#height = 0;
 
-	update() {
+	update(drivers) {
 
-		const p = this.#phase.getNext();
+		const p = this.#phase.next;
 		if (!this.#imageLoaded) {
 			return;
 		}
 
-		this.render.tiling({
+		drivers.render.tiling({
 			image: this.#image,
 			x: this.x,
 			y: this.y,
@@ -56,5 +52,4 @@ export class WalkMan extends GameObject {
 			tileY: Math.round(p / this.#delay)
 		})
 	}
-
 }

@@ -1,5 +1,7 @@
+import { Input } from "../inputs/input.js";
 import { BaseObject } from "../gameObjects/gameObject.js";
-import { GameObjects } from "../objects.js";
+import { GameObjects } from "../gameObjects/objects.js";
+import { throwIfNotInstanceof } from "../classUtils.js";
 
 export class Scene extends BaseObject {
 	// #settings = null;
@@ -7,7 +9,7 @@ export class Scene extends BaseObject {
 	get name() { return this.#name };
 
 	#objects = null;
-	#objectInputDrivers = [];
+	#objectInputDrivers = new ObjectInputDrivers();
 
 	constructor(params, objects) {
 		super(params);
@@ -20,16 +22,11 @@ export class Scene extends BaseObject {
 
 	setInput(objectName, input) {
 		const obj = this.#objects.get(objectName);
-		const driver = new ObjectInputDriver(obj, input);
-		console.log(driver);
-
-		this.#objectInputDrivers.push(driver);
+		this.#objectInputDrivers.add(obj, input);
 	}
 
 	update(drivers) {
-		this.#objectInputDrivers.forEach(driver => {
-			driver.do();
-		});
+		this.#objectInputDrivers.do();
 		const render = drivers.render;
 		render.clear();
 
@@ -40,19 +37,35 @@ export class Scene extends BaseObject {
 	}
 }
 
-class ObjectInputDriver {
-	#object = null;
-	#input = null;
+class ObjectInputDrivers {
+	#ObjectInputDriver = class {
+		#object = null;
+		#input = null;
 
-	constructor(object, input) {
-		this.#object = object;
-		this.#input = input;
+		constructor(object, input) {
+			throwIfNotInstanceof(object, BaseObject);
+			this.#object = object;
+			throwIfNotInstanceof(input, Input);
+			this.#input = input;
+		}
+
+		do() {
+			const commands = this.#input.get();
+			commands.forEach(comm => {
+				this.#object[comm]();
+			});
+		}
+	}
+
+	#items = [];
+	add(obj, input) {
+		const driver = new this.#ObjectInputDriver(obj, input);
+		this.#items.push(driver);
 	}
 
 	do() {
-		const commands = this.#input.get();
-		commands.forEach(comm => {
-			this.#object[comm]();
+		this.#items.forEach(driver => {
+			driver.do();
 		});
 	}
 }

@@ -10,9 +10,11 @@ export class CanvasRender extends Render {
 	get context() { return this.#context }
 
 	updateContext(params) {
+
 		function isValidNumber(value) {
 			return (Number(value) != NaN);
 		}
+
 		function isValidHex(value) {
 			if (value[0] != '#') return false;
 			return (parseInt(value.replace('#', ''), 16) != NaN)
