@@ -126,6 +126,16 @@ export class CanvasRender extends Render {
 		);
 	}
 
+	sprite(params) {
+		this.#ctx.drawImage(
+			params.image,
+			params.x,
+			params.y,
+			params.width,
+			params.height
+		);
+	}
+
 	path(params) {
 		const _context = this.#ctx;
 
