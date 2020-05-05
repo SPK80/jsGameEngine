@@ -1,6 +1,10 @@
 import { CanvasRender } from "./graphics/canvasRender.js";
 
-const render = new CanvasRender(800, 600, '#aaaaaa');
+const render = new CanvasRender(800, 600, '#bbbf');
 render.clear();
+
+render.rect({ x: 400, y: 300, width: 100, height: 50, color: 'blue', fill: true });
+render.circle({ x: 100, y: 100, radius: 50, color: 'green', fill: false });
 render.circle({ x: 300, y: 200, radius: 100, color: 'red', fill: true });
-// render.rect({ x: 300, y: 200, width: 100, height: 50, color: 'blue', fill: false });
+render.rect({ x: 100, y: 300, width: 100, height: 50, color: 'red', fill: false });
+render.text({ text: '1234', x: 10, y: 500, font: '50px arial', color: '#909', fill: false });

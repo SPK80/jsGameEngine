@@ -6,8 +6,8 @@ export class CanvasRender extends Render {
 	#height = 200;
 	#scale = 1;
 	#backgroundColor = 0;
-	#context = null;
-	get context() { return this.#context }
+	#ctx = null;
+	get context() { return this.#ctx }
 
 	updateContext(params) {
 
@@ -43,7 +43,7 @@ export class CanvasRender extends Render {
 		cnv.style.backgroundColor = this.#backgroundColor;
 		document.body.appendChild(cnv);
 
-		this.#context = cnv.getContext('2d');
+		this.#ctx = cnv.getContext('2d');
 	}
 
 	constructor(_width, _height, _backgroundColor, _scale = 1.0) {
@@ -57,51 +57,54 @@ export class CanvasRender extends Render {
 	}
 
 	clear() {
-		this.#context.clearRect(0, 0, this.#width, this.#height);
+		this.#ctx.clearRect(0, 0, this.#width, this.#height);
 	}
 
-	#stile = function name(params) {
+	#stile = function (params) {
+
 		if (params.fill) {
-			this.#context.fillStyle = params.color;
+			this.#ctx.fillStyle = params.color;
 		}
 		else {
-			this.#context.strokeStyle = params.color;
-			this.#context.lineWidth = params.lineWidth;
+			this.#ctx.strokeStyle = params.color;
+			this.#ctx.lineWidth = params.lineWidth;
 		}
+		this.#ctx.beginPath();
+	}
+
+	#endDraw = function (params) {
+		if (params.fill) this.#ctx.fill();
+		else this.#ctx.stroke();
 	}
 
 	rect(params) {
 		this.#stile(params);
-		// if (!params.fill) this.#context.beginPath();
-		this.#context.rect(params.x, params.y, params.width, params.height);
-		if (params.fill) this.#context.fill();
-		else this.#context.stroke();
+		this.#ctx.rect(params.x, params.y, params.width, params.height);
+		this.#endDraw(params);
+	}
 
+	fillRect(params) {
+		this.#ctx.fillStyle = params.color;
+		this.#ctx.fillRect(params.x, params.y, params.width, params.height);
 	}
 
 	circle(params) {
-		this.#stile(params);
-		// if (!params.fill) this.#context.beginPath();
-		this.#context.arc(params.x, params.y, params.radius, 0, Math.PI * 2);
-		if (params.fill) this.#context.fill();
-		else this.#context.stroke();
-	}
+		const startAngle = 0;
+		if (params.startAngle != undefined) startAngle = params.startAngle;
+		const endAngle = Math.PI * 2;
+		if (params.endAngle != undefined) endAngle = params.endAngle;
 
-	path(params) {
 		this.#stile(params);
-		this.#context.beginPath();
-		params.forEach(element => {
-			if (element.type == 'line') {
-
-			}
-		});
-		this.#context.stroke();
+		this.#ctx.arc(params.x, params.y, params.radius, startAngle, endAngle);
+		this.#endDraw(params);
 	}
 
 	text(params) {
 		this.#stile(params);
-		if (params.fill) this.#context.fillText(params.text, params.x, params.y);
-		else this.#context.strokeText(params.text, params.x, params.y);
+		if (params.font != undefined)
+			this.#ctx.font = params.font; //'50px serif';
+		if (params.fill) this.#ctx.fillText(params.text, params.x, params.y);
+		else this.#ctx.strokeText(params.text, params.x, params.y);
 	}
 
 	tiling(params) {
@@ -110,7 +113,7 @@ export class CanvasRender extends Render {
 		const tileWidth = (params.tileWidth) ? params.tileWidth : params.width;
 		const tileHeight = (params.tileHeight) ? params.tileHeight : params.height;
 
-		this.#context.drawImage(
+		this.#ctx.drawImage(
 			params.image,
 			tileWidth * tileX,
 			tileHeight * tileY,
@@ -124,29 +127,27 @@ export class CanvasRender extends Render {
 	}
 
 	path(params) {
-		const _context = this.#context;
+		const _context = this.#ctx;
 
 		this.#stile(params);
-		this.#context.beginPath();
 
 		params.elements.forEach(el => {
 
 			if (el.type == 'moveTo') {
-				this.#context.moveTo(el.x, el.y);
+				this.#ctx.moveTo(el.x, el.y);
 			}
 			else if (el.type == 'lineTo') {
-				this.#context.lineTo(el.x, el.y);
+				this.#ctx.lineTo(el.x, el.y);
 			}
 			else if (el.type == 'arc') {
-				this.#context.arc(el.x, el.y, el.radius, el.startAngle, el.endAngle);
+				this.#ctx.arc(el.x, el.y, el.radius, el.startAngle, el.endAngle);
 			}
 			else if (el.type == 'arcTo') {
-				this.#context.arcTo(el.x1, el.y1, el.x2, el.y2, el.radius);
+				this.#ctx.arcTo(el.x1, el.y1, el.x2, el.y2, el.radius);
 			}
 		});
 
-		if (params.fill) _context.fill();
-		else _context.stroke();
+		this.#endDraw(params);
 	}
 
 }
