@@ -11,6 +11,9 @@ export class WalkMan extends GameObject {
 	#tileWidth = 0;
 	#tileHeight = 0;
 
+	#width = 0;
+	#height = 0;
+
 	constructor(name, x, y) {
 		super({
 			name: name,
@@ -28,10 +31,7 @@ export class WalkMan extends GameObject {
 		}, false);
 
 		this.#image.src = 'sprite.png';
-	}
-
-	#width = 0;
-	#height = 0;
+	}	
 
 	update(drivers) {
 
@@ -40,7 +40,7 @@ export class WalkMan extends GameObject {
 			return;
 		}
 
-		drivers.render.tiling({
+		drivers.render.tile({
 			image: this.#image,
 			x: this.x,
 			y: this.y,

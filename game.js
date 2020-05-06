@@ -14,4 +14,12 @@ window.onclose = () => {
 	settings.save();
 }
 
-engine.start(new PacScene('Pacman scene'));
+const tiles = new Image();
+tiles.addEventListener("load", function () {
+
+	const pacScene = new PacScene('Pacman scene', undefined, tiles);
+
+	engine.start(pacScene);
+}, false);
+
+tiles.src = 'tiles.png';

@@ -17,20 +17,24 @@ export class Engine {
 		);
 	}
 
+	// #keyBoardInput = new KeyboardInput(new KeyMap([
+	// 	{ action: 'moveForward', keys: [KeyMap.KEYS.UP] },
+	// 	{ action: 'moveBack', keys: [KeyMap.KEYS.DOWN] },
+	// 	{ action: 'turnRight', keys: [KeyMap.KEYS.RIGHT] },
+	// 	{ action: 'turnLeft', keys: [KeyMap.KEYS.LEFT] },
+	// ]));
+
 	#keyBoardInput = new KeyboardInput(new KeyMap([
-		{ action: 'moveForward', keys: [KeyMap.KEYS.UP] },
-		{ action: 'moveBack', keys: [KeyMap.KEYS.DOWN] },
-		{ action: 'turnRight', keys: [KeyMap.KEYS.RIGHT] },
-		{ action: 'turnLeft', keys: [KeyMap.KEYS.LEFT] },
+		{ action: 'moveUp', keys: [KeyMap.KEYS.UP] },
+		{ action: 'moveDown', keys: [KeyMap.KEYS.DOWN] },
+		{ action: 'moveRight', keys: [KeyMap.KEYS.RIGHT] },
+		{ action: 'moveLeft', keys: [KeyMap.KEYS.LEFT] },
 	]));
 
 	start(activeScene) {
-
-		activeScene.setInput('Pacman', this.#keyBoardInput);
-
+		activeScene.setInput('Pers', this.#keyBoardInput);
 		this.#pause = false;
 		const _this = this;
-
 		requestAnimationFrame(function render() {
 			if (!_this.#pause) {
 				activeScene.update({ render: _this.#render });

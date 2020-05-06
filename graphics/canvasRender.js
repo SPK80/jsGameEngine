@@ -107,7 +107,7 @@ export class CanvasRender extends Render {
 		else this.#ctx.strokeText(params.text, params.x, params.y);
 	}
 
-	tiling(params) {
+	tile(params) {
 		const tileX = (params.tileX) ? params.tileX : 0;
 		const tileY = (params.tileY) ? params.tileY : 0;
 		const tileWidth = (params.tileWidth) ? params.tileWidth : params.width;
