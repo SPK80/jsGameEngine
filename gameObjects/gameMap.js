@@ -16,9 +16,21 @@ export class GameMap extends BaseObject {
 		super({ name: name });
 		this.#tiles = tiles;
 	}
-	update(drivers) {
-		this.#cells.forEach(row => {
 
-		});
+	update(drivers) {
+		const r = drivers.render;
+		for (let r = 0; r < this.#cells.length; r++) {
+			const row = this.#cells[r];
+			for (let c = 0; c < row.length; c++) {
+				const cell = row[c];
+				r.tile({
+					image: this.#tiles,
+					x:,
+					y:,
+					width: this.#tileWidth,
+					height: this.#tileHeight,
+				});
+			}
+
+		}
 	}
-}
