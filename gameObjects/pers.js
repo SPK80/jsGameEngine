@@ -44,33 +44,70 @@ export class Pers extends GameObject {
 
 	#direction = 10;
 	#moveSpeed = 1;
+	#states = {
+		IDLE: 0,
+		GO: 1,
+	};
 
+	#state = this.#states.IDLE;
+	#predAction = '';
 	moveRight() {
 		this.#direction = this.#directions.right;
-		this.x += this.#moveSpeed;
+
+		if (this.#predAction == 'moveRight')
+			this.x += this.#moveSpeed;
+		else
+			this.x += this.#moveSpeed * 0.707;
+
+		this.#state = this.#states.GO;
+		this.#predAction = 'moveRight';
 	}
 
 	moveLeft() {
 		this.#direction = this.#directions.left;
-		this.x -= this.#moveSpeed;
+
+		if (this.#predAction == 'moveLeft')
+			this.x -= this.#moveSpeed;
+		else
+			this.x -= this.#moveSpeed * 0.707;
+
+		this.#state = this.#states.GO;
+		this.#predAction = 'moveLeft';
 	}
 
 	moveDown() {
 		this.#direction = this.#directions.down;
-		this.y += this.#moveSpeed;
+
+		if (this.#predAction == 'moveDown')
+			this.y += this.#moveSpeed;
+		else
+			this.y += this.#moveSpeed * 0.707;
+
+		this.#state = this.#states.GO;
+		this.#predAction = 'moveDown';
 	}
 
 	moveUp() {
 		this.#direction = this.#directions.up;
-		this.y -= this.#moveSpeed;
+
+		if (this.#predAction == 'moveUp')
+			this.y -= this.#moveSpeed;
+		else
+			this.y -= this.#moveSpeed * 0.707;
+
+		this.#state = this.#states.GO;
+		this.#predAction = 'moveUp';
 	}
+
 
 	update(drivers) {
 
-		const p = this.#phase.next;
-		if (!this.#imageLoaded) {
-			return;
-		}
+		const phase = this.#phase.next;
+		if (!this.#imageLoaded) return;
+
+		let tx = 0;
+		if (this.#state == this.#states.GO)
+			tx = Math.round(phase / this.#delay);
 
 		drivers.render.tile({
 			image: this.#image,
@@ -80,8 +117,16 @@ export class Pers extends GameObject {
 			height: this.#height,
 			tileWidth: this.#tileWidth,
 			tileHeight: this.#tileHeight,
-			tileX: Math.round(p / this.#delay),
+			tileX: tx,
 			tileY: this.#direction
-		})
+		});
+
+		// drivers.render.text({
+		// 	text: this.#state,
+		// 	x: this.x,
+		// 	y: this.y,
+		// });
+
+		this.#state = this.#states.IDLE;
 	}
 }
