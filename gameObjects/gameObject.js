@@ -1,31 +1,12 @@
+import { throwIfUndefined, defaultIfUndefined } from "../classUtils.js";
+
 export class BaseObject {
 
 	#name = '';
 	get name() { return this.#name };
 
-	// #input = null;
-	// get input() { return this.#input };
-
-	// #render = null;
-	// get render() { return this.#render };
-
-	// #sound = null;
-	// get sound() { return this.#sound };
-
-	// #phisics = null;
-	// get phisics() { return this.#phisics };
-
 	constructor(params) {
-		this.#name = params.name;
-
-		// if ((params.abilities.render instanceof Render))
-		// 	this.#render = params.abilities.render;
-		// if ((params.abilities.input instanceof InputDriver))
-		// 	this.#input = params.abilities.input;
-		// if ((params.abilities.sound instanceof Sound))
-		// 	this.#sound = params.abilities.sound;
-		// if ((params.abilities.phisics instanceof Phisics))
-		// 	this.#phisics = params.abilities.phisics;
+		this.#name = throwIfUndefined(params.name, 'name');
 	}
 
 	update(drivers) { throw ('update must be implemented') }
@@ -47,8 +28,8 @@ export class GameObject extends BaseObject {
 
 	constructor(params) {
 		super(params);
-		this.#x = params.x;
-		this.#y = params.y;
-		this.#z = params.z;
+		this.#x = defaultIfUndefined(params.x, 0);
+		this.#y = defaultIfUndefined(params.y, 0);
+		this.#z = defaultIfUndefined(params.z, 0);
 	}
 }

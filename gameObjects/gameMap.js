@@ -1,7 +1,7 @@
-import { BaseObject } from "./gameObject.js";
+import { GameObject } from "./gameObject.js";
 import { throwIfUndefined } from "../classUtils.js";
 
-export class Landscape extends BaseObject {
+export class Landscape extends GameObject {
 
 	#tiles = null;
 	#tileWidth = 0;
@@ -11,7 +11,12 @@ export class Landscape extends BaseObject {
 	#cells;
 
 	constructor(params) {
-		super({ name: params.name });
+		super({
+			name: params.name,
+			x: 0,
+			y: 0,
+			z: 0
+		});
 		throwIfUndefined(params.tiles, 'tiles');
 		this.#tiles = params.tiles;
 		throwIfUndefined(params.cells, 'cells');

@@ -20,6 +20,7 @@ export class Pers extends GameObject {
 			name: name,
 			x: x == undefined ? 100 : x,
 			y: y == undefined ? 100 : y,
+			z: 1
 		});
 
 		if (image == undefined) {

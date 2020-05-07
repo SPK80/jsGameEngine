@@ -1,7 +1,7 @@
 import { Input } from "../inputs/input.js";
 import { BaseObject } from "../gameObjects/gameObject.js";
 import { GameObjects } from "../gameObjects/objects.js";
-import { throwIfNotInstanceof } from "../classUtils.js";
+import { throwIfNotInstance } from "../classUtils.js";
 
 export class Scene extends BaseObject {
 	// #settings = null;
@@ -43,9 +43,9 @@ class ObjectInputDrivers {
 		#input = null;
 
 		constructor(object, input) {
-			throwIfNotInstanceof(object, BaseObject);
+			throwIfNotInstance(object, BaseObject);
 			this.#object = object;
-			throwIfNotInstanceof(input, Input);
+			throwIfNotInstance(input, Input);
 			this.#input = input;
 		}
 
