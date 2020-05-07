@@ -19,12 +19,14 @@ let deep = 0;
 // }
 
 export function bublleFind(array, val) {
-	return find(array, 0, array.length - 1, val);
+	const last = array.length - 1;
+	if (val >= array[last]) return last;
+	if (val <= array[0]) return 0;
+	return find(array, 0, last, val);
 }
 
 function find(array, b, e, val) {
 	deep++;
-
 	if (e - b < 2) return b;
 	const c = Math.floor(e + b) / 2;
 	console.log(b, e, c);
