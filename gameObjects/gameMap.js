@@ -1,26 +1,27 @@
 import { BaseObject } from "./gameObject.js";
+import { throwIfUndefined } from "../classUtils.js";
 
 export class Landscape extends BaseObject {
 
-	#tiles = new Image();
-	#imageLoaded = false;
+	#tiles = null;
 	#tileWidth = 0;
 	#tileHeight = 0;
 	#tilesInRow = 0;
 
-	#xCount = 0;
-	#yCount = 0;
-
 	#cells;
 
-	constructor(name, tiles, tileWidth, tileHeight, cells) {
-		super({ name: name });
-		this.#tiles = tiles;
-		this.#cells = cells;
-		this.#tileWidth = tileWidth;
-		this.#tileHeight = tileHeight;
-		this.#tilesInRow = this.#tiles.width / this.#tileWidth;
+	constructor(params) {
+		super({ name: params.name });
+		throwIfUndefined(params.tiles, 'tiles');
+		this.#tiles = params.tiles;
+		throwIfUndefined(params.cells, 'cells');
+		this.#cells = params.cells;
+		this.#tileWidth = params.tileWidth;
+		throwIfUndefined(params.tileWidth, 'tileWidth');
+		this.#tileHeight = params.tileHeight;
+		throwIfUndefined(params.tileHeight, 'tileHeight');
 
+		this.#tilesInRow = this.#tiles.width / this.#tileWidth;
 	}
 
 	tilePos(cell) {
