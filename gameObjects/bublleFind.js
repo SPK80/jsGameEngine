@@ -5,9 +5,11 @@ export function bublleFindIndex(findVal, length, callback) {
 	throwIfUndefined(callback);
 	throwIfUndefined(findVal);
 	throwIfUndefined(length);
+	if (length == 0) return 0;
 
-	const _MAXDEEP = 10;
+	const _MAXDEEP = 100;
 	let _deep = 0;
+
 	function find(b, e) {
 		// console.log(b, e);
 		_deep++;

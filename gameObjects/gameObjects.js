@@ -1,4 +1,5 @@
 import { BaseObject } from "./gameObject.js";
+import { bublleFindIndex } from "./bublleFind.js";
 
 export class GameObjects {
 	#items = [];
@@ -23,8 +24,14 @@ export class GameObjects {
 			if (this.get(item.name)) return;
 
 			if (this.#sortByZ) {
-				const i = this.#items.bublleFind(item);
-				this.#items.slice(i, 0, item);
+
+				const index = bublleFindIndex(item.z, this.#items.length,
+					(i) => this.#items[i].z);
+				console.log(item);
+
+				this.#items.splice(index, 0, item);
+				// console.log(this.#items);
+
 			} else {
 				this.#items.push(item);
 			}

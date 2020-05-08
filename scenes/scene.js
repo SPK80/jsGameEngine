@@ -1,6 +1,6 @@
 import { Input } from "../inputs/input.js";
 import { BaseObject } from "../gameObjects/gameObject.js";
-import { GameObjects } from "../gameObjects/objects.js";
+import { GameObjects } from "../gameObjects/gameObjects.js";
 import { throwIfNotInstance } from "../classUtils.js";
 
 export class Scene extends BaseObject {
@@ -30,7 +30,8 @@ export class Scene extends BaseObject {
 		const render = drivers.render;
 		render.clear();
 
-		const objects = this.#objects.get();
+		const objects = this.#objects.get().rev;
+
 		objects.forEach(obj => {
 			obj.update(drivers);
 		});
@@ -38,6 +39,7 @@ export class Scene extends BaseObject {
 }
 
 class ObjectInputDrivers {
+
 	#ObjectInputDriver = class {
 		#object = null;
 		#input = null;
@@ -58,6 +60,7 @@ class ObjectInputDrivers {
 	}
 
 	#items = [];
+	
 	add(obj, input) {
 		const driver = new this.#ObjectInputDriver(obj, input);
 		this.#items.push(driver);
