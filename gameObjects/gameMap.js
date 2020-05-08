@@ -1,5 +1,5 @@
 import { GameObject } from "./gameObject.js";
-import { throwIfUndefined } from "../classUtils.js";
+import { throwIfUndefined } from "../tools/classUtils.js";
 
 export class Landscape extends GameObject {
 

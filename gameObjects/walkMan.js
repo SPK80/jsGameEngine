@@ -1,4 +1,4 @@
-import { CircleCounter } from "../counters.js";
+import { CircleCounter } from "../tools/counters.js";
 import { GameObject } from './gameObject.js';
 
 export class WalkMan extends GameObject {

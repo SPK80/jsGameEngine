@@ -1,4 +1,4 @@
-import { throwIfUndefined, defaultIfUndefined } from "../classUtils.js";
+import { throwIfUndefined, defaultIfUndefined } from "../tools/classUtils.js";
 
 export class BaseObject {
 

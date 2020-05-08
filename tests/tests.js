@@ -1,4 +1,4 @@
-import { CanvasRender } from "./graphics/canvasRender.js";
+import { CanvasRender } from "../graphics/canvasRender.js";
 
 const render = new CanvasRender(800, 600, '#bbbf');
 render.clear();

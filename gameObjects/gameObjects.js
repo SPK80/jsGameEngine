@@ -1,5 +1,5 @@
 import { BaseObject } from "./gameObject.js";
-import { bublleFindIndex } from "./bublleFind.js";
+import { bublleFindIndex } from "../tools/bublleFind.js";
 
 export class GameObjects {
 	#items = [];

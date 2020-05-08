@@ -1,7 +1,7 @@
 import { Input } from "../inputs/input.js";
 import { BaseObject } from "../gameObjects/gameObject.js";
 import { GameObjects } from "../gameObjects/gameObjects.js";
-import { throwIfNotInstance } from "../classUtils.js";
+import { throwIfNotInstance } from "../tools/classUtils.js";
 
 export class Scene extends BaseObject {
 	// #settings = null;
@@ -30,7 +30,7 @@ export class Scene extends BaseObject {
 		const render = drivers.render;
 		render.clear();
 
-		const objects = this.#objects.get().rev;
+		const objects = this.#objects.get();
 
 		objects.forEach(obj => {
 			obj.update(drivers);

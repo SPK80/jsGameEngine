@@ -1,5 +1,5 @@
 import { GameObject } from './gameObject.js';
-import { RolCounter } from '../counters.js';
+import { RolCounter } from '../tools/counters.js';
 
 export class Pacman extends GameObject {
 

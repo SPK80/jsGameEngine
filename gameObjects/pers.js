@@ -1,5 +1,5 @@
 import { GameObject } from "./gameObject.js";
-import { CircleCounter } from "../counters.js";
+import { CircleCounter } from "../tools/counters.js";
 
 export class Pers extends GameObject {
 
