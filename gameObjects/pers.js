@@ -13,19 +13,15 @@ export class Pers extends GameObject {
 	#tileHeight = 32;
 
 	#animations = {
-		idle: [{ x: 0, y: 256 }, { x: 0, y: 288 }, { x: 0, y: 320 }, { x: 0, y: 352 }],
-		moveRight: [{ x: 0, y: 320 }, { x: 32, y: 320 }, { x: 64, y: 320 }],
-		moveLeft: [{ x: 0, y: 288 }, { x: 32, y: 288 }, { x: 64, y: 288 }],
-		moveDown: [{ x: 0, y: 256 }, { x: 32, y: 256 }, { x: 64, y: 256 }],
-		moveUp: [{ x: 0, y: 352 }, { x: 32, y: 352 }, { x: 64, y: 352 }],
+		idle: [{ x: 0, y: 256, delay: 10 }, { x: 0, y: 288, delay: 10 }, { x: 0, y: 320, delay: 10 }, { x: 0, y: 352, delay: 10 }],
+		moveRight: [{ x: 0, y: 320, delay: 10 }, { x: 32, y: 320, delay: 10 }, { x: 64, y: 320, delay: 10 }],
+		moveLeft: [{ x: 0, y: 288, delay: 10 }, { x: 32, y: 288, delay: 10 }, { x: 64, y: 288, delay: 10 }],
+		moveDown: [{ x: 0, y: 256, delay: 10 }, { x: 32, y: 256, delay: 10 }, { x: 64, y: 256, delay: 10 }],
+		moveUp: [{ x: 0, y: 352, delay: 10 }, { x: 32, y: 352, delay: 10 }, { x: 64, y: 352, delay: 10 }],
 	}
 
 	#width = this.#tileWidth;
 	#height = this.#tileHeight;
-	
-	getAnimation(state, direction) {
-
-	}
 
 	constructor(name, x, y, image) {
 		super({
@@ -63,8 +59,23 @@ export class Pers extends GameObject {
 	};
 
 	#state = this.#states.IDLE;
-	#predAction = '';
 
+	getAnimation() {
+		if (this.#state == this.#states.IDLE)
+			return this.#animations.idle;
+		if (this.#state == this.#states.GO) {
+			if (this.#direction == this.#directions.down)
+				return this.#animations.moveDown;
+			if (this.#direction == this.#directions.up)
+				return this.#animations.moveUp;
+			if (this.#direction == this.#directions.right)
+				return this.#animations.moveRight;
+			if (this.#direction == this.#directions.left)
+				return this.#animations.moveLeft;
+		}
+	}
+
+	#predAction = '';
 	moveRight() {
 		this.#direction = this.#directions.right;
 
@@ -118,13 +129,15 @@ export class Pers extends GameObject {
 		const phase = this.#phase.next;
 		if (!this.#imageLoaded) return;
 
-		let tx = 0;
-		if (this.#state == this.#states.GO)
-			tx = Math.round(phase / this.#delay);
-		else
-			this.#state = this.#states.IDLE;
+		const anim = getAnimation();
+		const tile = anim[Math.round(phase / this.#delay)];
 
-		let anim = this.#animations.idle;
+		// let tx = 0;
+		// if (this.#state == this.#states.GO)
+		// 	tx = Math.round(phase / this.#delay);
+		// else
+		// 	this.#state = this.#states.IDLE;
+
 
 		if (this.#direction == this.#directions.down)
 			anim = this.#animations.moveDown;
