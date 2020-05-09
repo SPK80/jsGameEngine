@@ -12,8 +12,20 @@ export class Pers extends GameObject {
 	#tileWidth = 32;
 	#tileHeight = 32;
 
+	#animations = {
+		idle: [{ x: 0, y: 256 }, { x: 0, y: 288 }, { x: 0, y: 320 }, { x: 0, y: 352 }],
+		moveRight: [{ x: 0, y: 320 }, { x: 32, y: 320 }, { x: 64, y: 320 }],
+		moveLeft: [{ x: 0, y: 288 }, { x: 32, y: 288 }, { x: 64, y: 288 }],
+		moveDown: [{ x: 0, y: 256 }, { x: 32, y: 256 }, { x: 64, y: 256 }],
+		moveUp: [{ x: 0, y: 352 }, { x: 32, y: 352 }, { x: 64, y: 352 }],
+	}
+
 	#width = this.#tileWidth;
 	#height = this.#tileHeight;
+	
+	getAnimation(state, direction) {
+
+	}
 
 	constructor(name, x, y, image) {
 		super({
@@ -43,7 +55,6 @@ export class Pers extends GameObject {
 		left: 9,
 		right: 10,
 	}
-
 
 	#moveSpeed = 1;
 	#states = {
@@ -113,6 +124,17 @@ export class Pers extends GameObject {
 		else
 			this.#state = this.#states.IDLE;
 
+		let anim = this.#animations.idle;
+
+		if (this.#direction == this.#directions.down)
+			anim = this.#animations.moveDown;
+
+		if (this.#direction == this.#directions.up)
+			anim = this.#animations.moveUp;
+
+		if (this.#direction == this.#directions.up)
+			anim = this.#animations.moveUp;
+
 		drivers.render.tile({
 			image: this.#image,
 			x: this.x,
@@ -132,11 +154,4 @@ export class Pers extends GameObject {
 		// });
 	}
 
-	#animations = {
-		idle: [8,9,10,11],
-		moveRightL: [],
-		moveLeft: [],
-		moveDown: [],
-		moveUp: [],
-	}
 }
