@@ -36,6 +36,7 @@ export class Pers extends GameObject {
 		}
 	}
 
+	#direction = 10;
 	#directions = {
 		down: 8,
 		up: 11,
@@ -43,7 +44,7 @@ export class Pers extends GameObject {
 		right: 10,
 	}
 
-	#direction = 10;
+
 	#moveSpeed = 1;
 	#states = {
 		IDLE: 0,
@@ -52,6 +53,7 @@ export class Pers extends GameObject {
 
 	#state = this.#states.IDLE;
 	#predAction = '';
+
 	moveRight() {
 		this.#direction = this.#directions.right;
 
@@ -100,7 +102,6 @@ export class Pers extends GameObject {
 		this.#predAction = 'moveUp';
 	}
 
-
 	update(drivers) {
 
 		const phase = this.#phase.next;
@@ -109,6 +110,8 @@ export class Pers extends GameObject {
 		let tx = 0;
 		if (this.#state == this.#states.GO)
 			tx = Math.round(phase / this.#delay);
+		else
+			this.#state = this.#states.IDLE;
 
 		drivers.render.tile({
 			image: this.#image,
@@ -127,7 +130,13 @@ export class Pers extends GameObject {
 		// 	x: this.x,
 		// 	y: this.y,
 		// });
+	}
 
-		this.#state = this.#states.IDLE;
+	#animations = {
+		idle: [8,9,10,11],
+		moveRightL: [],
+		moveLeft: [],
+		moveDown: [],
+		moveUp: [],
 	}
 }

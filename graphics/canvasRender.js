@@ -107,16 +107,36 @@ export class CanvasRender extends Render {
 		else this.#ctx.strokeText(params.text, params.x, params.y);
 	}
 
+	// tile(params){
+	// 	this.#ctx.drawImage(
+	// 		params.image,
+	// 		params.tileX,
+	// 		params.tileY,
+	// 		params.tileWidth,
+	// 		params.tileHeight,
+	// 		params.x,
+	// 		params.y,
+	// 		params.width,
+	// 		params.height
+	// 	);
+	// }
+
 	tile(params) {
-		const tileX = (params.tileX) ? params.tileX : 0;
-		const tileY = (params.tileY) ? params.tileY : 0;
+		let tileX = (params.tileX) ? params.tileX : 0;
+		let tileY = (params.tileY) ? params.tileY : 0;
+
 		const tileWidth = (params.tileWidth) ? params.tileWidth : params.width;
 		const tileHeight = (params.tileHeight) ? params.tileHeight : params.height;
 
+		if (!params.absoluteTilePos) {
+			tileX = tileX * tileWidth
+			tileY = tileY * tileHeight
+		}
+
 		this.#ctx.drawImage(
 			params.image,
-			tileWidth * tileX,
-			tileHeight * tileY,
+			tileX,
+			tileY,
 			tileWidth,
 			tileHeight,
 			params.x,

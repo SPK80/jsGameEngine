@@ -2,7 +2,7 @@ export class Settings {
 	render = {
 		width: 600,
 		height: 400,
-		scale: 1,
+		scale: 1.5,
 		backgroundColor: '#004020',
 	}
 
