@@ -13,15 +13,13 @@ export class Animation {
 
 	#oredPos = 0;
 
-	get first() {
+	get reset() {
 		this.#oredPos = 0;
 		this.#finished = false;
-		return this.#frames[this.#order[this.#oredPos]];
 	}
 
 	get next() {
 		if (this.#finished) return;
-		this.#oredPos++;
 		if (this.#oredPos >= this.#order.length) {
 			this.#oredPos = 0;
 			if (!this.#cicled) {
@@ -29,6 +27,9 @@ export class Animation {
 				return;
 			}
 		}
-		return this.#frames[this.#order[this.#oredPos]];
+		const frame = this.#frames[this.#order[this.#oredPos]];
+		this.#oredPos++;
+		return frame;
+
 	}
 }

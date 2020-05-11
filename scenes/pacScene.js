@@ -34,7 +34,9 @@ export class PacScene extends Scene {
 
 		});
 
-		const walcMan = new Pers('Pers', 10, 100, tiles);
+		const pers = new Personage('Pers', 10, 100, tiles,
+		
+		);
 		// const pac = new Pacman('Pacman', 100, 100, '#00F0FF', 50);
 
 		// const tiles = new Image();
@@ -46,7 +48,7 @@ export class PacScene extends Scene {
 		super({
 			name: name,
 			drivers: drivers,
-		}, [landscape, walcMan]
+		}, [landscape, pers]
 		);
 	}
 }
