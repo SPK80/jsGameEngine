@@ -3,6 +3,8 @@ import { Pacman } from "../gameObjects/pacman.js";
 import { WalkMan } from "../gameObjects/walkMan.js";
 import { Pers } from "../gameObjects/pers.js";
 import { Landscape } from "../gameObjects/gameMap.js";
+import { Animation } from "../animations/animation.js";
+import { Frame } from "../animations/frame.js";
 
 export class PacScene extends Scene {
 
@@ -33,9 +35,12 @@ export class PacScene extends Scene {
 			]
 
 		});
+		const order = [0, 1, 2];
+		const pers = new Personage('Pers', 10, 100, tiles, {
+			moveRight: new Animation([new Frame(0, 8, 32, 32, 100), new Frame(1, 8, 32, 32, 100), new Frame(1, 8, 32, 32, 100)], order, true),
 
-		const pers = new Personage('Pers', 10, 100, tiles,
-		
+		}
+
 		);
 		// const pac = new Pacman('Pacman', 100, 100, '#00F0FF', 50);
 
