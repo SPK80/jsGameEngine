@@ -1,4 +1,17 @@
+import { throwIfUndefined } from "../tools/classUtils";
+
 /// Interface
 export class Animation {
-	get nextFrame() { throw ('get nextFrame() mast be implemented'); }
+	#frames;
+	#order;
+	#cicled = false;
+	constructor(frames, order, cicled) {
+		this.#frames = throwIfUndefined(frames, 'frames');
+		this.#order = throwIfUndefined(order, 'order');
+	}
+
+	#current;
+	get nextFrame() {
+		this.#order
+	}
 }
