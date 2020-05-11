@@ -1,9 +1,11 @@
-import { ChainAnimation } from "../animations/chainAnimation.js";
-import { ChainFrame } from "../animations/chainFrame.js";
+import { Animation } from "../animations/animation.js";
 
 console.log('anim');
 
-const anim = new ChainAnimation(new ChainFrame(0, 0, 10, 10, 100));
+const anim = new Animation(['fr1', 'fr2', 'fr3'], [0, 1, 2,1], true);
 console.log(anim);
-anim.addNext(10, 0, 10, 20, 200);
-console.log(anim);
+console.log(anim.first);
+for (let i = 0; i < 10; i++) {
+	console.log(anim.next);
+
+}
