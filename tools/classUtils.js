@@ -5,6 +5,7 @@ export function throwIfNotInstance(object, _class) {
 }
 
 export function throwIfUndefined(object, name = '') {
+	
 	if (object == undefined)
 		throw (`${name} undefined`);
 	return object;
