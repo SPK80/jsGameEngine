@@ -21,9 +21,11 @@ const animator = new Animator({
 });
 // animator.start('idle');
 
-const delays = [1000, 2000, 3000];
+const delays = [4000, 2000, 3000];
 let pos = 0;
 let max = 7;
+console.log('start');
+
 const loop = function () {
 	console.log(delays[pos], max);
 	if (max < 1) {

@@ -15,7 +15,7 @@ export class Personage extends GameObject {
 	#width = 32;
 	#height = 32;
 
-	#state = this.#states.IDLE;
+	// #state = this.#states.IDLE;
 
 	#animator;
 
@@ -53,7 +53,7 @@ export class Personage extends GameObject {
 		else
 			this.x += this.#moveSpeed * 0.707;
 
-		this.#state = this.#states.GO;
+		// this.#state = this.#states.GO;
 		this.#predAction = 'moveRight';
 		this.#animator.start('moveRight');
 	}
@@ -65,7 +65,7 @@ export class Personage extends GameObject {
 		else
 			this.x -= this.#moveSpeed * 0.707;
 
-		this.#state = this.#states.GO;
+		// this.#state = this.#states.GO;
 		this.#predAction = 'moveLeft';
 		this.#animator.start('moveLeft');
 	}
@@ -77,7 +77,7 @@ export class Personage extends GameObject {
 		else
 			this.y += this.#moveSpeed * 0.707;
 
-		this.#state = this.#states.GO;
+		// this.#state = this.#states.GO;
 		this.#predAction = 'moveDown';
 		this.#animator.start('moveDown');
 	}
@@ -89,7 +89,7 @@ export class Personage extends GameObject {
 		else
 			this.y -= this.#moveSpeed * 0.707;
 
-		this.#state = this.#states.GO;
+		// this.#state = this.#states.GO;
 		this.#predAction = 'moveUp';
 		this.#animator.start('moveUp');
 	}

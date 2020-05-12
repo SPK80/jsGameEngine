@@ -13,15 +13,18 @@ export class Animator {
 	get curFrame() { return this.#curFrame }
 
 	start(name) {
+		if (this.#animTimer) clearTimeout(this.#animTimer);
 		const anim = this.#animations[name];
-		console.log('start', anim);
-		if (this.#animTimer) clearInterval(this.#animTimer);
-		this.#animTimer = setInterval(
-			() => {
-				this.#curFrame = anim.next;
-				// console.log(this.#curFrame);
 
-			},
-			anim.delay);
+		console.log('start', anim);
+
+		const loop = () => {
+			this.#curFrame = anim.next;
+			console.log(this.#curFrame);
+			setTimeout(loop, this.#curFrame.delay);
+		}
+
+		loop();
+
 	}
 }
