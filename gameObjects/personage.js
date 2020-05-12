@@ -99,10 +99,8 @@ export class Personage extends GameObject {
 		if (!this.#imageLoaded) return;
 
 		const frame = this.#animator.curFrame;
-		if (frame)
-		{
-			// console.log(frame);
-		
+		if (frame) {
+
 			drivers.render.tile({
 				image: this.#image,
 				absoluteTilePos: true,
@@ -111,10 +109,11 @@ export class Personage extends GameObject {
 				width: this.#width,
 				height: this.#height,
 				tileX: frame.x,
-				tileY: frame.x,
+				tileY: frame.y,
 				tileWidth: frame.wi,
 				tileHeight: frame.he
-			});}
+			});
+		}
 		// drivers.render.text({
 		// 	text: this.#state,
 		// 	x: this.x,

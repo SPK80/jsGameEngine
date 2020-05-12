@@ -133,8 +133,6 @@ export class CanvasRender extends Render {
 			tileY = tileY * tileHeight
 		}
 
-		console.log(params);
-
 		this.#ctx.drawImage(
 			params.image,
 			tileX,
