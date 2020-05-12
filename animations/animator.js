@@ -1,4 +1,4 @@
-import { throwIfUndefined } from "../tools/classUtils";
+import { throwIfUndefined } from "../tools/classUtils.js";
 
 export class Animator {
 	#animations;
@@ -14,9 +14,14 @@ export class Animator {
 
 	start(name) {
 		const anim = this.#animations[name];
+		console.log('start', anim);
 		if (this.#animTimer) clearInterval(this.#animTimer);
 		this.#animTimer = setInterval(
-			() => this.#curFrame = anim.next,
+			() => {
+				this.#curFrame = anim.next;
+				// console.log(this.#curFrame);
+
+			},
 			anim.delay);
 	}
 }

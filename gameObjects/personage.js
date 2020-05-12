@@ -12,6 +12,9 @@ export class Personage extends GameObject {
 		GO: 1,
 	};
 
+	#width = 32;
+	#height = 32;
+
 	#state = this.#states.IDLE;
 
 	#animator;
@@ -38,6 +41,7 @@ export class Personage extends GameObject {
 			this.#image = image;
 			this.#imageLoaded = true;
 		}
+		this.#animator.start('idle');
 	}
 
 	#predAction = '';
@@ -79,7 +83,6 @@ export class Personage extends GameObject {
 	}
 
 	moveUp() {
-		this.#direction = this.#directions.up;
 
 		if (this.#predAction == 'moveUp')
 			this.y -= this.#moveSpeed;
@@ -96,19 +99,22 @@ export class Personage extends GameObject {
 		if (!this.#imageLoaded) return;
 
 		const frame = this.#animator.curFrame;
-
-		drivers.render.tile({
-			image: this.#image,
-			absoluteTilePos: true,
-			x: this.x,
-			y: this.y,
-			width: this.#width,
-			height: this.#height,
-			tileX: frame.x,
-			tileY: frame.x,
-			tileWidth: frame.wi,
-			tileHeight: frame.he
-		});
+		if (frame)
+		{
+			// console.log(frame);
+		
+			drivers.render.tile({
+				image: this.#image,
+				absoluteTilePos: true,
+				x: this.x,
+				y: this.y,
+				width: this.#width,
+				height: this.#height,
+				tileX: frame.x,
+				tileY: frame.x,
+				tileWidth: frame.wi,
+				tileHeight: frame.he
+			});}
 		// drivers.render.text({
 		// 	text: this.#state,
 		// 	x: this.x,
