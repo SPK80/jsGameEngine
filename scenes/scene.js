@@ -43,24 +43,30 @@ class ObjectInputDrivers {
 	#ObjectInputDriver = class {
 		#object = null;
 		#input = null;
+		#idleCommand;
 
-		constructor(object, input) {
+		constructor(object, input, idleCommand = 'idle') {
 			throwIfNotInstance(object, BaseObject);
 			this.#object = object;
 			throwIfNotInstance(input, Input);
 			this.#input = input;
+			this.#idleCommand = idleCommand;
 		}
 
 		do() {
 			const commands = this.#input.get();
-			commands.forEach(comm => {
-				this.#object[comm]();
-			});
+			
+			if (commands == undefined || commands.length < 1)
+				this.#object[this.#idleCommand]();
+			else
+				commands.forEach(comm => {
+					this.#object[comm]();
+				});
 		}
 	}
 
 	#items = [];
-	
+
 	add(obj, input) {
 		const driver = new this.#ObjectInputDriver(obj, input);
 		this.#items.push(driver);

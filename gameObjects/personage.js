@@ -15,8 +15,6 @@ export class Personage extends GameObject {
 	#width = 32;
 	#height = 32;
 
-	// #state = this.#states.IDLE;
-
 	#animator;
 
 	constructor(name, x, y, image, animations) {
@@ -41,53 +39,36 @@ export class Personage extends GameObject {
 			this.#image = image;
 			this.#imageLoaded = true;
 		}
-		this.#animator.start('idle');
 	}
 
-	#predAction = '';
+	// #predAction = '';
+	#moved = false;
+
+	_move(action, moveFunc) {
+		moveFunc(this.#moveSpeed);
+		if (!this.#moved) this.#animator.start(action, this.#moveSpeed);
+		this.#moved = true;
+	}
 
 	moveRight() {
-
-		if (this.#predAction == 'moveRight')
-			this.x += this.#moveSpeed;
-		else {
-			this.#animator.start('moveRight');
-			this.x += this.#moveSpeed * 0.707;
-		}
-		this.#predAction = 'moveRight';
+		this._move('moveRight', (s) => this.x += s);
 	}
 
 	moveLeft() {
-
-		if (this.#predAction == 'moveLeft')
-			this.x -= this.#moveSpeed;
-		else {
-			this.#animator.start('moveLeft');
-			this.x -= this.#moveSpeed * 0.707;
-		}
-		this.#predAction = 'moveLeft';
+		this._move('moveLeft', (s) => this.x -= s);
 	}
 
 	moveDown() {
-
-		if (this.#predAction == 'moveDown')
-			this.y += this.#moveSpeed;
-		else {
-			this.y += this.#moveSpeed * 0.707;
-			this.#animator.start('moveDown');
-		}
-		this.#predAction = 'moveDown';
+		this._move('moveDown', (s) => this.y += s);
 	}
 
 	moveUp() {
+		this._move('moveUp', (s) => this.y -= s);
+	}
 
-		if (this.#predAction == 'moveUp')
-			this.y -= this.#moveSpeed;
-		else {
-			this.y -= this.#moveSpeed * 0.707;
-			this.#animator.start('moveUp');
-		}
-		this.#predAction = 'moveUp';
+	idle() {
+		// this._move('idle', (s) => s);
+		this.#animator.start('idle');
 	}
 
 	update(drivers) {
@@ -109,11 +90,12 @@ export class Personage extends GameObject {
 				tileWidth: frame.wi,
 				tileHeight: frame.he
 			});
+			drivers.render.text({
+				text: `${frame.x} ${frame.y} ${frame.delay}`,
+				x: this.x,
+				y: this.y,
+			});
 		}
-		drivers.render.text({
-			text: `${this.#predAction} ${frame.x} ${frame.y} ${frame.delay}`,
-			x: this.x,
-			y: this.y,
-		});
+		this.#moved = false;
 	}
 }

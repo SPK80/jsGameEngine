@@ -36,34 +36,37 @@ export class PacScene extends Scene {
 			]
 
 		});
+
 		const order = [0, 1, 2];
+		const moveDelay = 100;
+		const idleDelay = 1000;
 		const pers = new Personage('Pers', 10, 100, tiles, {
 			moveRight: new Animation([
-				new Frame(0 * 32, 10 * 32, 32, 32, 300),
-				new Frame(1 * 32, 10 * 32, 32, 32, 300),
-				new Frame(2 * 32, 10 * 32, 32, 32, 300)
+				new Frame(0 * 32, 10 * 32, 32, 32, moveDelay),
+				new Frame(1 * 32, 10 * 32, 32, 32, moveDelay),
+				new Frame(2 * 32, 10 * 32, 32, 32, moveDelay)
 			], order, true),
 			moveLeft: new Animation([
-				new Frame(0 * 32, 9 * 32, 32, 32, 300),
-				new Frame(1 * 32, 9 * 32, 32, 32, 300),
-				new Frame(2 * 32, 9 * 32, 32, 32, 300)
+				new Frame(0 * 32, 9 * 32, 32, 32, moveDelay),
+				new Frame(1 * 32, 9 * 32, 32, 32, moveDelay),
+				new Frame(2 * 32, 9 * 32, 32, 32, moveDelay)
 			], order, true),
 			moveDown: new Animation([
-				new Frame(0 * 32, 8 * 32, 32, 32, 300),
-				new Frame(1 * 32, 8 * 32, 32, 32, 300),
-				new Frame(2 * 32, 8 * 32, 32, 32, 300)
+				new Frame(0 * 32, 8 * 32, 32, 32, moveDelay),
+				new Frame(1 * 32, 8 * 32, 32, 32, moveDelay),
+				new Frame(2 * 32, 8 * 32, 32, 32, moveDelay)
 			], order, true),
 			moveUp: new Animation([
-				new Frame(0 * 32, 11 * 32, 32, 32, 300),
-				new Frame(1 * 32, 11 * 32, 32, 32, 300),
-				new Frame(2 * 32, 11 * 32, 32, 32, 300)
+				new Frame(0 * 32, 11 * 32, 32, 32, moveDelay),
+				new Frame(1 * 32, 11 * 32, 32, 32, moveDelay),
+				new Frame(2 * 32, 11 * 32, 32, 32, moveDelay)
 			], order, true),
 			idle: new Animation([
-				new Frame(0 * 32, 8 * 32, 32, 32, 1000),
-				new Frame(0 * 32, 9 * 32, 32, 32, 1000),
-				new Frame(0 * 32, 10 * 32, 32, 32, 1000),
-				new Frame(0 * 32, 11 * 32, 32, 32, 1000)
-			], [0,1,2,3], true),
+				new Frame(0 * 32, 8 * 32, 32, 32, idleDelay),
+				new Frame(0 * 32, 9 * 32, 32, 32, idleDelay),
+				new Frame(0 * 32, 10 * 32, 32, 32, idleDelay),
+				new Frame(0 * 32, 11 * 32, 32, 32, idleDelay)
+			], [0, 1, 2, 3], true),
 		}
 
 		);
