@@ -41,13 +41,22 @@ export class Personage extends GameObject {
 		}
 	}
 
-	// #predAction = '';
+	#completedActions = [];
 	#moved = false;
-
+	#singleMove = true; //true - ignore 2nd command
+	#ignoreRepeatingCommand = true;
 	_move(action, moveFunc) {
-		moveFunc(this.#moveSpeed);
+		if (this.#ignoreRepeatingCommand && this.#completedActions.includes(action)) return;
 		if (!this.#moved) this.#animator.start(action, this.#moveSpeed);
+		else if (this.#singleMove) return;
+		let s = this.#moveSpeed;
+		if (this.#completedActions != action) {
+			s = s * 0.707;
+		}
+
+		moveFunc(s);
 		this.#moved = true;
+		this.#completedActions.push(action);
 	}
 
 	moveRight() {
@@ -90,11 +99,11 @@ export class Personage extends GameObject {
 				tileWidth: frame.wi,
 				tileHeight: frame.he
 			});
-			drivers.render.text({
-				text: `${frame.x} ${frame.y} ${frame.delay}`,
-				x: this.x,
-				y: this.y,
-			});
+			// drivers.render.text({
+			// 	text: `${this.#s}`,
+			// 	x: this.x,
+			// 	y: this.y,
+			// });
 		}
 		this.#moved = false;
 	}
