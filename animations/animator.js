@@ -20,7 +20,7 @@ export class Animator {
 
 		const loop = () => {
 			this.#curFrame = anim.next;
-			console.log(this.#curFrame);
+			// console.log(this.#curFrame);
 			setTimeout(loop, this.#curFrame.delay);
 		}
 

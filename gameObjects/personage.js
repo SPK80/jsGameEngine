@@ -50,48 +50,44 @@ export class Personage extends GameObject {
 
 		if (this.#predAction == 'moveRight')
 			this.x += this.#moveSpeed;
-		else
+		else {
+			this.#animator.start('moveRight');
 			this.x += this.#moveSpeed * 0.707;
-
-		// this.#state = this.#states.GO;
+		}
 		this.#predAction = 'moveRight';
-		this.#animator.start('moveRight');
 	}
 
 	moveLeft() {
 
 		if (this.#predAction == 'moveLeft')
 			this.x -= this.#moveSpeed;
-		else
+		else {
+			this.#animator.start('moveLeft');
 			this.x -= this.#moveSpeed * 0.707;
-
-		// this.#state = this.#states.GO;
+		}
 		this.#predAction = 'moveLeft';
-		this.#animator.start('moveLeft');
 	}
 
 	moveDown() {
 
 		if (this.#predAction == 'moveDown')
 			this.y += this.#moveSpeed;
-		else
+		else {
 			this.y += this.#moveSpeed * 0.707;
-
-		// this.#state = this.#states.GO;
+			this.#animator.start('moveDown');
+		}
 		this.#predAction = 'moveDown';
-		this.#animator.start('moveDown');
 	}
 
 	moveUp() {
 
 		if (this.#predAction == 'moveUp')
 			this.y -= this.#moveSpeed;
-		else
+		else {
 			this.y -= this.#moveSpeed * 0.707;
-
-		// this.#state = this.#states.GO;
+			this.#animator.start('moveUp');
+		}
 		this.#predAction = 'moveUp';
-		this.#animator.start('moveUp');
 	}
 
 	update(drivers) {
@@ -114,10 +110,10 @@ export class Personage extends GameObject {
 				tileHeight: frame.he
 			});
 		}
-		// drivers.render.text({
-		// 	text: this.#state,
-		// 	x: this.x,
-		// 	y: this.y,
-		// });
+		drivers.render.text({
+			text: `${this.#predAction} ${frame.x} ${frame.y} ${frame.delay}`,
+			x: this.x,
+			y: this.y,
+		});
 	}
 }

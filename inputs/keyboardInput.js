@@ -13,6 +13,8 @@ export class KeyboardInput extends Input {
 
 		window.addEventListener('keydown', e => {
 			const act = this.#keyMap.get(e.keyCode);
+			// console.log(act);
+
 			if (act && !this.#actions.includes(act))
 				this.#actions.push(act);
 		});
