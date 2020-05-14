@@ -7,7 +7,6 @@ export class Animator {
 	}
 
 	#animTimer;
-
 	#curFrame;
 	get curFrame() { return this.#curFrame }
 
@@ -16,14 +15,14 @@ export class Animator {
 
 		const anim = this.#animations[name];
 		if (!forsed && this.#curAnimation == anim) return;
-		console.log(`start ${name}`);
+		// console.log(`start ${name}`);
 
 		if (this.#animTimer) {
-			console.log(`clearTimeout ${this.#animTimer}`);
+			// console.log(`clearTimeout ${this.#animTimer}`);
 			clearTimeout(this.#animTimer);
 		}
 
-		console.log('start', anim);
+		// console.log('start', anim);
 		this.#curAnimation = anim;
 
 		const loop = () => {
