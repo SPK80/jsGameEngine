@@ -6,6 +6,7 @@ import { Landscape } from "../gameObjects/gameMap.js";
 import { Animation } from "../animations/animation.js";
 import { Frame } from "../animations/frame.js";
 import { Personage } from "../gameObjects/personage.js";
+import { WhiteWolker } from "../gameObjects/enemy.js";
 
 export class PacScene extends Scene {
 
@@ -67,9 +68,9 @@ export class PacScene extends Scene {
 				new Frame(0 * 32, 10 * 32, 32, 32, idleDelay),
 				new Frame(0 * 32, 11 * 32, 32, 32, idleDelay)
 			], [0, 1, 2, 3], true),
-		}
+		});
 
-		);
+		const whiteWolker = new WhiteWolker('WhiteWolker', 50, 150, tiles);
 		// const pac = new Pacman('Pacman', 100, 100, '#00F0FF', 50);
 
 		// const tiles = new Image();
@@ -81,7 +82,7 @@ export class PacScene extends Scene {
 		super({
 			name: name,
 			drivers: drivers,
-		}, [landscape, pers]
+		}, [landscape, whiteWolker, pers]
 		);
 	}
 }

@@ -8,10 +8,10 @@ export class Personage extends GameObject {
 	#imageLoaded = false;
 
 	#moveSpeed = 1;
-	#states = {
-		IDLE: 0,
-		GO: 1,
-	};
+	// #states = {
+	// 	IDLE: 0,
+	// 	GO: 1,
+	// };
 
 	#width = 32;
 	#height = 32;
@@ -40,6 +40,7 @@ export class Personage extends GameObject {
 			this.#image = image;
 			this.#imageLoaded = true;
 		}
+		this.idle();
 	}
 
 	#debugText = '';
@@ -94,8 +95,9 @@ export class Personage extends GameObject {
 
 	_startAnimation() {
 		const lastAction = this.#acceptedActions[this.#acceptedActions.length - 1]
+		if (lastAction == undefined) return;
 		if (lastAction == 'idle')
-			this.#animator.start(lastAction);
+			this.#animator.start('idle');
 		else
 			this.#animator.start(lastAction, this.#moveSpeed);
 	}

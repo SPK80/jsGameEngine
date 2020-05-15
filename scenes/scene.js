@@ -22,7 +22,8 @@ export class Scene extends BaseObject {
 
 	setInput(objectName, input) {
 		const obj = this.#objects.get(objectName);
-		this.#objectInputDrivers.add(obj, input);
+		if (obj)
+			this.#objectInputDrivers.add(obj, input);
 	}
 
 	update(drivers) {
@@ -33,6 +34,8 @@ export class Scene extends BaseObject {
 		const objects = this.#objects.get();
 
 		objects.forEach(obj => {
+			// console.log(obj);
+
 			obj.update(drivers);
 		});
 	}
@@ -55,7 +58,7 @@ class ObjectInputDrivers {
 
 		do() {
 			const commands = this.#input.get();
-			
+
 			if (commands == undefined || commands.length < 1)
 				this.#object[this.#idleCommand]();
 			else
@@ -68,6 +71,8 @@ class ObjectInputDrivers {
 	#items = [];
 
 	add(obj, input) {
+		// console.log(obj, input);
+
 		const driver = new this.#ObjectInputDriver(obj, input);
 		this.#items.push(driver);
 	}
