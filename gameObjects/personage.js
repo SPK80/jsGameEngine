@@ -54,60 +54,42 @@ export class Personage extends GameObject {
 		this.#acceptedActions.push(action);
 	}
 
-	// #moved = false;
-	// #singleMove = false; //true - ignore 2nd command
-	// #moveActions = ['moveRight', 'moveLeft', 'moveUp', 'moveDown'];
-
+	#direction = new Vector2(0, 0);
 	_move() {
-
-		const dir = new Vector2(0, 0);
+		this.#direction = new Vector2(0, 0);
 		this.#acceptedActions.forEach(act => {
-			// if (this.#moveActions.includes(act)) 
-			if (act == 'moveRight') dir.x += 1;
-			if (act == 'moveLeft') dir.x -= 1;
-			if (act == 'moveDown') dir.y += 1;
-			if (act == 'moveUp') dir.y -= 1;
+			if (act == 'moveRight') this.#direction.x += 1;
+			if (act == 'moveLeft') this.#direction.x -= 1;
+			if (act == 'moveDown') this.#direction.y += 1;
+			if (act == 'moveUp') this.#direction.y -= 1;
 		});
-		dir.normalize().mul(this.#moveSpeed);
-		this.x += dir.x;
-		this.y += dir.y;
+		if (Math.abs(this.#direction.x) < 1 && Math.abs(this.#direction.y) < 1) return;
 
-		// if (this.#moved && this.#singleMove) return;
+		this.#direction.normalize().mul(this.#moveSpeed);
+		this.#debugText = `${this.#direction.x}, ${this.#direction.y}`;
 
-		// let s = this.#moveSpeed;
-		// // if (!includes) s = s * 0.707;
-
-		// this.#debugText = `speed:${s}`;
-		// moveFunc(s);
-		// this.#moved = true;
+		this.x += this.#direction.x;
+		this.y += this.#direction.y;
 	}
 
 	moveRight() {
 		this._input('moveRight');
-		// this._move('moveRight', (s) => this.x += s);
 	}
 
 	moveLeft() {
 		this._input('moveLeft');
-		// this._move('moveLeft', (s) => this.x -= s);
 	}
 
 	moveDown() {
 		this._input('moveDown');
-		// this._move('moveDown', (s) => this.y += s);
 	}
 
 	moveUp() {
 		this._input('moveUp');
-		// this._move('moveUp', (s) => this.y -= s);
 	}
 
 	idle() {
 		this._input('idle');
-
-		// this.#acceptedActions.push('idle');
-		// this._move('idle', (s) => s);
-		// this.#animator.start('idle');
 	}
 
 	_startAnimation() {
@@ -133,12 +115,12 @@ export class Personage extends GameObject {
 				tileWidth: frame.wi,
 				tileHeight: frame.he
 			});
-			render.text({
-				text: this.#debugText,
-				x: this.x,
-				y: this.y,
-				color: 'red'
-			});
+			// render.text({
+			// 	text: this.#debugText,
+			// 	x: this.x,
+			// 	y: this.y,
+			// 	color: 'red'
+			// });
 		}
 	}
 
@@ -147,10 +129,9 @@ export class Personage extends GameObject {
 		if (!this.#imageLoaded) return;
 
 		this._startAnimation();
-		this._move();
 		this._draw(drivers.render);
+		this._move();
 
-		// this.#moved = false;
 		this.#acceptedActions = [];
 	}
 }
