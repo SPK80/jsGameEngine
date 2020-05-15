@@ -1,107 +1,25 @@
-import {Engine} from './engine.js';
-import {Pacman} from './pacman.js';
-import {Circle} from './shapes.js';
+import { Engine } from "./engine.js";
+import { Settings } from "./settings.js";
+import { PacScene } from "./scenes/pacScene.js";
 
-const engine = new Engine(640, 480, '#3D4D3D', 1.3333);
+const settings = new Settings();
 
-const mousePos = engine.createMLText('mouse', '', 20, 80, '#FF0000');
-const keys = engine.createMLText('keys', '', 10, 10);
-const pacText = engine.createMLText('pacText', '', 400, 10);
+const engine = new Engine(settings);
 
-Number.prototype.round = function(places=0) {
-    if (places==0) return Math.round(this);
-    const p = Math.pow(10, places);
-    return Math.round( this * p  + Number.EPSILON ) / p;
+window.onclose = () => {
+	console.log('pause', engine);
+	engine.pause();
+
+	console.log('save', settings);
+	settings.save();
 }
 
-const rect = engine.createObject('rect','Rect', 
-{
-    x: 200, 
-    y: 200, 
-    width: 50, 
-    height: 80, 
-    color: '#3D4DFF', 
-    fill: true
-});
+const tiles = new Image();
+tiles.addEventListener("load", function () {
 
-engine.addClass('Pacman', Pacman);
-const pac = engine.createObject('pac', 'Pacman', {});
+	const pacScene = new PacScene('Pacman scene', undefined, tiles);
 
-engine.addClass('Circle', Circle);
-const circle = engine.createObject('circle', 'Circle', {
-    x:100, 
-    y:200, 
-    width: 20, 
-    height: 80, 
-    color: '#FD4D00', 
-    fill: false
-});
+	engine.start(pacScene);
+}, false);
 
-const keyBoard = engine.keyBoard;
-const mouse = engine.mouse;
-
-engine.update = function () {
-
-    // if (keyBoard.isPress('ENTER')){ 
-    //     engine.stop();       
-    //     engine.updateContext(engine.width-10, engine.height+10, engine.backgroundColor+10, engine.scale);
-    // }    
-
-    if (keyBoard.isPress('ESC')){        
-        engine.pause();
-        console.log('pause');
-        
-    }        
-
-    if (keyBoard.isPress('UP')){    
-        // pac.turn(pac.sides.up);
-        pac.moveForward();
-        engine.log('UP');
-    }        
-
-    if (keyBoard.isPress('DOWN')){
-        // pac.turn(pac.sides.down);
-        pac.moveBack();
-        engine.log('DOWN');
-    }        
-
-    if (keyBoard.isPress('RIGHT')){
-        pac.turnOn(0.1);
-        // pac.moveForward();
-        engine.log('RIGHT');
-    }        
-
-    if (keyBoard.isPress('LEFT')){
-        pac.turnOn(-0.1);
-        // pac.moveForward();
-        engine.log('LEFT');
-    }
-    
-    mousePos.text = `x: ${mouse.x.round()} [${mouse.dx.round()}]\r\ny: ${mouse.y.round()} [${mouse.dy.round()}]`;
-    keys.text = `${keyBoard.lastDown.key}: ${keyBoard.lastDown.code}`;
-    pacText.text = `dir.x:${pac.direction.x.round(2)}\r\ndir.y:${pac.direction.y.round(2)}`;
-    // if (mouse.wereEvent('click', false))
-    // {
-        // if (runRectIntersector.includes(mouse.x, mouse.y)){
-        //     runRect.fill = !runRect.fill;
-        // }
-        // console.log(runRect.fill);        
-    // }
-    
-    // if (mouse.wereEvent('dblclick'))
-    // {
-    //     console.log('dblclick');        
-    // }
-
-    // if (mouse.wereEvent('click'))
-    // {      
-    //     shape.fill = !shape.fill;
-    //     if (!shape.lineWidth){
-    //         shape.lineWidth=0;
-    //     }
-    //     console.log(shape.lineWidth++);  
-    // }
-   
-};
-
-engine.start();
+tiles.src = 'tiles.png';
