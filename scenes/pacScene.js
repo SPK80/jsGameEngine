@@ -70,7 +70,7 @@ export class PacScene extends Scene {
 			], [0, 1, 2, 3], true),
 		});
 
-		const whiteWolker = new WhiteWolker('WhiteWolker', 50, 150, tiles);
+		const whiteWolkers = [new WhiteWolker('WhiteWolker1', 50, 150, tiles), new WhiteWolker('WhiteWolker2', 100, 100, tiles), new WhiteWolker('WhiteWolker3', 150, 50, tiles)];
 		// const pac = new Pacman('Pacman', 100, 100, '#00F0FF', 50);
 
 		// const tiles = new Image();
@@ -82,7 +82,7 @@ export class PacScene extends Scene {
 		super({
 			name: name,
 			drivers: drivers,
-		}, [landscape, whiteWolker, pers]
+		}, [landscape, ...whiteWolkers, pers]
 		);
 	}
 }

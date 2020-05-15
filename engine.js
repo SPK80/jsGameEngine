@@ -32,7 +32,7 @@ export class Engine {
 	]));
 
 	start(activeScene) {
-		activeScene.setInput('WhiteWolker', this.#keyBoardInput);
+		activeScene.setInput('Pers', this.#keyBoardInput);
 		this.#pause = false;
 		const _this = this;
 		requestAnimationFrame(function render() {
