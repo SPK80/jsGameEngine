@@ -27,7 +27,6 @@ export class GameObjects {
 
 				const index = bublleFindIndex(item.z, this.#items.length,
 					(i) => this.#items[i].z);
-				console.log(item);
 
 				this.#items.splice(index, 0, item);
 				// console.log(this.#items);

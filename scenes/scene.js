@@ -10,10 +10,14 @@ export class Scene extends BaseObject {
 
 	#objects = null;
 	#objectControllers = [];
+	#debug = '';
+	#refreshDebug = false;
 
 	constructor(params, objects) {
 		super(params);
 		this.#objects = new GameObjects(objects);
+
+		setInterval(() => this.#refreshDebug = true, 500);
 	}
 
 	addObject(gameObject) {
@@ -28,15 +32,31 @@ export class Scene extends BaseObject {
 	}
 
 	update(drivers) {
-		let debug = '';
+		function _us(t) {
+			return Math.trunc(t*1000)
+		}
+		let t = 0;
+
+		const startPerf = () => {
+			if (this.#refreshDebug) {
+				t = performance.now();
+			}
+		}
+
+		const calcPerf = () => {
+			if (this.#refreshDebug) {
+				this.#debug = `${_us(performance.now() - t)}us`;
+				this.#refreshDebug = false;
+			}
+		}
+
 		const render = drivers.render;
+		startPerf();
 		render.clear();
 
 		const objects = this.#objects.get();
-		let t = performance.now();
 		objects.sort((a, b) => a.y - b.y);
-		debug = `${Math.round((performance.now() - t)*1000)}`;
-
+		calcPerf();
 		objects.forEach(obj => {
 			let _drivers = {};
 			const controller = this.#objectControllers.find((con) => con.object == obj);
@@ -46,8 +66,9 @@ export class Scene extends BaseObject {
 			obj.update(Object.assign(_drivers, drivers));
 		});
 
+
 		render.text({
-			text: debug,
+			text: this.#debug,
 			x: 5,
 			y: 20,
 			color: 'red',

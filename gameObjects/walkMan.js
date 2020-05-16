@@ -1,55 +1,42 @@
-import { CircleCounter } from "../tools/counters.js";
-import { GameObject } from './gameObject.js';
+import { Personage } from "./personage.js";
+import { Animation } from "../animations/animation.js";
+import { Frame } from "../animations/frame.js";
 
-export class WalkMan extends GameObject {
+export class WalkMan extends Personage {
 
-	#delay = 8;
-	#frames = 5;
-	#phase = new CircleCounter(0, (this.#frames - 1) * this.#delay, 1);
-	#image = new Image();
-	#imageLoaded = false;
-	#tileWidth = 0;
-	#tileHeight = 0;
-
-	#width = 0;
-	#height = 0;
-
-	constructor(name, x, y) {
-		super({
-			name: name,
-			x: x == undefined ? 100 : x,
-			y: y == undefined ? 100 : y,
-		});
-
-		const _this = this;
-		this.#image.addEventListener("load", function () {
-			_this.#tileWidth = _this.#image.width;
-			_this.#tileHeight = _this.#image.height / _this.#frames;
-			_this.#width = _this.#tileWidth / 2;
-			_this.#height = _this.#tileHeight / 2;			// console.log('Loaded', _this.#image);
-			_this.#imageLoaded = true;
-		}, false);
-
-		this.#image.src = 'sprite.png';
-	}	
-
-	update(drivers) {
-
-		const p = this.#phase.next;
-		if (!this.#imageLoaded) {
-			return;
+	constructor(name, x, y, image) {
+		const order = [0, 1, 2];
+		const moveDelay = 100;
+		const idleDelay = 1000;
+		super(name, x, y, image, {
+			moveRight: new Animation([
+				new Frame(0 * 32, 10 * 32, 32, 32, moveDelay),
+				new Frame(1 * 32, 10 * 32, 32, 32, moveDelay),
+				new Frame(2 * 32, 10 * 32, 32, 32, moveDelay)
+			], order, true),
+			moveLeft: new Animation([
+				new Frame(0 * 32, 9 * 32, 32, 32, moveDelay),
+				new Frame(1 * 32, 9 * 32, 32, 32, moveDelay),
+				new Frame(2 * 32, 9 * 32, 32, 32, moveDelay)
+			], order, true),
+			moveDown: new Animation([
+				new Frame(0 * 32, 8 * 32, 32, 32, moveDelay),
+				new Frame(1 * 32, 8 * 32, 32, 32, moveDelay),
+				new Frame(2 * 32, 8 * 32, 32, 32, moveDelay)
+			], order, true),
+			moveUp: new Animation([
+				new Frame(0 * 32, 11 * 32, 32, 32, moveDelay),
+				new Frame(1 * 32, 11 * 32, 32, 32, moveDelay),
+				new Frame(2 * 32, 11 * 32, 32, 32, moveDelay)
+			], order, true),
+			idle: new Animation([
+				new Frame(0 * 32, 8 * 32, 32, 32, idleDelay),
+				new Frame(0 * 32, 9 * 32, 32, 32, idleDelay),
+				new Frame(0 * 32, 10 * 32, 32, 32, idleDelay),
+				new Frame(0 * 32, 11 * 32, 32, 32, idleDelay)
+			], [0, 1, 2, 3], true),
 		}
-
-		drivers.render.tile({
-			image: this.#image,
-			x: this.x,
-			y: this.y,
-			width: this.#width,
-			height: this.#height,
-			tileWidth: this.#tileWidth,
-			tileHeight: this.#tileHeight,
-			// tileX: 0,
-			tileY: Math.round(p / this.#delay)
-		})
+		);
 	}
+
 }
