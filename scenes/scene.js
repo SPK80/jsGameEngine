@@ -9,7 +9,7 @@ export class Scene extends BaseObject {
 	get name() { return this.#name };
 
 	#objects = null;
-	#objectInputDrivers = new ObjectInputDrivers();
+	#objectControllers = [];
 
 	constructor(params, objects) {
 		super(params);
@@ -23,63 +23,22 @@ export class Scene extends BaseObject {
 	setInput(objectName, input) {
 		const obj = this.#objects.get(objectName);
 		if (obj)
-			this.#objectInputDrivers.add(obj, input);
+			this.#objectControllers.push({ object: obj, input: input });
 	}
 
 	update(drivers) {
-		this.#objectInputDrivers.do();
 		const render = drivers.render;
 		render.clear();
 
 		const objects = this.#objects.get();
 
 		objects.forEach(obj => {
-			// console.log(obj);
-
-			obj.update(drivers);
-		});
-	}
-}
-
-class ObjectInputDrivers {
-
-	#ObjectInputDriver = class {
-		#object = null;
-		#input = null;
-		#idleCommand;
-
-		constructor(object, input, idleCommand = 'idle') {
-			throwIfNotInstance(object, BaseObject);
-			this.#object = object;
-			throwIfNotInstance(input, Input);
-			this.#input = input;
-			this.#idleCommand = idleCommand;
-		}
-
-		do() {
-			const commands = this.#input.get();
-
-			if (commands == undefined || commands.length < 1)
-				this.#object[this.#idleCommand]();
-			else
-				commands.forEach(comm => {
-					this.#object[comm]();
-				});
-		}
-	}
-
-	#items = [];
-
-	add(obj, input) {
-		// console.log(obj, input);
-
-		const driver = new this.#ObjectInputDriver(obj, input);
-		this.#items.push(driver);
-	}
-
-	do() {
-		this.#items.forEach(driver => {
-			driver.do();
+			let _drivers = {};
+			const controller = this.#objectControllers.find((con) => con.object == obj);
+			if (controller) {
+				_drivers.input = controller.input;
+			}
+			obj.update(Object.assign(_drivers, drivers));
 		});
 	}
 }

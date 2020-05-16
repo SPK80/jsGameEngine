@@ -31,7 +31,7 @@ export class Personage extends GameObject {
 
 		this.#image = throwIfNotInstance(image, Image);
 
-		this.idle();
+		this._input('idle');
 	}
 
 	#debugText = '';
@@ -62,26 +62,6 @@ export class Personage extends GameObject {
 
 		this.x += this.#direction.x;
 		this.y += this.#direction.y;
-	}
-
-	moveRight() {
-		this._input('moveRight');
-	}
-
-	moveLeft() {
-		this._input('moveLeft');
-	}
-
-	moveDown() {
-		this._input('moveDown');
-	}
-
-	moveUp() {
-		this._input('moveUp');
-	}
-
-	idle() {
-		this._input('idle');
 	}
 
 	_startAnimation() {
@@ -118,6 +98,16 @@ export class Personage extends GameObject {
 	}
 
 	update(drivers) {
+		if (drivers.input) {
+			const commands = drivers.input.get();
+			if (commands && commands.length > 0)
+				commands.forEach(com => {
+					this._input(com);
+				});
+			else this._input('idle');
+		}
+
+
 		this._startAnimation();
 		this._draw(drivers.render);
 		this._move();
