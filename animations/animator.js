@@ -15,14 +15,11 @@ export class Animator {
 
 		const anim = this.#animations[name];
 		if (!forsed && this.#curAnimation == anim) return;
-		// console.log(`start ${name}`);
 
 		if (this.#animTimer) {
-			// console.log(`clearTimeout ${this.#animTimer}`);
 			clearTimeout(this.#animTimer);
 		}
 
-		// console.log('start', anim);
 		this.#curAnimation = anim;
 
 		const loop = () => {

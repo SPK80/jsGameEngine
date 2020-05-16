@@ -1,11 +1,11 @@
 import { GameObject } from "./gameObject.js";
 import { Animator } from "../animations/animator.js";
 import { Vector2 } from "../geometry/vectors.js";
+import { throwIfNotInstance } from "../tools/classUtils.js";
 
 export class Personage extends GameObject {
 
-	#image = new Image();
-	#imageLoaded = false;
+	#image;
 
 	#moveSpeed = 1;
 	// #states = {
@@ -29,17 +29,8 @@ export class Personage extends GameObject {
 
 		this.#animator = new Animator(animations);
 
-		if (image == undefined) {
-			const _this = this;
-			this.#image.addEventListener("load", function () {
-				_this.#imageLoaded = true;
-			}, false);
-			this.#image.src = 'tiles.png';
-		}
-		else {
-			this.#image = image;
-			this.#imageLoaded = true;
-		}
+		this.#image = throwIfNotInstance(image, Image);
+
 		this.idle();
 	}
 
@@ -127,9 +118,6 @@ export class Personage extends GameObject {
 	}
 
 	update(drivers) {
-
-		if (!this.#imageLoaded) return;
-
 		this._startAnimation();
 		this._draw(drivers.render);
 		this._move();
