@@ -3,6 +3,7 @@ import { Animation } from "../animations/animation.js";
 import { Frame } from "../animations/frame.js";
 import { CircleCounter, RndCounter } from "../tools/counters.js";
 import { inject } from "../tools/classUtils.js";
+import { RndWolk } from "../inputs/rndWolk.js";
 
 export class WhiteWolker extends Personage {
 	#rndWolk;
@@ -40,9 +41,9 @@ export class WhiteWolker extends Personage {
 			], idleOrder, true),
 		});
 	}
-	update(drivers) {
-		const input = ... #TODO
+	#input = new RndWolk();
 
-		super.update(inject(drivers, 'input', input));
+	update(drivers) {
+		super.update(inject(drivers, 'input', this.#input));
 	}
 }
