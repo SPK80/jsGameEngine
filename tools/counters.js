@@ -1,4 +1,4 @@
-export class CircleCounter {
+export class CircleCounter extends Counter {
 	#value = 0;
 	#start = 0;
 	#max = 10;
@@ -20,7 +20,7 @@ export class CircleCounter {
 	}
 }
 
-export class RolCounter {
+export class RolCounter extends Counter {
 	#value = 0;
 	#start = 0;
 	#max = 10;
@@ -40,16 +40,6 @@ export class RolCounter {
 	}
 }
 
-class Counter {
-	value = 0;
-	start = 0;
-	max = 10;
-	increment = 1;
-
-	constructor(start, max, increment) {
-		this.start = start;
-		this.max = max;
-		this.increment = increment;
-	}
-	getNext() { throw ('calcNext not implemented') }
+export class Counter {
+	getNext() { throw ('getNext must be implemented') }
 }

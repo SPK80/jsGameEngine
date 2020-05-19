@@ -1,34 +1,36 @@
-import { throwIfUndefined } from "../tools/classUtils.js";
+import { throwIfUndefined, throwIfNotInstance } from "../tools/classUtils.js";
+import { Counter } from "../tools/counters.js";
 
 export class Animation {
 	#frames;
 	#order;
-	#cicled = false;
+	// #cicled = false;
 	#finished = false;
-	constructor(frames, order, cicled = false) {
+	constructor(frames, order) {
 		this.#frames = throwIfUndefined(frames, 'frames');
-		this.#order = throwIfUndefined(order, 'order');
-		this.#cicled = cicled;
+		this.#order = throwIfNotInstance(order, Counter);
+		// this.#cicled = cicled;
 	}
 
-	#oredPos = 0;
+	#oredPos = -1;
 
 	get reset() {
-		this.#oredPos = 0;
+		this.#oredPos = -1;
 		this.#finished = false;
 	}
 
 	get next() {
 		if (this.#finished) return;
-		if (this.#oredPos >= this.#order.length) {
-			this.#oredPos = 0;
-			if (!this.#cicled) {
-				this.#finished = true;
-				return;
-			}
-		}
+		this.#oredPos = this.#order.getNext();
+		// if (this.#oredPos >= this.#order.length) {
+		// 	this.#oredPos = 0;
+		// 	if (!this.#cicled) {
+		// 		this.#finished = true;
+		// 		return;
+		// 	}
+		// }
 		const frame = this.#frames[this.#order[this.#oredPos]];
-		this.#oredPos++;
+		// this.#oredPos++;
 		return frame;
 
 	}
