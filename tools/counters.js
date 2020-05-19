@@ -1,3 +1,9 @@
+import { throwIfUndefined } from "./classUtils.js";
+
+export class Counter {
+	getNext() { throw ('getNext must be implemented') }
+}
+
 export class CircleCounter extends Counter {
 	#value = 0;
 	#start = 0;
@@ -5,12 +11,13 @@ export class CircleCounter extends Counter {
 	#increment = 1;
 
 	constructor(start, max, increment) {
+		super();
 		this.#start = start;
 		this.#max = max;
 		this.#increment = increment;
 	}
 
-	get next() {
+	getNext() {
 		this.#value += this.#increment;
 		if (this.#increment > 0)
 			if (this.#value > this.#max) this.#value = this.#start;
@@ -27,12 +34,13 @@ export class RolCounter extends Counter {
 	#increment = 1;
 
 	constructor(start, max, increment) {
+		super();
 		this.#start = start;
 		this.#max = max;
 		this.#increment = increment;
 	}
 
-	get next() {
+	getNext() {
 		this.#value += this.#increment;
 		if (this.#value > this.#max || this.#value < this.#start) this.#increment = -this.#increment;
 
@@ -40,6 +48,15 @@ export class RolCounter extends Counter {
 	}
 }
 
-export class Counter {
-	getNext() { throw ('getNext must be implemented') }
+export class RndCounter extends Counter {
+	#min;
+	#max;
+	constructor(min, max) {
+		super();
+		this.#min = throwIfUndefined(min, 'min');
+		this.#max = throwIfUndefined(max, 'max');
+	}
+	getNext() {
+		Math.random()+this.#min;
+	}
 }

@@ -12,16 +12,18 @@ export class Animation {
 		// this.#cicled = cicled;
 	}
 
-	#oredPos = -1;
+	#position = -1;
 
 	get reset() {
-		this.#oredPos = -1;
+		this.#position = -1;
 		this.#finished = false;
 	}
 
 	get next() {
 		if (this.#finished) return;
-		this.#oredPos = this.#order.getNext();
+		// console.log(this.#order);
+
+		this.#position = this.#order.getNext();
 		// if (this.#oredPos >= this.#order.length) {
 		// 	this.#oredPos = 0;
 		// 	if (!this.#cicled) {
@@ -29,9 +31,9 @@ export class Animation {
 		// 		return;
 		// 	}
 		// }
-		const frame = this.#frames[this.#order[this.#oredPos]];
+		// const frame = this.#frames[this.#order[this.#oredPos]];
 		// this.#oredPos++;
-		return frame;
+		return this.#frames[this.#position];
 
 	}
 }

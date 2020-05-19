@@ -1,6 +1,6 @@
 export function throwIfNotInstance(object, _class) {
 	if (!(object instanceof _class))
-		throw (`${object} must extend class ${_class}`);
+		throw (`${object} must extend ${_class}`);
 	return object;
 }
 
