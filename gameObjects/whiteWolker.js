@@ -1,13 +1,13 @@
 import { Personage } from "./personage.js";
 import { Animation } from "../animations/animation.js";
 import { Frame } from "../animations/frame.js";
-import { CircleCounter } from "../tools/counters.js";
+import { CircleCounter, RndCounter } from "../tools/counters.js";
 
 export class WhiteWolker extends Personage {
 
 	constructor(name, x, y, image) {
 		const moveOrder = new CircleCounter(0, 2, 1);//[0, 1, 2];
-		const idleOrder = new CircleCounter(0, 3, 1);//[0, 1, 2, 3];
+		const idleOrder = new RndCounter(0, 3);//[0, 1, 2, 3];
 		const moveDelay = 100;
 		const idleDelay = 1000;
 		super(name, x, y, image, {

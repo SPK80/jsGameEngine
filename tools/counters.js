@@ -57,6 +57,8 @@ export class RndCounter extends Counter {
 		this.#max = throwIfUndefined(max, 'max');
 	}
 	getNext() {
-		Math.random()+this.#min;
+		const rand = Math.round(this.#min - 0.5 + Math.random() * (this.#max - this.#min + 1));
+		console.log(rand);
+		return rand;
 	}
 }
