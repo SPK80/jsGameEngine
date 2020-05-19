@@ -2,9 +2,10 @@ import { Personage } from "./personage.js";
 import { Animation } from "../animations/animation.js";
 import { Frame } from "../animations/frame.js";
 import { CircleCounter, RndCounter } from "../tools/counters.js";
+import { inject } from "../tools/classUtils.js";
 
 export class WhiteWolker extends Personage {
-
+	#rndWolk;
 	constructor(name, x, y, image) {
 		const moveOrder = new CircleCounter(0, 2, 1);//[0, 1, 2];
 		const idleOrder = new RndCounter(0, 3);//[0, 1, 2, 3];
@@ -37,7 +38,11 @@ export class WhiteWolker extends Personage {
 				new Frame(6 * 32, 10 * 32, 32, 32, idleDelay),
 				new Frame(6 * 32, 11 * 32, 32, 32, idleDelay)
 			], idleOrder, true),
-		}
-		);
+		});
+	}
+	update(drivers) {
+		const input = ... #TODO
+
+		super.update(inject(drivers, 'input', input));
 	}
 }

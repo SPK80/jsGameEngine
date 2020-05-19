@@ -1,7 +1,7 @@
 import { Input } from "../inputs/input.js";
 import { BaseObject } from "../gameObjects/gameObject.js";
 import { GameObjects } from "../gameObjects/gameObjects.js";
-import { throwIfNotInstance } from "../tools/classUtils.js";
+import { throwIfNotInstance, inject } from "../tools/classUtils.js";
 
 export class Scene extends BaseObject {
 	// #settings = null;
@@ -33,7 +33,7 @@ export class Scene extends BaseObject {
 
 	update(drivers) {
 		function _us(t) {
-			return Math.trunc(t*1000)
+			return Math.trunc(t * 1000)
 		}
 		let t = 0;
 
@@ -58,14 +58,10 @@ export class Scene extends BaseObject {
 		objects.sort((a, b) => a.y - b.y);
 		calcPerf();
 		objects.forEach(obj => {
-			let _drivers = {};
 			const controller = this.#objectControllers.find((con) => con.object == obj);
-			if (controller) {
-				_drivers.input = controller.input;
-			}
-			obj.update(Object.assign(_drivers, drivers));
+			if (controller) obj.update(inject(drivers, 'input', controller.input));
+			else obj.update(drivers);
 		});
-
 
 		render.text({
 			text: this.#debug,
