@@ -25,17 +25,17 @@ export class Scene extends BaseObject {
 		this.#objects.add(gameObject);
 	}
 
-	#viewPort = new ViewPort();
+	// #viewPort = new ViewPort();
 
-	#character;
-	setCharacter(objectName, input) {
-		const obj = this.#objects.get(objectName);
-		if (obj) {
-			this.#character = obj;
-			setInput(objectName, input);
-			this.#viewPort.follow(this.#character);
-		}
-	}
+	// #character;
+	// setCharacter(objectName, input) {
+	// 	const obj = this.#objects.get(objectName);
+	// 	if (obj) {
+	// 		this.#character = obj;
+	// 		setInput(objectName, input);
+	// 		this.#viewPort.follow(this.#character);
+	// 	}
+	// }
 
 	setInput(objectName, input) {
 		throwIfNotInstance(input, Input);
@@ -87,7 +87,7 @@ export class Scene extends BaseObject {
 			color: 'red',
 		});
 
-		this.#viewPort.update(drivers);
+		// this.#viewPort.update(drivers);
 
 	}
 }

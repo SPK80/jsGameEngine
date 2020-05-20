@@ -42,7 +42,7 @@ export class PacScene extends Scene {
 		super({
 			name: name,
 			drivers: drivers,
-		}, [landscape, pers]
+		}, [landscape, pers, ...whiteWolkers]
 		);
 	}
 }
