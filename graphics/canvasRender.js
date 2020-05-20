@@ -133,6 +133,11 @@ export class CanvasRender extends Render {
 			tileY = tileY * tileHeight
 		}
 
+		const x = params.x;
+		const y = params.y;
+
+		params = this.#viewPort.move(params);
+
 		this.#ctx.drawImage(
 			params.image,
 			tileX,
@@ -178,6 +183,23 @@ export class CanvasRender extends Render {
 		});
 
 		this.#endDraw(params);
+	}
+
+	#viewPort = {
+		x: 0,
+		y: 0,
+		move: (params) => {
+			if (params.viewPort) {
+				params.x -= this.x;
+				params.y -= this.y;
+			}
+			return params;
+		}
+	}
+
+	viewPort(params) {
+		this.#viewPort.x = params.x;
+		this.#viewPort.y = params.y;
 	}
 
 }

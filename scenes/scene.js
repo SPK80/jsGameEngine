@@ -1,5 +1,5 @@
 import { Input } from "../inputs/input.js";
-import { BaseObject } from "../gameObjects/gameObject.js";
+import { BaseObject, GameObject } from "../gameObjects/gameObject.js";
 import { GameObjects } from "../gameObjects/gameObjects.js";
 import { throwIfNotInstance } from "../tools/classUtils.js";
 
@@ -11,6 +11,7 @@ export class Scene extends BaseObject {
 	#objects = null;
 	#objectControllers = [];
 	#debug = '';
+
 	#refreshDebug = false;
 
 	constructor(params, objects) {
@@ -22,6 +23,18 @@ export class Scene extends BaseObject {
 
 	addObject(gameObject) {
 		this.#objects.add(gameObject);
+	}
+
+	#viewPort = new ViewPort();
+
+	#character;
+	setCharacter(objectName, input) {
+		const obj = this.#objects.get(objectName);
+		if (obj) {
+			this.#character = obj;
+			setInput(objectName, input);
+			this.#viewPort.follow(this.#character);
+		}
 	}
 
 	setInput(objectName, input) {
@@ -73,5 +86,37 @@ export class Scene extends BaseObject {
 			y: 20,
 			color: 'red',
 		});
+
+		this.#viewPort.update(drivers);
+
+	}
+}
+
+class ViewPort extends GameObject {
+
+	constructor() {
+		super();
+	}
+
+	#wi = 400;
+	#he = 300;
+
+	#tracked;
+
+	follow(obj) {
+		obj = throwIfNotInstance(obj, GameObject);
+		this.#tracked = obj;
+	}
+
+	update(drivers) {
+		this.x = obj.x;
+		this.y = obj.y;
+		drivers.render.viewPort(
+			{
+				x: this.x,
+				y: this.y,
+				// wi: this.#wi,
+				// he: this.#he
+			});
 	}
 }
