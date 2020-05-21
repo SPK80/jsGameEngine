@@ -22,19 +22,22 @@ export class GameObjects {
 	add(item) {
 		if (item instanceof BaseObject) {
 			if (this.get(item.name)) return;
-
 			if (this.#sortByZ) {
-
 				const index = bublleFindIndex(item.z, this.#items.length,
 					(i) => this.#items[i].z);
-
 				this.#items.splice(index, 0, item);
-				// console.log(this.#items);
-
-			} else {
-				this.#items.push(item);
-			}
-
+			} else this.#items.push(item);
 		}
 	}
+
+	remove(item) {
+		if (item instanceof BaseObject) {
+			const i = this.#items.indexOf(item);
+			if (i >= 0) delete this.#items[i];
+		}
+		else if (typeof (item) == 'string') {
+			remove(this.get(item.name));
+		}
+	}
+
 }

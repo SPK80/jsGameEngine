@@ -107,7 +107,6 @@ export class Personage extends GameObject {
 			else this._input('idle');
 		}
 
-
 		this._startAnimation();
 		this._draw(drivers.render);
 		this._move();

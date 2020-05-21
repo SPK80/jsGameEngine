@@ -5,7 +5,7 @@ export function throwIfNotInstance(object, _class) {
 }
 
 export function throwIfUndefined(object, name = '') {
-	
+
 	if (object == undefined)
 		throw (`${name} undefined`);
 	return object;
@@ -14,4 +14,13 @@ export function throwIfUndefined(object, name = '') {
 export function defaultIfUndefined(object, def) {
 	if (object == undefined) return def;
 	return object;
+}
+
+export function isValidNumber(value) {
+	return (Number(value) != NaN);
+}
+
+export function isValidHex(value) {
+	if (value[0] != '#') return false;
+	return (parseInt(value.replace('#', ''), 16) != NaN)
 }

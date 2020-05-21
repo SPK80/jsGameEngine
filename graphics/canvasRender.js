@@ -107,20 +107,6 @@ export class CanvasRender extends Render {
 		else this.#ctx.strokeText(params.text, params.x, params.y);
 	}
 
-	// tile(params){
-	// 	this.#ctx.drawImage(
-	// 		params.image,
-	// 		params.tileX,
-	// 		params.tileY,
-	// 		params.tileWidth,
-	// 		params.tileHeight,
-	// 		params.x,
-	// 		params.y,
-	// 		params.width,
-	// 		params.height
-	// 	);
-	// }
-
 	tile(params) {
 		let tileX = (params.tileX) ? params.tileX : 0;
 		let tileY = (params.tileY) ? params.tileY : 0;

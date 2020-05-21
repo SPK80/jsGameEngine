@@ -2,13 +2,14 @@ import { Input } from "../inputs/input.js";
 import { BaseObject, GameObject } from "../gameObjects/gameObject.js";
 import { GameObjects } from "../gameObjects/gameObjects.js";
 import { throwIfNotInstance } from "../tools/classUtils.js";
+import { CompositeObject } from "../gameObjects/compositeObject.js";
 
-export class Scene extends BaseObject {
+export class Scene extends CompositeObject {
 	// #settings = null;
 	#name = '';
 	get name() { return this.#name };
 
-	#objects = null;
+	#objects;
 	#objectControllers = [];
 	#debug = '';
 
