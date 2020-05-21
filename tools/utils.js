@@ -24,3 +24,11 @@ export function isValidHex(value) {
 	if (value[0] != '#') return false;
 	return (parseInt(value.replace('#', ''), 16) != NaN)
 }
+
+///returns copy object with injected field
+///not change input object
+export function inject(object, name, value) {
+	let _fields = {};
+	_fields[name] = value;
+	return Object.assign(_fields, object);
+}
