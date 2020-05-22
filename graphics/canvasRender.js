@@ -119,11 +119,6 @@ export class CanvasRender extends Render {
 			tileY = tileY * tileHeight
 		}
 
-		const x = params.x;
-		const y = params.y;
-
-		params = this.#viewPort.move(params);
-
 		this.#ctx.drawImage(
 			params.image,
 			tileX,
