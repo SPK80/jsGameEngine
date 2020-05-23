@@ -1,6 +1,6 @@
-import { GameObject } from "./gameObject.js";
 import { bublleFindIndex } from "../tools/bublleFind.js";
 import { throwIfNotInstance } from "../tools/utils.js";
+import { EmptyObject } from "./emptyObject.js";
 
 export class GameObjects {
 	#items = [];
@@ -13,7 +13,7 @@ export class GameObjects {
 			this.#sortByY = sortBy.y ? true : false;
 		}
 		items.forEach(it => {
-			throwIfNotInstance(it, GameObject)
+			throwIfNotInstance(it, EmptyObject)
 			this.add(it);
 		});
 	}
@@ -30,18 +30,18 @@ export class GameObjects {
 	}
 
 	add(item) {
-		if (item instanceof GameObject) {
+		if (item instanceof EmptyObject) {
 			if (this.get(item.name)) return;
 			if (this.#sortByZ) {
-				const index = bublleFindIndex(item.z, this.#items.length,
-					(i) => this.#items[i].z);
+				const index = bublleFindIndex(item.pos.z, this.#items.length,
+					(i) => this.#items[i].pos.z);
 				this.#items.splice(index, 0, item);
 			} else this.#items.push(item);
 		}
 	}
 
 	remove(item) {
-		if (item instanceof GameObject) {
+		if (item instanceof EmptyObject) {
 			const i = this.#items.indexOf(item);
 			if (i >= 0) delete this.#items[i];
 		}
