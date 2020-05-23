@@ -14,9 +14,14 @@ export class EmptyObject {
 		if (params.name) this.#name = params.name;
 		if (params.pos) this.#pos = params.pos;
 		if (params.size) this.#size = params.size;
+		if (params.render) this.#render = params.render;
 	}
-
+	#render;
 	update(drivers) {
-		drivers.render.clear(this.#pos.x, this.#pos.y, this.#size.x, this.#size.y);
+		this.#render.clear(this.#pos.x, this.#pos.y, this.#size.x, this.#size.y);
 	}
+}
+
+class ControlledObject {
+
 }
