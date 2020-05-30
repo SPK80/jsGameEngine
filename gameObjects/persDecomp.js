@@ -36,54 +36,48 @@ class Commander {
 class AnimatedImage {
 
 	#animator;
-	#image;
-	#render;
-	#commander;
 	#speed = 1;
-	#object;
+	#state;
 
-	constructor(object, commander, render, image, animations, speed = 1) {
+	constructor(state, animations) {
 		this.#animator = new Animator(animations);
-		this.#image = throwIfNotInstance(image, Image);
-		this.#render = throwIfNotInstance(render, Render);
-		this.#commander = throwIfNotInstance(commander, Commander);
-		this.#object = throwIfNotInstance(object, SpaceObject);
-		this.#speed = speed;
-	}
-
-	_startAnimation() {
-
-		const lastAction = this.#commander.accepted.last();
-
-		if (lastAction == undefined) return;
-		// if (lastAction == 'idle')
-		// 	this.#animator.start('idle');
-		// else
-		this.#animator.start(lastAction, this.#speed);
-	}
-
-	_draw() {
-		const frame = this.#animator.curFrame;
-		if (frame) {
-			this.#render.tile({
-				image: this.#image,
-				absoluteTilePos: true,
-				x: this.#object.pos.x,
-				y: this.#object.pos.y,
-				width: this.#object.size.x,
-				height: this.#object.size.y,
-				tileX: frame.x,
-				tileY: frame.y,
-				tileWidth: frame.wi,
-				tileHeight: frame.he
-			});
-		}
+		this.#state = throwIfNotInstance(image, State);
 	}
 
 	update() {
-		this.#commander.update();
-		this._startAnimation();
-		this._draw();
+		const _draw = () => {
+			const frame = this.#animator.curFrame;
+			if (frame) {
+				this.#render.tile({
+					image: this.#image,
+					absoluteTilePos: true,
+					x: this.#object.pos.x,
+					y: this.#object.pos.y,
+					width: this.#object.size.x,
+					height: this.#object.size.y,
+					tileX: frame.x,
+					tileY: frame.y,
+					tileWidth: frame.wi,
+					tileHeight: frame.he
+				});
+			}
+		}
+
+		const _startAnimation = () => {
+
+			const lastAction = this.#commander.accepted.last();
+
+			if (lastAction == undefined) return;
+			// if (lastAction == 'idle')
+			// 	this.#animator.start('idle');
+			// else
+			this.#animator.start(lastAction, this.#speed);
+		}
+
+		this.#state.update();
+
+		// _startAnimation();
+		// _draw();
 	}
 }
 
@@ -101,12 +95,38 @@ class SpaceObject {
 	get size() { return this.#size };
 }
 
+class State {
+	#commander;
+
+	get state() {
+		const lastAction = this.#commander.accepted.last();
+		if (lastAction == undefined) return 'idle';
+		else return lastAction;
+	}
+
+	constructor(commander) {
+		this.#commander = throwIfNotInstance(commander, Commander);
+	}
+
+	update() {
+		this.#commander.update();
+	}
+}
+
 class Movable extends SpaceObject {
 
 	#speed = 1;
+	get speed() { return this.#speed };
 	#direction = new Vector2(0, 0);
 	get direction() { return this.#direction };
 
+	#commander;
+
+	constructor(x, y, wi, he, commander) {
+		super(x, y, wi, he);
+		this.#commander = throwIfNotInstance(commander, Commander);
+		this.#speed = speed;
+	}
 
 	update() {
 		const _move = () => {
@@ -121,7 +141,7 @@ class Movable extends SpaceObject {
 			if (Math.abs(this.#direction.x) < 1 && Math.abs(this.#direction.y) < 1) return;
 
 			this.#direction.normalize().mul(this.#speed);
-			this.#pos.add(this.#direction);
+			this.pos.add(this.#direction);
 		}
 
 		_move();
@@ -136,6 +156,9 @@ class Personage {
 	}
 
 }
-const pers = new AnimatedImage(new SpaceObject(100,100,32, 32),
 
-)
+const pers = new AnimatedImage(
+	new Movable(100, 100, 32, 32, new Commander(input)),
+	render,
+	image,
+	animations);
