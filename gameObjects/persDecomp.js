@@ -54,7 +54,7 @@ class View {
 	get frame() { throw ('frame must be implemented') }
 }
 
-class Animated extends View {
+class Animating extends View {
 
 	#animator;
 	// #speed = 1;
@@ -75,13 +75,13 @@ class Animated extends View {
 	}
 }
 
-class Drawed {
+class Drawing {
 	#view;
-	#spaceObject;
+	#body;
 
-	constructor(view, spaceObject) {
+	constructor(view, body) {
 		this.#view = throwIfNotInstance(view, View);
-		this.#spaceObject = throwIfNotInstance(spaceObject, SpaceObject);
+		this.#body = throwIfNotInstance(body, Body);
 	}
 
 	update() {
@@ -90,10 +90,10 @@ class Drawed {
 			this.#render.tile({
 				image: this.#image,
 				absoluteTilePos: true,
-				x: this.#spaceObject.pos.x,
-				y: this.#spaceObject.pos.y,
-				width: this.#spaceObject.size.x,
-				height: this.#spaceObject.size.y,
+				x: this.#body.pos.x,
+				y: this.#body.pos.y,
+				width: this.#body.size.x,
+				height: this.#body.size.y,
 				tileX: frame.x,
 				tileY: frame.y,
 				tileWidth: frame.wi,
@@ -103,7 +103,7 @@ class Drawed {
 	}
 }
 
-class SpaceObject {
+class Body {
 
 	constructor(x, y, wi, he) {
 		this.#pos = new Vector3(x, y, 0);
@@ -117,7 +117,7 @@ class SpaceObject {
 	get size() { return this.#size };
 }
 
-class Movable extends SpaceObject {
+class MovingBody extends Body {
 
 	#speed = 1;
 	get speed() { return this.#speed };
@@ -150,15 +150,6 @@ class Movable extends SpaceObject {
 
 		_move();
 	}
-}
-
-class Personage {
-	#spaceObject;
-
-	constructor(x, y) {
-		this.#spaceObject = new SpaceObject(x, y, 0, 0);
-	}
-
 }
 
 const pers = new Animated(
