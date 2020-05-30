@@ -33,10 +33,31 @@ class Commander {
 	}
 }
 
-class AnimatedImage {
+class State {
+	#commander;
+
+	get() {
+		const lastAction = this.#commander.accepted.last();
+		if (lastAction == undefined) return 'idle';
+		else return lastAction;
+	}
+
+	constructor(commander) {
+		this.#commander = throwIfNotInstance(commander, Commander);
+	}
+
+	update() {
+		this.#commander.update();
+	}
+}
+class View {
+	get frame() { throw ('frame must be implemented') }
+}
+
+class Animated extends View {
 
 	#animator;
-	#speed = 1;
+	// #speed = 1;
 	#state;
 
 	constructor(state, animations) {
@@ -44,40 +65,41 @@ class AnimatedImage {
 		this.#state = throwIfNotInstance(image, State);
 	}
 
+	get frame() {
+		return this.#animator.curFrame;
+	}
+
 	update() {
-		const _draw = () => {
-			const frame = this.#animator.curFrame;
-			if (frame) {
-				this.#render.tile({
-					image: this.#image,
-					absoluteTilePos: true,
-					x: this.#object.pos.x,
-					y: this.#object.pos.y,
-					width: this.#object.size.x,
-					height: this.#object.size.y,
-					tileX: frame.x,
-					tileY: frame.y,
-					tileWidth: frame.wi,
-					tileHeight: frame.he
-				});
-			}
-		}
-
-		const _startAnimation = () => {
-
-			const lastAction = this.#commander.accepted.last();
-
-			if (lastAction == undefined) return;
-			// if (lastAction == 'idle')
-			// 	this.#animator.start('idle');
-			// else
-			this.#animator.start(lastAction, this.#speed);
-		}
-
 		this.#state.update();
+		this.#animator.start(this.#state.get());
+	}
+}
 
-		// _startAnimation();
-		// _draw();
+class Drawed {
+	#view;
+	#spaceObject;
+
+	constructor(view, spaceObject) {
+		this.#view = throwIfNotInstance(view, View);
+		this.#spaceObject = throwIfNotInstance(spaceObject, SpaceObject);
+	}
+
+	update() {
+		const frame = this.#view.frame;
+		if (frame) {
+			this.#render.tile({
+				image: this.#image,
+				absoluteTilePos: true,
+				x: this.#spaceObject.pos.x,
+				y: this.#spaceObject.pos.y,
+				width: this.#spaceObject.size.x,
+				height: this.#spaceObject.size.y,
+				tileX: frame.x,
+				tileY: frame.y,
+				tileWidth: frame.wi,
+				tileHeight: frame.he
+			});
+		}
 	}
 }
 
@@ -93,24 +115,6 @@ class SpaceObject {
 
 	#size = new Vector3();
 	get size() { return this.#size };
-}
-
-class State {
-	#commander;
-
-	get state() {
-		const lastAction = this.#commander.accepted.last();
-		if (lastAction == undefined) return 'idle';
-		else return lastAction;
-	}
-
-	constructor(commander) {
-		this.#commander = throwIfNotInstance(commander, Commander);
-	}
-
-	update() {
-		this.#commander.update();
-	}
 }
 
 class Movable extends SpaceObject {
@@ -157,7 +161,7 @@ class Personage {
 
 }
 
-const pers = new AnimatedImage(
+const pers = new Animated(
 	new Movable(100, 100, 32, 32, new Commander(input)),
 	render,
 	image,
