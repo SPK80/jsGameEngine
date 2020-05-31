@@ -50,6 +50,7 @@ class State {
 		this.#commander.update();
 	}
 }
+
 class View {
 	get frame() { throw ('frame must be implemented') }
 }
@@ -78,10 +79,14 @@ class Animating extends View {
 class Drawing {
 	#view;
 	#body;
+	#render;
+	#image;
 
-	constructor(view, body) {
+	constructor(body, view, render, image) {
 		this.#view = throwIfNotInstance(view, View);
 		this.#body = throwIfNotInstance(body, Body);
+		this.#render = throwIfNotInstance(render, Render);
+		this.#image = throwIfNotInstance(image, Image);
 	}
 
 	update() {
@@ -147,13 +152,15 @@ class MovingBody extends Body {
 			this.#direction.normalize().mul(this.#speed);
 			this.pos.add(this.#direction);
 		}
-
+		this.#commander.update();
 		_move();
 	}
 }
 
-const pers = new Animated(
-	new Movable(100, 100, 32, 32, new Commander(input)),
+const comm = new Commander(input);
+const pers = new Drawing(
+	new MovingBody(100, 150, 100, 100, comm),
+	new Animating(new State(comm), animations),
 	render,
-	image,
-	animations);
+	image
+);
