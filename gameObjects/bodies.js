@@ -103,7 +103,6 @@ export class Composite extends BodyDecorator {
 	#sortByZ = true;
 	#sortByY = true;
 
-
 	constructor(items, sortBy, object) {
 		super(object);
 
@@ -116,7 +115,6 @@ export class Composite extends BodyDecorator {
 			this.add(it);
 		});
 	}
-
 
 	get(name) {
 		if (name == undefined) {
