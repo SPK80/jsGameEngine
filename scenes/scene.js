@@ -1,7 +1,7 @@
 import { Input } from "../inputs/input.js";
 import { throwIfNotInstance } from "../tools/utils.js";
 
-export class Scene extends CompositeObject {
+export class Scene {//extends CompositeObject {
 
 	#controllers = [];
 	#debug = '';
@@ -18,7 +18,7 @@ export class Scene extends CompositeObject {
 	}
 
 	update(drivers) {
-		super.update(drivers);
+		// super.update(drivers);
 
 		const objects = this.#objects.get();
 

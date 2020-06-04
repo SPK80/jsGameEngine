@@ -1,4 +1,4 @@
-import { throwIfUndefined } from "../tools/classUtils.js";
+import { throwIfUndefined } from "../tools/utils.js";
 
 export class Frame {
 	#x = 0;

@@ -1,6 +1,6 @@
-import { throwIfNotInstance, throwIfNotNumber } from "../tools/utils"
+import { throwIfNotInstance, throwIfNotNumber, throwIfNotHex } from "../tools/utils.js"
 
-class AbstractRender {
+export class AbstractRender {
 	#children = [];
 	newChild(x, y, wi, he) {
 		this.#children.push(new LocalRender(x, y, wi, he, this));
@@ -84,7 +84,7 @@ export class CanvasRender extends AbstractRender {
 		this.#width = throwIfNotNumber(wi);
 		this.#height = throwIfNotNumber(he);
 		this.#scale = throwIfNotNumber(scale);
-		this.#bkColor = throwIfNotHex(bkColor);
+		this.#bkColor = bkColor;
 
 		var cnv = null;
 		var cnvs = document.getElementsByTagName('canvas');
@@ -106,11 +106,13 @@ export class CanvasRender extends AbstractRender {
 
 	///Implement AbstractRender
 	clear(x, y, wi, he) {
-		this.#ctx.clear(x, y, wi, he);
+		this.#ctx.clearRect(x, y, wi, he);
 	}
 
 	clear() {
-		this.#ctx.clear(0, 0, this.#width, this.#height);
+		// console.log(this.#ctx);
+
+		this.#ctx.clearRect(0, 0, this.#width, this.#height);
 	}
 
 	rect(x, y, wi, he, color, fill) {
@@ -130,7 +132,7 @@ export class CanvasRender extends AbstractRender {
 		} else {
 			this.#ctx.strokeStyle = color;
 		}
-		this.#ctx.arc(x, y + this.#y, radius, color, 0, Math.PI * 2);
+		this.#ctx.arc(x, y, radius, color, 0, Math.PI * 2);
 		if (params.fill) this.#ctx.fill();
 		else this.#ctx.stroke();
 	}

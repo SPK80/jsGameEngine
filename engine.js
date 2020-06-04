@@ -1,6 +1,7 @@
-import { CanvasRender } from "./graphics/canvasRender.js";
-import { KeyMap } from "./inputs/keyMap.js";
-import { KeyboardInput } from "./inputs/keyboardInput.js";
+// import { CanvasRender } from "./graphics/canvasRender.js";
+// import { KeyMap } from "./inputs/keyMap.js";
+// import { KeyboardInput } from "./inputs/keyboardInput.js";
+import { Updatable } from "./gameObjects/common.js";
 
 export class Engine {
 	// #settings = null;
@@ -8,36 +9,31 @@ export class Engine {
 	#render = null;
 
 	constructor(settings) {
-		// this.#settings = settings.engine;
-		this.#render = new CanvasRender(
-			settings.render.width,
-			settings.render.height,
-			settings.render.backgroundColor,
-			settings.render.scale
-		);
+		// // this.#settings = settings.engine;
+		// this.#render = new CanvasRender(
+		// 	settings.render.width,
+		// 	settings.render.height,
+		// 	settings.render.backgroundColor,
+		// 	settings.render.scale
+		// );
 	}
 
 	// #keyBoardInput = new KeyboardInput(new KeyMap([
-	// 	{ action: 'moveForward', keys: [KeyMap.KEYS.UP] },
-	// 	{ action: 'moveBack', keys: [KeyMap.KEYS.DOWN] },
-	// 	{ action: 'turnRight', keys: [KeyMap.KEYS.RIGHT] },
-	// 	{ action: 'turnLeft', keys: [KeyMap.KEYS.LEFT] },
+	// 	{ action: 'moveUp', keys: [KeyMap.KEYS.UP] },
+	// 	{ action: 'moveDown', keys: [KeyMap.KEYS.DOWN] },
+	// 	{ action: 'moveRight', keys: [KeyMap.KEYS.RIGHT] },
+	// 	{ action: 'moveLeft', keys: [KeyMap.KEYS.LEFT] },
 	// ]));
 
-	#keyBoardInput = new KeyboardInput(new KeyMap([
-		{ action: 'moveUp', keys: [KeyMap.KEYS.UP] },
-		{ action: 'moveDown', keys: [KeyMap.KEYS.DOWN] },
-		{ action: 'moveRight', keys: [KeyMap.KEYS.RIGHT] },
-		{ action: 'moveLeft', keys: [KeyMap.KEYS.LEFT] },
-	]));
-
-	start(activeScene) {
-		activeScene.setInput('Pers', this.#keyBoardInput);
+	start(scene) {
+		if (!(scene instanceof Updatable)) return;
+		// activeScene.setInput('Pers', this.#keyBoardInput);
 		this.#pause = false;
 		const _this = this;
 		requestAnimationFrame(function render() {
 			if (!_this.#pause) {
-				activeScene.update({ render: _this.#render });
+				// activeScene.update({ render: _this.#render });
+				scene.update();
 			}
 			requestAnimationFrame(render);
 		});

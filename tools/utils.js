@@ -45,6 +45,7 @@ export function inject(object, name, value) {
 	return Object.assign(_fields, object);
 }
 
+
 export function clone(object) {
 	return Object.assign({}, object);
 }

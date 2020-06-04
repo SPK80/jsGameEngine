@@ -5,9 +5,7 @@ export class Vector2 {
 	#y = 0;
 	get y() { return this.#y };
 
-	constructor() { }
-
-	constructor(x, y) {
+	constructor(x = 0, y = 0) {
 		this.#x = x;
 		this.#y = y;
 	}
@@ -39,9 +37,7 @@ export class Vector3 extends Vector2 {
 	#z = 0;
 	get z() { return this.#z };
 
-	constructor() { }
-
-	constructor(x, y, z) {
+	constructor(x = 0, y = 0, z = 0) {
 		super(x, y);
 		this.#z = z;
 	}

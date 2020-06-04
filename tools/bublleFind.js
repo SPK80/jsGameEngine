@@ -1,4 +1,6 @@
-import { throwIfUndefined } from "./classUtils.js";
+// import { throwIfUndefined } from "./classUtils.js";
+
+import { throwIfUndefined } from "./utils.js";
 
 /// callback  - function(index) returns value by index for comparison  
 export function bublleFindIndex(findVal, length, callback) {
