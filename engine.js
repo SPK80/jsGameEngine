@@ -1,7 +1,7 @@
 // import { CanvasRender } from "./graphics/canvasRender.js";
 // import { KeyMap } from "./inputs/keyMap.js";
 // import { KeyboardInput } from "./inputs/keyboardInput.js";
-import { Updatable } from "./gameObjects/common.js";
+import { IUpdating } from "./gameObjects/common.js";
 
 export class Engine {
 	// #settings = null;
@@ -26,7 +26,7 @@ export class Engine {
 	// ]));
 
 	start(scene) {
-		if (!(scene instanceof Updatable)) return;
+		if (!(scene instanceof IUpdating)) return;
 		// activeScene.setInput('Pers', this.#keyBoardInput);
 		this.#pause = false;
 		const _this = this;

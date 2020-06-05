@@ -1,13 +1,7 @@
 import { throwIfNotInstance } from "../tools/utils.js";
-import { AbstractRender } from "../graphics/renders.js";
+import { AbstractRender } from "../graphics/abstractRender.js";
 import { Animator } from "../animations/animator.js";
-import { IBody } from "./bodies.js";
-import { Updatable } from "./common.js";
-
-export class IDrawing extends Updatable {
-	get render() { throw ('render must be implemented') };
-	get body() { throw ('body must be implemented') };
-}
+import { IDrawing, IBody } from "./common.js";
 
 export class EmptyDrawing extends IDrawing {
 
@@ -23,7 +17,7 @@ export class EmptyDrawing extends IDrawing {
 	}
 
 	update() {
-		console.log('EmptyDrawing', this);
+		// console.log('EmptyDrawing', this);
 	}
 }
 
@@ -60,7 +54,6 @@ export class ClearDrawing extends DrawingDecorator {
 }
 
 export class ImageDrawing extends DrawingDecorator {
-
 	#image;
 
 	constructor(image, object) {
@@ -70,7 +63,7 @@ export class ImageDrawing extends DrawingDecorator {
 
 	update() {
 		super.update();
-		console.log('ImageDrawing', this);
+		// console.log('ImageDrawing', this);
 		this.render.sprite(
 			this.body.pos.x,
 			this.body.pos.y,

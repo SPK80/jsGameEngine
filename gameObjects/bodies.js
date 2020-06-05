@@ -1,9 +1,7 @@
 import { throwIfNotInstance } from "../tools/utils.js";
 import { Vector2, Vector3 } from "../geometry/vectors.js";
 import { Input } from "../inputs/input.js";
-// import { GameObjects } from "./gameObjects.js";
-import { Updatable } from "./common.js";
-import { bublleFindIndex } from "../tools/bublleFind.js";
+import { IDrawing, IBody } from "./common.js";
 
 export class State extends Input {
 	#state = 'idle';
@@ -15,12 +13,6 @@ export class State extends Input {
 	set(state) {
 		this.#state = state;
 	}
-}
-
-export class IBody extends Updatable {
-	get pos() { throw ('pos() must be implemented') };
-	get size() { throw ('size() must be implemented') };
-	get state() { throw ('state() must be implemented') };
 }
 
 export class Body extends IBody {
@@ -42,7 +34,7 @@ export class Body extends IBody {
 	}
 
 	update() {
-		console.log('Body', this);
+		// console.log('Body', this);
 	}
 }
 

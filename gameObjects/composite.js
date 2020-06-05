@@ -1,14 +1,12 @@
-import { GameObjects } from "./gameObjects.js";
-import { clone } from "../tools/utils.js";
-import { LocalRender } from "../graphics/renders.js";
-import { EmptyObject } from "./emptyObject.js";
+import { IUpdating } from "./common.js";
+import { DrawingDecorator } from "./drawings.js";
+import { bublleFindIndex } from "../tools/bublleFind.js";
+import { throwIfNotInstance } from "../tools/utils.js";
 
-
-export class Composite extends BodyDecorator {
+export class Composite extends DrawingDecorator {
 	#items = [];
 	#sortByZ = true;
 	#sortByY = true;
-
 
 	constructor(items, sortBy, object) {
 		super(object);
@@ -18,7 +16,7 @@ export class Composite extends BodyDecorator {
 			this.#sortByY = sortBy.y ? true : false;
 		}
 		items.forEach(it => {
-			throwIfNotInstance(it, Updatable)
+			throwIfNotInstance(it, IUpdating)
 			this.add(it);
 		});
 	}
@@ -36,7 +34,7 @@ export class Composite extends BodyDecorator {
 	}
 
 	add(item) {
-		if (item instanceof Updatable) {
+		if (item instanceof IUpdating) {
 			if (this.get(item.name)) return;
 			if (this.#sortByZ) {
 				const index = bublleFindIndex(item.pos.z, this.#items.length,
@@ -47,7 +45,7 @@ export class Composite extends BodyDecorator {
 	}
 
 	remove(item) {
-		if (item instanceof Updatable) {
+		if (item instanceof IUpdating) {
 			const i = this.#items.indexOf(item);
 			if (i >= 0) delete this.#items[i];
 		}
@@ -57,7 +55,7 @@ export class Composite extends BodyDecorator {
 	}
 
 	update() {
-		console.log('Composite', this);
+		// console.log('Composite', this);
 		super.update();
 
 		this.get().forEach(item => {

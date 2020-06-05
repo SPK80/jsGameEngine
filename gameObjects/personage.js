@@ -1,13 +1,8 @@
-// import { GameObject } from "./gameObject.js";
-// import { Animator } from "../animations/animator.js";
-// import { Vector2 } from "../geometry/vectors.js";
-// import { throwIfNotInstance } from "../tools/classUtils.js";
 import { Body, Moving, State } from "./bodies.js";
 import { AnimDrawing, EmptyDrawing } from "./drawings.js";
-import { Updatable } from "./common.js";
-// import { Input } from "../inputs/input.js";
+import { IUpdating } from "./common.js";
 
-export class Personage extends Updatable {
+export class Personage extends IUpdating {
 	#name = 'noName';
 	get name() { return this.#name }
 	#assembly;
@@ -27,5 +22,4 @@ export class Personage extends Updatable {
 	update() {
 		this.#assembly.update();
 	}
-
 }

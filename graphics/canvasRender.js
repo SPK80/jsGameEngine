@@ -1,32 +1,29 @@
-import { Render } from "./render.js";
+import { throwIfNotNumber, throwIfNotHex } from "../tools/utils.js"
+import { AbstractRender } from "./abstractRender.js";
 
-export class CanvasRender extends Render {
-
+export class CanvasRender extends AbstractRender {
 	#width = 200;
 	#height = 200;
 	#scale = 1;
-	#backgroundColor = 0;
+	#bkColor = 0;
 	#ctx = null;
-	get context() { return this.#ctx }
 
-	updateContext(params) {
+	constructor(wi, he, bkColor, scale = 1) {
+		super();
+		this.updateContext(wi, he, bkColor, scale);
+	}
 
-		function isValidNumber(value) {
-			return (Number(value) != NaN);
-		}
-
-		function isValidHex(value) {
-			if (value[0] != '#') return false;
-			return (parseInt(value.replace('#', ''), 16) != NaN)
-		}
-
-		var haveParam = false;
-
-		if (isValidNumber(params.width)) { this.#width = params.width; haveParam = true; }
-		if (isValidNumber(params.height)) { this.#height = params.height; haveParam = true; }
-		if (isValidNumber(params.scale)) { this.#scale = params.scale; haveParam = true; }
-		if (isValidHex(params.backgroundColor)) { this.#backgroundColor = params.backgroundColor; haveParam = true; }
-		if (!haveParam) return; //no one param!
+	updateContext(wi, he, bkColor, scale) {
+		// let haveParam = false;
+		// if (isValidNumber(wi)) { this.#width = wi; haveParam = true; }
+		// if (isValidNumber(he)) { this.#height = he; haveParam = true; }
+		// if (isValidNumber(scale)) { this.#scale = scale; haveParam = true; }
+		// if (isValidHex(bkColor)) { this.#bkColor = bkColor; haveParam = true; }
+		// if (!haveParam) return; //no one param!
+		this.#width = throwIfNotNumber(wi);
+		this.#height = throwIfNotNumber(he);
+		this.#scale = throwIfNotNumber(scale);
+		this.#bkColor = bkColor;
 
 		var cnv = null;
 		var cnvs = document.getElementsByTagName('canvas');
@@ -40,147 +37,67 @@ export class CanvasRender extends Render {
 		cnv.style.top = 0;
 		cnv.style.width = this.#width * this.#scale + 'px';
 		cnv.style.height = this.#height * this.#scale + 'px';
-		cnv.style.backgroundColor = this.#backgroundColor;
+		cnv.style.backgroundColor = this.#bkColor;
 		document.body.appendChild(cnv);
 
 		this.#ctx = cnv.getContext('2d');
 	}
 
-	constructor(_width, _height, _backgroundColor, _scale = 1.0) {
-		super();
-		this.updateContext({
-			width: _width,
-			height: _height,
-			backgroundColor: _backgroundColor,
-			scale: _scale
-		});
+	///Implement AbstractRender
+	clear(x, y, wi, he) {
+		this.#ctx.clearRect(x, y, wi, he);
 	}
 
 	clear() {
+		// console.log(this.#ctx);
+
 		this.#ctx.clearRect(0, 0, this.#width, this.#height);
 	}
 
-	#stile = function (params) {
-
-		if (params.fill) {
-			this.#ctx.fillStyle = params.color;
+	rect(x, y, wi, he, color, fill) {
+		if (fill) {
+			this.#ctx.fillStyle = color;
+			this.#ctx.fillRect(x, y, wi, he, color);
+		} else {
+			this.#ctx.strokeStyle = color;
+			this.#ctx.rect(x, y, wi, he, color);
 		}
-		else {
-			this.#ctx.strokeStyle = params.color;
-			this.#ctx.lineWidth = params.lineWidth;
-		}
-		this.#ctx.beginPath();
 	}
 
-	#endDraw = function (params) {
+	circle(x, y, radius, color, fill) {
+		this.#ctx.beginPath();
+		if (fill) {
+			this.#ctx.fillStyle = color;
+		} else {
+			this.#ctx.strokeStyle = color;
+		}
+		this.#ctx.arc(x, y, radius, color, 0, Math.PI * 2);
 		if (params.fill) this.#ctx.fill();
 		else this.#ctx.stroke();
 	}
 
-	rect(params) {
-		this.#stile(params);
-		this.#ctx.rect(params.x, params.y, params.width, params.height);
-		this.#endDraw(params);
-	}
-
-	fillRect(params) {
-		this.#ctx.fillStyle = params.color;
-		this.#ctx.fillRect(params.x, params.y, params.width, params.height);
-	}
-
-	circle(params) {
-		const startAngle = 0;
-		if (params.startAngle != undefined) startAngle = params.startAngle;
-		const endAngle = Math.PI * 2;
-		if (params.endAngle != undefined) endAngle = params.endAngle;
-
-		this.#stile(params);
-		this.#ctx.arc(params.x, params.y, params.radius, startAngle, endAngle);
-		this.#endDraw(params);
-	}
-
-	text(params) {
-		this.#stile(params);
-		if (params.font != undefined)
-			this.#ctx.font = params.font; //'50px serif';
-		if (params.fill) this.#ctx.fillText(params.text, params.x, params.y);
-		else this.#ctx.strokeText(params.text, params.x, params.y);
-	}
-
-	tile(params) {
-		let tileX = (params.tileX) ? params.tileX : 0;
-		let tileY = (params.tileY) ? params.tileY : 0;
-
-		const tileWidth = (params.tileWidth) ? params.tileWidth : params.width;
-		const tileHeight = (params.tileHeight) ? params.tileHeight : params.height;
-
-		if (!params.absoluteTilePos) {
-			tileX = tileX * tileWidth
-			tileY = tileY * tileHeight
+	text(x, y, text, color, font, fill) {
+		if (font) this.#ctx.font = font; //'50px serif';
+		this.#ctx.beginPath();
+		if (fill) {
+			this.#ctx.fillStyle = color;
+			this.#ctx.fillText(text, x, y);
 		}
-
-		this.#ctx.drawImage(
-			params.image,
-			tileX,
-			tileY,
-			tileWidth,
-			tileHeight,
-			params.x,
-			params.y,
-			params.width,
-			params.height
-		);
-	}
-
-	sprite(params) {
-		this.#ctx.drawImage(
-			params.image,
-			params.x,
-			params.y,
-			params.width,
-			params.height
-		);
-	}
-
-	path(params) {
-		const _context = this.#ctx;
-
-		this.#stile(params);
-
-		params.elements.forEach(el => {
-
-			if (el.type == 'moveTo') {
-				this.#ctx.moveTo(el.x, el.y);
-			}
-			else if (el.type == 'lineTo') {
-				this.#ctx.lineTo(el.x, el.y);
-			}
-			else if (el.type == 'arc') {
-				this.#ctx.arc(el.x, el.y, el.radius, el.startAngle, el.endAngle);
-			}
-			else if (el.type == 'arcTo') {
-				this.#ctx.arcTo(el.x1, el.y1, el.x2, el.y2, el.radius);
-			}
-		});
-
-		this.#endDraw(params);
-	}
-
-	#viewPort = {
-		x: 0,
-		y: 0,
-		move: (params) => {
-			if (params.viewPort) {
-				params.x -= this.x;
-				params.y -= this.y;
-			}
-			return params;
+		else {
+			this.#ctx.strokeStyle = color;
+			this.#ctx.strokeText(text, x, y);
 		}
 	}
 
-	viewPort(params) {
-		this.#viewPort.x = params.x;
-		this.#viewPort.y = params.y;
+	sprite(x, y, wi, he, image) {
+		this.#ctx.drawImage(image, x, y, wi, he);
 	}
 
+	tile(x, y, wi, he, tiX, tiY, tiWi, tiHe, image) {
+		this.#ctx.drawImage(
+			image,
+			tiX, tiY, tiWi, tiHe,
+			x, y, wi, he
+		);
+	}
 }
