@@ -50,6 +50,7 @@ export class ClearDrawing extends DrawingDecorator {
 	}
 
 	update() {
+		super.update();
 		this.render.clear(
 			this.body.pos.x,
 			this.body.pos.y,
@@ -57,7 +58,6 @@ export class ClearDrawing extends DrawingDecorator {
 			this.body.size.y);
 	}
 }
-
 
 export class ImageDrawing extends DrawingDecorator {
 

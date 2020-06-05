@@ -59,10 +59,8 @@ tiles.addEventListener("load", function () {
 	const pers = new Personage('Pers', 10, 100, 32, 32,
 		tiles, animations, new State(), render);
 
-	const scene = new ImageDrawing(tiles,
-		new EmptyDrawing(render,
-			new Composite([pers], { y: true, z: true },
-				new Body(0, 0, tiles.width, tiles.height, new State()))));
+	const scene = new Composite([pers], { y: true, z: true },
+		new Body(0, 0, tiles.width, tiles.height, new State()));
 
 	// engine.start(scene);
 	scene.update();
