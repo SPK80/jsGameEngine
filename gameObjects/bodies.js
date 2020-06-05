@@ -1,8 +1,7 @@
 import { throwIfNotInstance } from "../tools/utils.js";
 import { Vector2, Vector3 } from "../geometry/vectors.js";
 import { Input } from "../inputs/input.js";
-import { IDrawing, IBody } from "./common.js";
-
+import { IBody } from "./common.js";
 export class State extends Input {
 	#state = 'idle';
 
