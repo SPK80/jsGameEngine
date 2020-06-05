@@ -57,10 +57,8 @@ export class BodyDecorator extends IBody {
 export class Moving extends BodyDecorator {
 
 	#input;
-
 	#speed = 1;
 	get speed() { return this.#speed };
-
 	#direction = new Vector2(0, 0);
 	get direction() { return this.#direction };
 
@@ -74,6 +72,8 @@ export class Moving extends BodyDecorator {
 
 		this.#direction = new Vector2(0, 0);
 		const commands = this.#input.get();
+		console.log(commands);
+		
 		this.state.set(commands[commands.length - 1]);
 		commands.forEach(comm => {
 			if (comm == 'moveRight') this.#direction.add(new Vector2(1, 0));

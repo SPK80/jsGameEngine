@@ -31,6 +31,7 @@ export class KeyboardInput extends Input {
 	}
 
 	get() {
+		// console.log(this.#actions);
 		return this.#actions;
 	}
 }

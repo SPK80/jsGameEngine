@@ -17,6 +17,7 @@ export class EmptyDrawing extends IDrawing {
 	}
 
 	update() {
+		this.#body.update();
 		// console.log('EmptyDrawing', this);
 	}
 }

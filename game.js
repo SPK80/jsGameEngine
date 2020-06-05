@@ -10,6 +10,9 @@ import { CanvasRender } from "./graphics/canvasRender.js";
 import { ImageDrawing, EmptyDrawing } from "./gameObjects/drawings.js";
 import { WhiteWolker } from "./gameObjects/whiteWolker.js";
 import { Composite } from "./gameObjects/composite.js";
+import { WalkMan } from "./gameObjects/walkMan.js";
+import { KeyboardInput } from "./inputs/keyboardInput.js";
+import { KeyMap } from "./inputs/keyMap.js";
 
 const settings = new Settings();
 
@@ -26,13 +29,22 @@ window.onclose = () => {
 const tiles = new Image();
 tiles.addEventListener("load", function () {
 	// const pacScene = new NewScene('New scene', undefined, tiles);
-
+	const kb = new KeyboardInput(
+		new KeyMap([
+			{ action: 'moveUp', keys: [KeyMap.KEYS.UP] },
+			{ action: 'moveDown', keys: [KeyMap.KEYS.DOWN] },
+			{ action: 'moveRight', keys: [KeyMap.KEYS.RIGHT] },
+			{ action: 'moveLeft', keys: [KeyMap.KEYS.LEFT] },
+		])
+	);
 	const render = new CanvasRender(settings.render.width, settings.render.height, '');
-	const pers = new WhiteWolker('Pers', 500, 100,
+	const ww = new WhiteWolker('WhiteWolker', 500, 100,
 		tiles, new State(), render);
+	const wm = new WalkMan('WalkMan', 500, 200,
+		tiles, kb, render);
 
 	const scene = new ImageDrawing(tiles,
-		new Composite([pers], { y: true, z: true },
+		new Composite([ww, wm], { y: true, z: true },
 			new EmptyDrawing(render,
 				new Body(0, 0, tiles.width, tiles.height,
 					new State()))));
