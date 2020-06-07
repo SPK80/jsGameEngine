@@ -2,17 +2,7 @@ import { throwIfNotInstance } from "../tools/utils.js";
 import { Vector2, Vector3 } from "../geometry/vectors.js";
 import { Input } from "../inputs/input.js";
 import { IBody } from "./common.js";
-export class State extends Input {
-	#state = 'idle';
-
-	get() {
-		return this.#state;
-	}
-
-	set(state) {
-		this.#state = state;
-	}
-}
+import { State } from "./state.js";
 
 export class Body extends IBody {
 
@@ -29,7 +19,11 @@ export class Body extends IBody {
 		super();
 		this.#pos = new Vector3(x, y, 0);
 		this.#size = new Vector3(wi, he, 0);
-		this.#state = throwIfNotInstance(state, Input);
+
+
+		if (state)
+			this.#state = throwIfNotInstance(state, Input);
+		console.log(this.#state);
 	}
 
 	update() {
@@ -72,9 +66,8 @@ export class Moving extends BodyDecorator {
 
 		this.#direction = new Vector2(0, 0);
 		const commands = this.#input.get();
-		console.log(commands);
-		
-		this.state.set(commands[commands.length - 1]);
+		if (commands.length > 0)
+			this.state.set(commands[commands.length - 1]);
 		commands.forEach(comm => {
 			if (comm == 'moveRight') this.#direction.add(new Vector2(1, 0));
 			if (comm == 'moveLeft') this.#direction.add(new Vector2(-1, 0));
@@ -83,7 +76,7 @@ export class Moving extends BodyDecorator {
 		});
 
 		if (Math.abs(this.#direction.x) < 1 && Math.abs(this.#direction.y) < 1) return;
-		this.#direction.normalize().mul(this.#speed);
+		this.#direction.normalize().scMul(this.#speed);
 
 		this.pos.add(this.#direction);
 	}

@@ -1,4 +1,5 @@
-import { Body, Moving, State } from "./bodies.js";
+import { Body, Moving } from "./bodies.js";
+import { State } from "./state.js";
 import { AnimDrawing, EmptyDrawing } from "./drawings.js";
 import { IUpdating } from "./common.js";
 

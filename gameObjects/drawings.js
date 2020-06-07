@@ -90,10 +90,16 @@ export class AnimDrawing extends DrawingDecorator {
 		super.update();
 
 		const _state = this.body.state.get();
-		if (_state == undefined) return;
 		this.#animator.start(_state);
 
 		const frame = this.#animator.curFrame;
+		this.render.text(
+			this.body.pos.x,
+			this.body.pos.y,
+			_state,
+			'red',
+			true
+		);
 		if (frame) {
 			this.render.tile(
 				this.body.pos.x,
@@ -106,6 +112,7 @@ export class AnimDrawing extends DrawingDecorator {
 				frame.he,
 				this.#image
 			);
+
 		}
 	}
 }
