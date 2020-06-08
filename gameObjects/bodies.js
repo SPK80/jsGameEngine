@@ -23,7 +23,7 @@ export class Body extends IBody {
 
 		if (state)
 			this.#state = throwIfNotInstance(state, Input);
-		console.log(this.#state);
+		// console.log(this.#state);
 	}
 
 	update() {
