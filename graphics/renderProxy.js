@@ -12,12 +12,12 @@ export class SortRenderProxy extends AbstractRender {
 
 	}
 
-	push(func, x,y)  {
+	push(func, x, y) {
 		if (this.#sortByY) {
-			const index = bublleFindIndex(y, this.#items.length,
-				(i) => this.#items[i].pos.z);
-			this.#items.splice(index, 0, item);
-		} else this.#items.push(func);
+			const index = bublleFindIndex(y, this.#order.length,
+				(i) => this.#order[i].y);
+			this.#order.splice(index, 0, func);
+		} else this.#order.push(func);
 
 	}
 
@@ -27,6 +27,8 @@ export class SortRenderProxy extends AbstractRender {
 	}
 
 	update(sortBy) {
-
+		this.#order.forEach(it => {
+			it.func();
+		});
 	}
 }

@@ -3,8 +3,8 @@
 import { throwIfUndefined } from "./utils.js";
 
 /// callback  - function(index) returns value by index for comparison  
-export function bublleFindIndex(findVal, length, callback) {
-	throwIfUndefined(callback);
+export function bublleFindIndex(findVal, length, itemGetter) {
+	throwIfUndefined(itemGetter);
 	throwIfUndefined(findVal);
 	throwIfUndefined(length);
 	if (length == 0) return 0;
@@ -19,14 +19,14 @@ export function bublleFindIndex(findVal, length, callback) {
 
 		if (e - b < 2) return e;
 		const c = Math.floor((e + b) / 2);
-		if (findVal >= callback(b) && findVal <= callback(c))
+		if (findVal >= itemGetter(b) && findVal <= itemGetter(c))
 			return find(b, c);
 		else
 			return find(c, e);
 	};
 
-	if (findVal >= callback(length - 1)) return length;
-	if (findVal <= callback(0)) return 0;
+	if (findVal >= itemGetter(length - 1)) return length;
+	if (findVal <= itemGetter(0)) return 0;
 
 	return find(0, length - 1);
 }
