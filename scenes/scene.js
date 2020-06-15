@@ -6,36 +6,35 @@ import { Body } from "../gameObjects/bodies.js";
 export class Scene extends IGameObject {
 
 	#assembly;
-	#composite;
 
-	constructor(objects, tiles, render) {
+	#landscape;
+
+	constructor(objects, landscape, tiles, render) {
 		super();
-
-		this.#composite = new Composite(objects,
-			new ClearDrawing(
+		this.#landscape = landscape;
+		this.#assembly = new Composite(objects, //new ImageDrawing(tiles,
+			// new ClearDrawing(
 				new EmptyDrawing(render,
-					new Body(0, 0, 0, tiles.width, tiles.height))));
-
-		this.#assembly = new ImageDrawing(tiles, this.#composite);
+					new Body(0, 0, 0, tiles.width, tiles.height)));
 	}
 
 	addObject(object) {
-		this.#composite.add(object);
+		this.#assembly.add(object);
 	}
 
 	removeObject(object) {
-		this.#composite.remove(object);
+		this.#assembly.remove(object);
 	}
 
 	setInput(objectName, input) {
-		const obj = this.#composite.get(objectName);
+		const obj = this.#assembly.get(objectName);
 		if (obj)
 			obj.setInput(input);
 	}
 
 	update() {
-		this.#assembly.update();
-		this.#assembly.render.update();
+		this.#landscape.update();
+		this.#assembly.update();		
 	}
 }
 

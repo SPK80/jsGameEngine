@@ -13,15 +13,11 @@ export class EmptyDrawing extends IDrawing {
 	constructor(render, body) {
 		super();
 		this.#body = throwIfNotInstance(body, IBody);
-		// console.log((render instanceof AbstractRender), render, AbstractRender);
-
-		// this.#render = throwIfNotInstance(render, AbstractRender);
-		this.#render = render;
+		this.#render = throwIfNotInstance(render, AbstractRender);
 	}
 
 	update() {
 		this.#body.update();
-		// console.log('EmptyDrawing', this);
 	}
 }
 
@@ -37,7 +33,6 @@ export class DrawingDecorator extends IDrawing {
 	}
 
 	update() {
-		// this.render.setZ(this.body.pos.z);
 		this.#object.update();
 	}
 }
@@ -50,7 +45,6 @@ export class ClearDrawing extends DrawingDecorator {
 
 	update() {
 		super.update();
-		this.render.setZ(this.body.pos.z);
 		this.render.clear(
 			this.body.pos.x,
 			this.body.pos.y,
@@ -68,11 +62,7 @@ export class ImageDrawing extends DrawingDecorator {
 	}
 
 	update() {
-		// console.log('ImageDrawing ', this.body.pos);
-
 		super.update();
-		// console.log('ImageDrawing', this);
-		this.render.setZ(this.body.pos.z);
 		this.render.sprite(
 			this.body.pos.x,
 			this.body.pos.y,
@@ -91,24 +81,21 @@ export class AnimDrawing extends DrawingDecorator {
 		super(object);
 		this.#image = throwIfNotInstance(image, Image);
 		this.#animator = new Animator(animations);
-		// this.#state = throwIfNotInstance(state, Input);
 	}
 
 	update() {
 		super.update();
-		this.render.setZ(this.body.pos.z);
-
 		const _state = this.body.state.get();
 		this.#animator.start(_state);
 		const frame = this.#animator.curFrame;
-
-		this.render.text(
-			this.body.pos.x,
-			this.body.pos.y,
-			this.body.pos.z,
-			'red',
-			true
-		);
+		//debug text
+		// this.render.text( 
+		// 	this.body.pos.x,
+		// 	this.body.pos.y,
+		// 	this.body.pos.z,
+		// 	'red',
+		// 	true
+		// );
 		if (frame) {
 			this.render.tile(
 				this.body.pos.x,

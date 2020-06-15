@@ -8,7 +8,6 @@ export class RndWolk extends Input {
 
 	get() {
 		return [this.#commands[this.#current]];
-		// return [this.#commands[this.#counter.getNext()]];
 	}
 
 	#timer;
@@ -18,8 +17,19 @@ export class RndWolk extends Input {
 		const loop = () => {
 			this.#current = this.#counter.getNext();
 			this.#timer = setTimeout(loop, Math.floor(Math.random() * 5000));
-			// console.log(this.#current, this.#timer);
 		}
 		loop();
+	}
+}
+
+export class Stand extends Input {
+	#commands = ['idle'];
+
+	get() {
+		return this.#commands;
+	}
+
+	constructor() {
+		super();
 	}
 }

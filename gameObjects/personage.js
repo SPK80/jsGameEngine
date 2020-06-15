@@ -1,6 +1,7 @@
 import { Body, Moving } from "./bodies.js";
 import { AnimDrawing, EmptyDrawing, ClearDrawing } from "./drawings.js";
 import { IGameObject } from "./gameObject.js";
+import { SortingRender } from "../graphics/renderProxy.js";
 
 export class Personage extends IGameObject {
 	#name = 'noName';
@@ -12,6 +13,7 @@ export class Personage extends IGameObject {
 		this.#moving.input = input;
 	}
 
+	get body() { return this.#moving }
 	constructor(name, x, y, wi, he, input, tiles, animations, render) {
 		super();
 		this.#name = name;
@@ -20,8 +22,7 @@ export class Personage extends IGameObject {
 
 		this.#assembly =
 			new AnimDrawing(tiles, animations,
-				// new ClearDrawing(
-					new EmptyDrawing(render, this.#moving));
+				new EmptyDrawing(render, this.#moving));
 	}
 
 	update() {

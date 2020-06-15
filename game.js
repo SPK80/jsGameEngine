@@ -18,7 +18,7 @@ import { SortingRender } from "./graphics/renderProxy.js";
 import { throwIfNotInstance } from "./tools/utils.js";
 import { AbstractRender } from "./graphics/AbstractRender.js";
 import { Scene } from "./scenes/scene.js";
-import { RndWolk } from "./inputs/rndWolk.js";
+import { RndWolk, Stand } from "./inputs/rndWolk.js";
 
 const settings = new Settings();
 
@@ -34,7 +34,7 @@ window.onclose = () => {
 
 const tiles = new Image();
 tiles.addEventListener("load", function () {
-	// const pacScene = new NewScene('New scene', undefined, tiles);
+
 	const kb = new KeyboardInput(
 		new KeyMap([
 			{ action: 'moveUp', keys: [KeyMap.KEYS.UP] },
@@ -43,24 +43,33 @@ tiles.addEventListener("load", function () {
 			{ action: 'moveLeft', keys: [KeyMap.KEYS.LEFT] },
 		])
 	);
-	const render = new SortingRender({ z: true },
-		new CanvasRender(settings.render.width, settings.render.height, ''));
-
-	// console.log((render instanceof AbstractRender), render, AbstractRender);
+	const render = new CanvasRender(settings.render.width, settings.render.height, '');
 
 	const wm = new WalkMan('WalkMan', 100, 100, kb, tiles, render);
-	const ww = new WhiteWolker('WhiteWolker', 100, 140, new RndWolk(), tiles, render);
+	
+	const grass = new Image();
+	grass.addEventListener("load", function () {
+		const ls = new ImageDrawing(grass,
+			new EmptyDrawing(render,
+				new Body(0, 0, 0, grass.width, grass.height)));
+				
+				const scene = new Scene([wm], ls, tiles, render);
 
-	// const scene = new ImageDrawing(tiles,
-	// 	new Composite([wm],
-	// 		//new ClearDrawing(
-	// 		new EmptyDrawing(render,
-	// 			new Body(0, 0, 0, tiles.width, tiles.height,
-	// 				new State()))));
-	const scene = new Scene([ww, wm], tiles, render);
-	// scene.addObject(new WhiteWolker('WhiteWolker',200,150,new State(), tiles, render))
+	for (let i = 0; i < 9; i++) {
+		const ww = new WhiteWolker('WhiteWolker' + i,
+			Math.random() * settings.render.width,
+			Math.random() * settings.render.height,
+			new RndWolk(), tiles, render);
+		scene.addObject(ww);
+
+	}
+
 	engine.start(scene);
-	scene.update();
+	});
+	grass.src = 'grass.jpg';
+	
+
+	
 
 }, false);
 
