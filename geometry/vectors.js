@@ -26,6 +26,12 @@ export class Vector2 {
 		return this;
 	}
 
+	sub(vector) {
+		this.#x -= vector.x;
+		this.#y -= vector.y;
+		return this;
+	}
+
 	normalize() {
 		const l = Math.sqrt(this.#x * this.#x + this.#y * this.#y);
 		this.scMul(1.0 / l);
@@ -54,7 +60,8 @@ export class Vector3 extends Vector2 {
 
 	add(vector) {
 		super.add(vector);
-		this.#z += vector.z;
+		if (vector.z)
+			this.#z += vector.z;
 		return this;
 	}
 

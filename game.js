@@ -14,6 +14,11 @@ import { Composite } from "./gameObjects/composite.js";
 import { WalkMan } from "./gameObjects/walkMan.js";
 import { KeyboardInput } from "./inputs/keyboardInput.js";
 import { KeyMap } from "./inputs/keyMap.js";
+import { SortingRender } from "./graphics/renderProxy.js";
+import { throwIfNotInstance } from "./tools/utils.js";
+import { AbstractRender } from "./graphics/AbstractRender.js";
+import { Scene } from "./scenes/scene.js";
+import { RndWolk } from "./inputs/rndWolk.js";
 
 const settings = new Settings();
 
@@ -38,18 +43,25 @@ tiles.addEventListener("load", function () {
 			{ action: 'moveLeft', keys: [KeyMap.KEYS.LEFT] },
 		])
 	);
-	const render = new CanvasRender(settings.render.width, settings.render.height, '');
-	const wm = new WalkMan('WalkMan', 100, 100, tiles, kb, render);
+	const render = new SortingRender({ z: true },
+		new CanvasRender(settings.render.width, settings.render.height, ''));
 
-	const scene = new ImageDrawing(tiles,
-		new Composite([wm],
-			new ClearDrawing(
-				new EmptyDrawing(render,
-					new Body(0, 0, tiles.width, tiles.height,
-						new State())))));
+	// console.log((render instanceof AbstractRender), render, AbstractRender);
 
+	const wm = new WalkMan('WalkMan', 100, 100, kb, tiles, render);
+	const ww = new WhiteWolker('WhiteWolker', 100, 140, new RndWolk(), tiles, render);
+
+	// const scene = new ImageDrawing(tiles,
+	// 	new Composite([wm],
+	// 		//new ClearDrawing(
+	// 		new EmptyDrawing(render,
+	// 			new Body(0, 0, 0, tiles.width, tiles.height,
+	// 				new State()))));
+	const scene = new Scene([ww, wm], tiles, render);
+	// scene.addObject(new WhiteWolker('WhiteWolker',200,150,new State(), tiles, render))
 	engine.start(scene);
-	// scene.update();
+	scene.update();
+
 }, false);
 
 tiles.src = 'tiles.png';

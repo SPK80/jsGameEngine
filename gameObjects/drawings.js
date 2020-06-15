@@ -13,7 +13,10 @@ export class EmptyDrawing extends IDrawing {
 	constructor(render, body) {
 		super();
 		this.#body = throwIfNotInstance(body, IBody);
-		this.#render = throwIfNotInstance(render, AbstractRender);
+		// console.log((render instanceof AbstractRender), render, AbstractRender);
+
+		// this.#render = throwIfNotInstance(render, AbstractRender);
+		this.#render = render;
 	}
 
 	update() {
@@ -34,6 +37,7 @@ export class DrawingDecorator extends IDrawing {
 	}
 
 	update() {
+		// this.render.setZ(this.body.pos.z);
 		this.#object.update();
 	}
 }
@@ -46,6 +50,7 @@ export class ClearDrawing extends DrawingDecorator {
 
 	update() {
 		super.update();
+		this.render.setZ(this.body.pos.z);
 		this.render.clear(
 			this.body.pos.x,
 			this.body.pos.y,
@@ -63,8 +68,11 @@ export class ImageDrawing extends DrawingDecorator {
 	}
 
 	update() {
+		// console.log('ImageDrawing ', this.body.pos);
+
 		super.update();
 		// console.log('ImageDrawing', this);
+		this.render.setZ(this.body.pos.z);
 		this.render.sprite(
 			this.body.pos.x,
 			this.body.pos.y,
@@ -88,15 +96,16 @@ export class AnimDrawing extends DrawingDecorator {
 
 	update() {
 		super.update();
+		this.render.setZ(this.body.pos.z);
 
 		const _state = this.body.state.get();
 		this.#animator.start(_state);
-
 		const frame = this.#animator.curFrame;
+
 		this.render.text(
 			this.body.pos.x,
 			this.body.pos.y,
-			_state,
+			this.body.pos.z,
 			'red',
 			true
 		);
@@ -112,7 +121,6 @@ export class AnimDrawing extends DrawingDecorator {
 				frame.he,
 				this.#image
 			);
-
 		}
 	}
 }

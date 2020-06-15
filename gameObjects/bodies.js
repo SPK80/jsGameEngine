@@ -15,9 +15,9 @@ export class Body extends IBody {
 	#state = new State();
 	get state() { return this.#state }
 
-	constructor(x, y, wi, he, state) {
+	constructor(x, y, z, wi, he, state) {
 		super();
-		this.#pos = new Vector3(x, y, 0);
+		this.#pos = new Vector3(x, y, z);
 		this.#size = new Vector3(wi, he, 0);
 
 
@@ -51,14 +51,22 @@ export class BodyDecorator extends IBody {
 export class Moving extends BodyDecorator {
 
 	#input;
+	get input() {
+		return this.#input;
+	}
+	set input(input) {
+		this.#input = throwIfNotInstance(input, Input);
+	}
+
 	#speed = 1;
 	get speed() { return this.#speed };
+
 	#direction = new Vector2(0, 0);
 	get direction() { return this.#direction };
 
 	constructor(input, object) {
 		super(object);
-		this.#input = throwIfNotInstance(input, Input);
+		this.input = input;
 	}
 
 	update() {

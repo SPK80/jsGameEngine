@@ -1,23 +1,27 @@
 import { Body, Moving } from "./bodies.js";
-import { State } from "./state.js";
-import { AnimDrawing, EmptyDrawing } from "./drawings.js";
-import { IUpdating } from "./common.js";
+import { AnimDrawing, EmptyDrawing, ClearDrawing } from "./drawings.js";
+import { IGameObject } from "./gameObject.js";
 
-export class Personage extends IUpdating {
+export class Personage extends IGameObject {
 	#name = 'noName';
 	get name() { return this.#name }
+
 	#assembly;
-	get pos() {
-		return this.#assembly.body.pos;
+	#moving;
+	setInput(input) {
+		this.#moving.input = input;
 	}
 
-	constructor(name, x, y, wi, he, image, animations, input, render) {
+	constructor(name, x, y, wi, he, input, tiles, animations, render) {
 		super();
 		this.#name = name;
-		const body = new Moving(input,
-			new Body(x, y, wi, he, new State()));
-		this.#assembly = new AnimDrawing(image, animations,
-			new EmptyDrawing(render, body));
+		this.#moving = new Moving(input,
+			new Body(x, y, 1, wi, he));
+
+		this.#assembly =
+			new AnimDrawing(tiles, animations,
+				// new ClearDrawing(
+					new EmptyDrawing(render, this.#moving));
 	}
 
 	update() {

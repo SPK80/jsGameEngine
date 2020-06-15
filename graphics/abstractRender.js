@@ -1,9 +1,4 @@
 export class AbstractRender {
-	#children = [];
-	// newChild(x, y, wi, he) {
-	// 	this.#children.push(new LocalRender(x, y, wi, he, this));
-	// }
-
 	clear() { throw ('not implemented'); }
 	clear(x, y, wi, he) { throw ('not implemented'); }
 	rect(x, y, wi, he, color, fill) { throw ('not implemented'); }
@@ -12,3 +7,16 @@ export class AbstractRender {
 	sprite(x, y, wi, he, image) { throw ('not implemented'); }
 	tile(x, y, wi, he, tiX, tiY, tiWi, tiHe, image) { throw ('not implemented'); }
 }
+// export class PositionRender extends AbstractRender{
+// 	#pos = new Vector2();
+// 	#posStack = [];
+
+// 	pushPos(pos) {
+// 		this.#posStack.push(this.#pos);
+// 		this.#pos = new Vector2(this.#pos.x, this.#pos.y).add(pos);
+// 	}
+
+// 	popPos() {
+// 		this.#pos = this.#posStack.pop();
+// 	}
+// }

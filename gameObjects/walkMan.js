@@ -1,19 +1,10 @@
 import { Animation } from "../animations/animation.js";
 import { Frame } from "../animations/frame.js";
-import { AnimDrawing, ClearDrawing, EmptyDrawing, ImageDrawing } from "./drawings.js";
-import { Moving, Body } from "./bodies.js";
-import { IGameObject } from "./gameObject.js";
+import { Personage } from "./personage.js";
 
-export class WalkMan extends IGameObject {
+export class WalkMan extends Personage {
 
-	#name = 'noName';
-	get name() { return this.#name }
-
-	#assembly;
-
-	constructor(name, x, y, tiles, input, render) {
-		super();
-		this.#name = name;
+	constructor(name, x, y, input, tiles, render) {
 		const order = [0, 1, 2];
 		const moveDelay = 100;
 		const idleDelay = 1000;
@@ -45,15 +36,6 @@ export class WalkMan extends IGameObject {
 				new Frame(0 * 32, 11 * 32, 32, 32, idleDelay)
 			], [0, 1, 2, 3], true),
 		};
-		this.#assembly =
-			new AnimDrawing(tiles, anims,
-				new ClearDrawing(
-					new EmptyDrawing(render,
-						new Moving(input,
-							new Body(x, y, 32, 32)))));
-	}
-
-	update() {
-		this.#assembly.update();
+		super(name, x, y, 32, 32, input, tiles, anims, render);
 	}
 }

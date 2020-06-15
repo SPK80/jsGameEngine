@@ -1,40 +1,41 @@
-import { Input } from "../inputs/input.js";
-import { throwIfNotInstance } from "../tools/utils.js";
+import { Composite } from "../gameObjects/composite.js";
+import { EmptyDrawing, ImageDrawing, ClearDrawing } from "../gameObjects/drawings.js";
+import { IGameObject } from "../gameObjects/gameObject.js";
+import { Body } from "../gameObjects/bodies.js";
 
-export class Scene {//extends CompositeObject {
+export class Scene extends IGameObject {
 
-	#controllers = [];
-	#debug = '';
+	#assembly;
+	#composite;
 
-	constructor(params) {
-		super(params);
+	constructor(objects, tiles, render) {
+		super();
+
+		this.#composite = new Composite(objects,
+			new ClearDrawing(
+				new EmptyDrawing(render,
+					new Body(0, 0, 0, tiles.width, tiles.height))));
+
+		this.#assembly = new ImageDrawing(tiles, this.#composite);
+	}
+
+	addObject(object) {
+		this.#composite.add(object);
+	}
+
+	removeObject(object) {
+		this.#composite.remove(object);
 	}
 
 	setInput(objectName, input) {
-		throwIfNotInstance(input, Input);
-		const obj = this.#objects.get(objectName);
+		const obj = this.#composite.get(objectName);
 		if (obj)
-			this.#controllers.push({ object: obj, input: input });
+			obj.setInput(input);
 	}
 
-	update(drivers) {
-		// super.update(drivers);
-
-		const objects = this.#objects.get();
-
-		objects.forEach(obj => {
-			const controller = this.#controllers.find((con) => con.object == obj);
-			if (controller) obj.update(inject(drivers, 'input', controller.input));
-			else obj.update(drivers);
-		});
-
-		const render = drivers.render;
-		render.text({
-			text: this.#debug,
-			x: 5,
-			y: 20,
-			color: 'red',
-		});
+	update() {
+		this.#assembly.update();
+		this.#assembly.render.update();
 	}
 }
 

@@ -1,3 +1,5 @@
+import { throwIfUndefined } from "./utils.js";
+
 export class CircleCounter {
 	#value = 0;
 	#start = 0;
@@ -52,4 +54,20 @@ class Counter {
 		this.increment = increment;
 	}
 	getNext() { throw ('calcNext not implemented') }
+}
+
+
+export class RndCounter extends Counter {
+	#min;
+	#max;
+	constructor(min, max) {
+		super();
+		this.#min = throwIfUndefined(min, 'min');
+		this.#max = throwIfUndefined(max, 'max');
+	}
+	getNext() {
+		const rand = Math.round(this.#min - 0.5 + Math.random() * (this.#max - this.#min + 1));
+		// console.log(rand);
+		return rand;
+	}
 }

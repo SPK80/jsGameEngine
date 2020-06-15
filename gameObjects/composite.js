@@ -7,15 +7,21 @@ export class Composite extends DrawingDecorator {
 
 	constructor(items, object) {
 		super(object);
-
+		// console.log(items);
+		
 		items.forEach(it => {
 			throwIfNotInstance(it, IGameObject);
 			this.add(it);
 		});
 	}
 
+	// #sorted = false;
 	get(name) {
 		if (name == undefined) {
+			// if (!this.#sorted) {
+			// 	this.#items.sort((a, b) => a.body.pos.z - b.body.pos.z);
+			// 	this.#sorted = true;
+			// }
 			return this.#items;
 		}
 		else
@@ -27,6 +33,7 @@ export class Composite extends DrawingDecorator {
 			if (this.get(item.name)) return;
 			this.#items.push(item);
 		}
+		// this.#sorted = false;
 	}
 
 	remove(item) {
@@ -41,7 +48,9 @@ export class Composite extends DrawingDecorator {
 
 	update() {
 		super.update();
-		this.#items.forEach(item => {
+		// console.log(this.get());
+		
+		this.get().forEach(item => {
 			item.update();
 		});
 	}
