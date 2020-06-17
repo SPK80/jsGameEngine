@@ -12,3 +12,7 @@ export class IBody extends IUpdating {
 	get size() { throw ('size() must be implemented') };
 	get state() { throw ('state() must be implemented') };
 }
+
+export class IGameObject extends IUpdating {
+	get name() { throw ('name must be implemented') };
+}

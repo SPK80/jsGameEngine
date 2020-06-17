@@ -1,6 +1,6 @@
 import { DrawingDecorator } from "./drawings.js";
 import { throwIfNotInstance } from "../tools/utils.js";
-import { IGameObject } from "./gameObject.js";
+import { IGameObject } from "./common.js";
 
 export class Composite extends DrawingDecorator {
 	#items = [];

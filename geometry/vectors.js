@@ -33,9 +33,12 @@ export class Vector2 {
 	}
 
 	normalize() {
-		const l = Math.sqrt(this.#x * this.#x + this.#y * this.#y);
-		this.scMul(1.0 / l);
+		this.scMul(1.0 / this.length());
 		return this;
+	}
+
+	length() {
+		return Math.sqrt(this.#x * this.#x + this.#y * this.#y);
 	}
 }
 
@@ -66,8 +69,11 @@ export class Vector3 extends Vector2 {
 	}
 
 	normalize() {
-		const l = Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
-		this.scMul(1.0 / l);
+		this.scMul(1.0 / this.length());
 		return this;
+	}
+
+	length() {
+		return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
 	}
 }

@@ -1,4 +1,4 @@
-import { AbstractRender } from "./AbstractRender.js";
+import { AbstractRender } from "./abstractRender.js";
 import { Vector3 } from "../geometry/vectors.js";
 
 export class SortingRender extends AbstractRender {
@@ -54,6 +54,9 @@ export class SortingRender extends AbstractRender {
 		this.#sorted = false;
 	}
 
+	get width() { return this.#render.width }
+	get height() { return this.#render.height }
+
 	clear() {
 		this.#push(0, 0, () =>
 			this.#render.clear());
@@ -100,94 +103,50 @@ export class SortingRender extends AbstractRender {
 	}
 }
 
-// export class SortingRender {
-// 	#render;
-// 	#sortByX = false;
-// 	#sortByY = false;
-// 	#sortByZ = false;
+export class PositionRender extends AbstractRender {
+	#render;
+	get width() { return this.#render.width }
+	get height() { return this.#render.height }
 
-// 	constructor(render, sortBy) {
-// 		this.#render = render;
-// 		if (!sortBy) throw ('sortBy undifined!');
-// 		if (sortBy.x) this.#sortByX = true;
-// 		if (sortBy.y) this.#sortByY = true;
-// 		if (sortBy.z) this.#sortByZ = true;
-// 	}
+	#x = 0;
+	#y = 0;
 
-// 	#calls = [];
+	constructor(x, y, render) {
+		super();
+		this.#x = x;
+		this.#y = y;
+		this.#render = render;
+	}
 
-// 	#sorted = false;
-// 	update() {
-// 		if (!this.#sorted) {
-// 			this.#sorted = true;
-// 			if (this.#sortByX)
-// 				this.#calls.sort((a, b) => a.pos.x - b.pos.x);
-// 			if (this.#sortByY)
-// 				this.#calls.sort((a, b) => a.pos.y - b.pos.y);
-// 			if (this.#sortByZ)
-// 				this.#calls.sort((a, b) => a.pos.z - b.pos.z);
-// 		}
-// 		this.#calls.forEach(call => { call.f() });
-// 		this.#calls.clear();
-// 		this.#sorted = false;
-// 	}
+	clear() {
+		this.#render.clear();
+	}
 
-// 	#push = (pos, f) => {
-// 		this.#calls.push({
-// 			pos: new Vector3(pos.x, pos.y, pos.z),
-// 			f: f
-// 		});
-// 	}
+	clear(x, y, wi, he) {
+			this.#render.clear(x+this.#x, y+this.#y, wi, he);
+	}
 
-// 	clear() {
-// 		this.#push(new Vector3(),
-// 			() => this.#render.clear());
-// 	}
+	rect(x, y, wi, he, color, fill) {		
+			this.#render.rect(x+this.#x, y+this.#y, wi, he, color, fill);
+	}
 
-// 	clear(pos, size) {
-// 		this.#push(pos,
-// 			() => this.#render.clear(
-// 				pos.x, pos.y,
-// 				size.x, size.y));
-// 	}
+	circle(x, y, radius, color, fill) {		
+			this.#render.circle(
+				x+this.#x, y+this.#y, radius, color, fill);
+	}
 
-// 	rect(pos, size, color, fill) {
-// 		this.#push(pos,
-// 			() => this.#render.rect(
-// 				pos.x, pos.y,
-// 				size.x, size.y,
-// 				color, fill));
-// 	}
+	text(x, y, text, color, font, fill) {		
+			this.#render.text(
+				x+this.#x, y+this.#y, text, color, font, fill);
+	}
 
-// 	circle(pos, radius, color, fill) {
-// 		this.#push(pos,
-// 			() => this.#render.circle(
-// 				pos.x, pos.y,
-// 				radius, color, fill));
-// 	}
+	sprite(x, y, wi, he, image) {
+			this.#render.sprite(
+				x+this.#x, y+this.#y, wi, he, image);
+	}
 
-// 	text(pos, text, color, font, fill) {
-// 		this.#push(pos,
-// 			() => this.#render.text(
-// 				pos.x, pos.y,
-// 				text, color, font, fill));
-// 	}
-
-// 	sprite(pos, size, image) {
-// 		this.#push(pos,
-// 			() => this.#render.sprite(
-// 				pos.x, pos.y,
-// 				size.x, size.y,
-// 				image));
-// 	}
-
-// 	tile(pos, size, tiPos, tiSize, image) {
-// 		this.#push(pos,
-// 			() => this.#render.tile(
-// 				pos.x, pos.y,
-// 				size.x, size.y,
-// 				tiPos.x, tiPos.y,
-// 				tiSize.x, tiSize.y,
-// 				image));
-// 	}
-// }
+	tile(x, y, wi, he, tiX, tiY, tiWi, tiHe, image) {
+			this.#render.tile(
+				x+this.#x, y+this.#y, wi, he, tiX, tiY, tiWi, tiHe, image);
+	}
+}

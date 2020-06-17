@@ -1,7 +1,7 @@
 import { Composite } from "../gameObjects/composite.js";
 import { EmptyDrawing } from "../gameObjects/drawings.js";
-import { IGameObject } from "../gameObjects/gameObject.js";
 import { Body } from "../gameObjects/bodies.js";
+import { IGameObject } from "../gameObjects/common.js";
 
 export class Scene extends IGameObject {
 	#assembly;

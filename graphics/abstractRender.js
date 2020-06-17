@@ -10,16 +10,3 @@ export class AbstractRender {
 	get width() { throw ('not implemented'); }
 	get height() { throw ('not implemented'); }
 }
-// export class PositionRender extends AbstractRender{
-// 	#pos = new Vector2();
-// 	#posStack = [];
-
-// 	pushPos(pos) {
-// 		this.#posStack.push(this.#pos);
-// 		this.#pos = new Vector2(this.#pos.x, this.#pos.y).add(pos);
-// 	}
-
-// 	popPos() {
-// 		this.#pos = this.#posStack.pop();
-// 	}
-// }

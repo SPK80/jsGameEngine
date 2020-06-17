@@ -1,7 +1,6 @@
 import { Body, Moving } from "./bodies.js";
-import { AnimDrawing, EmptyDrawing, ClearDrawing } from "./drawings.js";
-import { IGameObject } from "./gameObject.js";
-import { SortingRender } from "../graphics/renderProxy.js";
+import { AnimDrawing, EmptyDrawing } from "./drawings.js";
+import { IGameObject } from "./common.js";
 
 export class Personage extends IGameObject {
 	#name = 'noName';
