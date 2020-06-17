@@ -4,6 +4,9 @@ import { AbstractRender } from "./abstractRender.js";
 export class CanvasRender extends AbstractRender {
 	#width = 200;
 	#height = 200;
+	get width() { return this.#width }
+	get height() { return this.#height }
+
 	#scale = 1;
 	#bkColor = 0;
 	#ctx = null;

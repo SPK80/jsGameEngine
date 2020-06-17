@@ -6,6 +6,9 @@ export class AbstractRender {
 	text(x, y, text, color, font, fill) { throw ('not implemented'); }
 	sprite(x, y, wi, he, image) { throw ('not implemented'); }
 	tile(x, y, wi, he, tiX, tiY, tiWi, tiHe, image) { throw ('not implemented'); }
+
+	get width() { throw ('not implemented'); }
+	get height() { throw ('not implemented'); }
 }
 // export class PositionRender extends AbstractRender{
 // 	#pos = new Vector2();
