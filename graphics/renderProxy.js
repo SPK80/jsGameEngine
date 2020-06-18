@@ -108,45 +108,51 @@ export class PositionRender extends AbstractRender {
 	get width() { return this.#render.width }
 	get height() { return this.#render.height }
 
-	#x = 0;
-	#y = 0;
+	#body;
 
-	constructor(x, y, render) {
+	constructor(body, render) {
 		super();
-		this.#x = x;
-		this.#y = y;
 		this.#render = render;
+		this.#body = body;
 	}
+
+	#getX = (x) => { return x - this.#body.pos.x }
+	#getY = (y) => { return y - this.#body.pos.y }
 
 	clear() {
 		this.#render.clear();
 	}
 
 	clear(x, y, wi, he) {
-			this.#render.clear(x+this.#x, y+this.#y, wi, he);
+		this.#render.clear(this.#getX(x), this.#getY(y), wi, he);
 	}
 
-	rect(x, y, wi, he, color, fill) {		
-			this.#render.rect(x+this.#x, y+this.#y, wi, he, color, fill);
+	rect(x, y, wi, he, color, fill) {
+		this.#render.rect(
+			this.#getX(x), this.#getY(y),
+			wi, he, color, fill);
 	}
 
-	circle(x, y, radius, color, fill) {		
-			this.#render.circle(
-				x+this.#x, y+this.#y, radius, color, fill);
+	circle(x, y, radius, color, fill) {
+		this.#render.circle(
+			this.#getX(x), this.#getY(y),
+			radius, color, fill);
 	}
 
-	text(x, y, text, color, font, fill) {		
-			this.#render.text(
-				x+this.#x, y+this.#y, text, color, font, fill);
+	text(x, y, text, color, font, fill) {
+		this.#render.text(
+			this.#getX(x), this.#getY(y),
+			text, color, font, fill);
 	}
 
 	sprite(x, y, wi, he, image) {
-			this.#render.sprite(
-				x+this.#x, y+this.#y, wi, he, image);
+		this.#render.sprite(
+			this.#getX(x), this.#getY(y), wi, he, image);
 	}
 
 	tile(x, y, wi, he, tiX, tiY, tiWi, tiHe, image) {
-			this.#render.tile(
-				x+this.#x, y+this.#y, wi, he, tiX, tiY, tiWi, tiHe, image);
+		this.#render.tile(
+			this.#getX(x), this.#getY(y),
+			wi, he, tiX, tiY, tiWi, tiHe, image);
 	}
 }

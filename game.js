@@ -7,6 +7,8 @@ import { KeyMap } from "./inputs/keyMap.js";
 import { GrassScene } from "./scenes/grassScene.js";
 import { PositionRender } from "./graphics/renderProxy.js";
 import { Closer } from "./gameObjects/closer.js";
+import { Vector2 } from "./geometry/vectors.js";
+import { Moving, Body } from "./gameObjects/bodies.js";
 
 const settings = new Settings();
 
@@ -30,14 +32,18 @@ tiles.addEventListener("load", () => {
 			{ action: 'moveLeft', keys: [KeyMap.KEYS.LEFT] },
 		])
 	);
-	const render = new PositionRender(0, 0,
+	const renderBody = new Body(0, 0, 0, settings.render.width, settings.render.height);
+	const render = new PositionRender(renderBody,
 		new CanvasRender(settings.render.width, settings.render.height, ''));
-	const wm = new WalkMan('WalkMan', 100, 100, kb, tiles, render);
-	const scene = new GrassScene(render, tiles);
-	// const renderCloser = new Closer(render);
-	scene.addObject(wm);
-	engine.start([scene]);
 
+	const wm = new WalkMan('WalkMan', 100, 100, kb, tiles, render);
+
+	const closer = new Closer(renderBody, wm.body, 0.05);
+
+	const scene = new GrassScene(render, tiles);
+
+	scene.addObject(wm);
+	engine.start([scene, closer]);
 
 }, false);
 tiles.src = 'tiles.png';
