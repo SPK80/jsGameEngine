@@ -14,10 +14,10 @@ export class Closer extends IUpdating {
 	}
 
 	update() {
-		const s = new Vector2(this.#moving.size.x, this.#moving.size.y).scMul(0.5);
-		const v = new Vector2(this.#moving.pos.x, this.#moving.pos.y).add(s);
-		v.sub(this.#target.pos);
-		// console.log(v.length());
+		const ms = new Vector2(this.#moving.size.x, this.#moving.size.y).scMul(0.5);
+		const ts = new Vector2(this.#target.size.x, this.#target.size.y).scMul(0.5);
+		const v = new Vector2(this.#moving.pos.x, this.#moving.pos.y).
+		add(ms).sub(ts).sub(this.#target.pos);
 
 		if (v.length() > 1)
 			this.#moving.pos.sub(v.scMul(this.#speed));
