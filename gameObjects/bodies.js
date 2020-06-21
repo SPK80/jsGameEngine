@@ -89,3 +89,7 @@ export class Moving extends BodyDecorator {
 		this.pos.add(this.#direction);
 	}
 }
+
+export class Interation extends BodyDecorator {
+	
+}
