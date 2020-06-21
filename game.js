@@ -8,6 +8,7 @@ import { GrassScene } from "./scenes/grassScene.js";
 import { PositionRender } from "./graphics/renderProxy.js";
 import { Closer } from "./gameObjects/closer.js";
 import { Body } from "./gameObjects/bodies.js";
+import { ViewPort } from "./graphics/viewPort.js";
 
 const settings = new Settings();
 
@@ -24,11 +25,7 @@ window.onclose = () => {
 const tiles = new Image();
 tiles.addEventListener("load", () => {
 
-	const renderBody = new Body(0, 0, 0, settings.render.width, settings.render.height);
-	const render = new PositionRender(renderBody,
-		new CanvasRender(settings.render.width, settings.render.height, ''));
-
-	const kb = new KeyboardInput(
+	const kbInput = new KeyboardInput(
 		new KeyMap([
 			{ action: 'moveUp', keys: [KeyMap.KEYS.UP] },
 			{ action: 'moveDown', keys: [KeyMap.KEYS.DOWN] },
@@ -36,14 +33,20 @@ tiles.addEventListener("load", () => {
 			{ action: 'moveLeft', keys: [KeyMap.KEYS.LEFT] },
 		])
 	);
-	const wm = new WalkMan('WalkMan', 300, 200, kb, tiles, render);
 
-	const closer = new Closer(renderBody, wm.body, 0.05);
+	const renderBody = new Body(0, 0, 0, settings.render.width, settings.render.height);
+	const render = new PositionRender(renderBody,
+		new CanvasRender(settings.render.width, settings.render.height, ''));
+
+	const wm = new WalkMan('WalkMan', 300, 200, kbInput, tiles, render);
+	const viewPort = new ViewPort('ViewPort',
+		new Closer(wm.body, 0.05, renderBody));
 
 	const scene = new GrassScene(render, tiles);
-
 	scene.addObject(wm);
-	engine.start([scene, closer]);
+	scene.addObject(viewPort);
+
+	engine.start([scene]);
 
 }, false);
 tiles.src = 'tiles.png';

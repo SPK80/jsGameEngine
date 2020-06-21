@@ -15,4 +15,5 @@ export class IBody extends IUpdating {
 
 export class IGameObject extends IUpdating {
 	get name() { throw ('name must be implemented') };
+	get body() { throw ('body must be implemented') };
 }

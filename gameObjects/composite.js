@@ -7,7 +7,7 @@ export class Composite extends DrawingDecorator {
 
 	constructor(items, object) {
 		super(object);
-		
+
 		items.forEach(it => {
 			throwIfNotInstance(it, IGameObject);
 			this.add(it);
@@ -18,7 +18,8 @@ export class Composite extends DrawingDecorator {
 	get(name) {
 		if (name == undefined) {
 			if (!this.#sortedZ) {
-				this.#items.sort((a, b) => a.body.pos.z - b.body.pos.z);
+				this.#items.sort((a, b) =>
+					a.body.pos.z - b.body.pos.z);
 				this.#sortedZ = true;
 			}
 			return this.#items;
@@ -31,7 +32,7 @@ export class Composite extends DrawingDecorator {
 		if (item instanceof IGameObject) {
 			if (this.get(item.name)) return;
 			this.#items.push(item);
-			
+
 		}
 		this.#sortedZ = false;
 	}
@@ -48,12 +49,12 @@ export class Composite extends DrawingDecorator {
 
 	update() {
 		super.update();
-		
+
 		this.get().
-		sort((a, b) => a.body.pos.y - b.body.pos.y).
-		forEach(item => {
-			item.update();
-		});
+			sort((a, b) => a.body.pos.y - b.body.pos.y).
+			forEach(item => {
+				item.update();
+			});
 	}
 }
 

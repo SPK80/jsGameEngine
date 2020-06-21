@@ -1,25 +1,24 @@
-import { IUpdating } from "./common.js";
 import { Vector2 } from "../geometry/vectors.js";
+import { BodyDecorator } from "./bodies.js";
 
-export class Closer extends IUpdating {
+export class Closer extends BodyDecorator {
 	#target;
-	#moving;
 	#speed;
 
-	constructor(moving, target, speed) {
-		super();
+	constructor(target, speed, object) {
+		super(object);
 		this.#target = target;
-		this.#moving = moving;
 		this.#speed = speed;
 	}
 
 	update() {
-		const ms = new Vector2(this.#moving.size.x, this.#moving.size.y).scMul(0.5);
+		super.update();
+		const ms = new Vector2(this.size.x, this.size.y).scMul(0.5);
 		const ts = new Vector2(this.#target.size.x, this.#target.size.y).scMul(0.5);
-		const v = new Vector2(this.#moving.pos.x, this.#moving.pos.y).
-		add(ms).sub(ts).sub(this.#target.pos);
+		const v = new Vector2(this.pos.x, this.pos.y).
+			add(ms).sub(ts).sub(this.#target.pos);
 
 		if (v.length() > 1)
-			this.#moving.pos.sub(v.scMul(this.#speed));
+			this.pos.sub(v.scMul(this.#speed));
 	}
 }
