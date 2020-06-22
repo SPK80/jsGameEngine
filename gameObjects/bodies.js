@@ -90,6 +90,35 @@ export class Moving extends BodyDecorator {
 	}
 }
 
-export class Interation extends BodyDecorator {
-	
-}
+// export class Interation extends BodyDecorator {
+// 	// #target;
+
+// 	constructor(object) {
+// 		super(object);
+// 		// this.#target = target;
+// 	}
+
+// 	check(target) {
+// 		target.pos
+// 	}
+
+// 	update() {
+// 		super.update();
+// 	}
+// }
+
+// export class Behavior extends BodyDecorator {
+// #reactions;
+// 	constructor(object, reactions) {
+// 		super(object);
+// 		this.#reactions = reactions;
+
+// 	}
+
+// 	update() {
+// 		super.update();
+
+// 		// this.#reactions.do();
+// 	}
+
+// }
