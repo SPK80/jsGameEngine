@@ -53,7 +53,7 @@ class Composite extends DrawingDecorator {
 
 export class SortingComposite extends Composite {
 
-	_sortedZ = false;
+	#sortedZ = false;
 	constructor(items, object) {
 		super(items, object);
 	}
@@ -68,10 +68,12 @@ export class SortingComposite extends Composite {
 
 	get(name) {
 		if (name == undefined) {
-			if (!this._sortedZ) {
+			if (!this.#sortedZ) {
+				//console.log('sort', this.#sortedZ);
+
 				super.get().sort((a, b) =>
 					a.body.pos.z - b.body.pos.z);
-				this._sortedZ = true;
+				this.#sortedZ = true;
 			}
 			return super.get();
 		}
@@ -81,16 +83,16 @@ export class SortingComposite extends Composite {
 
 	add(item) {
 		super.add(item);
-		this._sortedZ = false;
-
+		this.#sortedZ = false;
+		//console.log(`add ${item.name}`, this);
 	}
 }
 
-class Interactor {
-	interact(object) {
-		throw ('interact must be implemented');
-	}
-}
+// class Interactor {
+// 	interact(object) {
+// 		throw ('interact must be implemented');
+// 	}
+// }
 
 export class InteractComposite extends SortingComposite {
 
