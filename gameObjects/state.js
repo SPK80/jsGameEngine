@@ -1,10 +1,12 @@
 import { Input } from "../inputs/input.js";
 export class State extends Input {
+
 	#def = '';
 	constructor(def = 'idle') {
 		super();
 		this.#def = def;
 	}
+
 	#states = [];
 
 	get() {
