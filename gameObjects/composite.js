@@ -1,6 +1,6 @@
 import { DrawingDecorator } from "./drawings.js";
 import { throwIfNotInstance } from "../tools/utils.js";
-import { IGameObject } from "./common.js";
+import { IGameObject, IComposite } from "./common.js";
 
 class Composite extends DrawingDecorator {
 	#items = [];
@@ -65,8 +65,6 @@ export class SortingComposite extends Composite {
 	get(name) {
 		if (name == undefined) {
 			if (!this.#sortedZ) {
-				//console.log('sort', this.#sortedZ);
-
 				super.get().sort((a, b) => a.body.pos.z - b.body.pos.z);
 				this.#sortedZ = true;
 			}
@@ -77,9 +75,9 @@ export class SortingComposite extends Composite {
 	add(item) {
 		super.add(item);
 		this.#sortedZ = false;
-		//console.log(`add ${item.name}`, this);
 	}
 }
+
 
 // class Interactor {
 // 	interact(object) {
