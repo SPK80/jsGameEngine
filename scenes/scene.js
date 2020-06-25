@@ -1,16 +1,14 @@
-import { SortingComposite } from "../gameObjects/composite.js";
-import { EmptyDrawing } from "../gameObjects/drawings.js";
-import { Body } from "../gameObjects/bodies.js";
 import { IGameObject } from "../gameObjects/common.js";
+import { Composite, SortingComposite } from "../gameObjects/composite.js";
+
 
 export class Scene extends IGameObject {
 	#assembly;
 
 	constructor(objects, render) {
 		super();
-		this.#assembly = new SortingComposite(objects,
-			new EmptyDrawing(render,
-				new Body(0, 0, 0, render.width, render.height)));
+		this.#assembly = new SortingComposite(
+			new Composite(objects));
 	}
 
 	addObject(object) {
