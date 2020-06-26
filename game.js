@@ -5,10 +5,15 @@ import { WalkMan } from "./gameObjects/walkMan.js";
 import { KeyboardInput } from "./inputs/keyboardInput.js";
 import { KeyMap } from "./inputs/keyMap.js";
 import { GrassScene } from "./scenes/grassScene.js";
-import { PositionRender } from "./graphics/renderProxy.js";
+import { PositionRender } from "./graphics/positionRender.js";
 import { Closer } from "./gameObjects/closer.js";
-import { Body } from "./gameObjects/bodies.js";
-import { ViewPort } from "./graphics/viewPort.js";
+import { Body, BodyDecorator } from "./gameObjects/bodies.js";
+import { ViewPort } from "./gameObjects/viewPort.js";
+import { WhiteWolker } from "./gameObjects/whiteWolker.js";
+import { RndWolk } from "./inputs/rndWolk.js";
+import { Vector2, Vector3 } from "./geometry/vectors.js";
+import { IBody } from "./gameObjects/common.js";
+import { throwIfNotInstance } from "./tools/utils.js";
 
 const settings = new Settings();
 
@@ -46,7 +51,79 @@ tiles.addEventListener("load", () => {
 	scene.addObject(wm);
 	scene.addObject(viewPort);
 
-	engine.start([scene]);
+	const wws = new WWSpawner(scene, render, 2000, 10,
+		new ScaledBody(new Vector3(5, 5),
+			new ShiftedBody(new Vector3(-25, -25), wm.body)));
+
+	engine.start(scene);
 
 }, false);
 tiles.src = 'tiles.png';
+
+
+class WWSpawner {
+	constructor(scene, render, interval, startNum, area) {
+		let i = startNum;
+		if (area instanceof IBody) {
+			console.log(area);
+
+			setInterval(() => {
+				scene.addObject(
+					new WhiteWolker(
+						"WhiteWolker" + i,
+						Math.random() * area.size.x + area.pos.x,
+						Math.random() * area.size.y + area.pos.y,
+						new RndWolk(),
+						tiles,
+						render
+					)
+				);
+				i++;
+			}, interval);
+		}
+		else if (Array.isArray(area))
+			setInterval(() => {
+				const pos = area[Math.random() * (area.length - 1)];
+				scene.addObject(
+					new WhiteWolker(
+						"WhiteWolker" + i,
+						pos.x,
+						pos.y,
+						new RndWolk(),
+						tiles,
+						render
+					)
+				)
+			}
+			);
+	}
+}
+
+
+class ShiftedBody extends BodyDecorator {
+	#shift;
+	constructor(shift, object) {
+		super(object);
+
+		this.#shift = throwIfNotInstance(shift, Vector2);
+	}
+
+	get pos() {
+		const pos = super.pos;
+		return new Vector3(pos.x, pos.y, pos.z).
+			add(this.#shift);
+	}
+}
+
+class ScaledBody extends BodyDecorator {
+	#scale;
+	constructor(scale, object) {
+		super(object);
+		this.#scale = throwIfNotInstance(scale, Vector2);
+	}
+
+	get size() {
+		const size = super.size;
+		return new Vector3(super.size.x * this.#scale.x, super.size.y * this.#scale.y, super.size.z);
+	}
+}

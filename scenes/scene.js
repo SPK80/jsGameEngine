@@ -5,7 +5,7 @@ import { Composite, SortingComposite } from "../gameObjects/composite.js";
 export class Scene extends IGameObject {
 	#assembly;
 
-	constructor(objects, render) {
+	constructor(objects) {
 		super();
 		this.#assembly = new SortingComposite(
 			new Composite(objects));

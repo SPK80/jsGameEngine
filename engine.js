@@ -25,7 +25,7 @@ export class Engine {
 	// 	{ action: 'moveLeft', keys: [KeyMap.KEYS.LEFT] },
 	// ]));
 
-	start(objects) {
+	start(scene) {
 		// if (!(scene instanceof IUpdating)) return;
 		// activeScene.setInput('Pers', this.#keyBoardInput);
 		this.#pause = false;
@@ -33,10 +33,7 @@ export class Engine {
 		requestAnimationFrame(function render() {
 			if (!_this.#pause) {
 				// activeScene.update({ render: _this.#render });
-				objects.forEach(obj => {
-					obj.update();
-				});
-				
+				scene.update();
 			}
 			requestAnimationFrame(render);
 		});

@@ -17,12 +17,6 @@ export class CanvasRender extends AbstractRender {
 	}
 
 	updateContext(wi, he, bkColor, scale) {
-		// let haveParam = false;
-		// if (isValidNumber(wi)) { this.#width = wi; haveParam = true; }
-		// if (isValidNumber(he)) { this.#height = he; haveParam = true; }
-		// if (isValidNumber(scale)) { this.#scale = scale; haveParam = true; }
-		// if (isValidHex(bkColor)) { this.#bkColor = bkColor; haveParam = true; }
-		// if (!haveParam) return; //no one param!
 		this.#width = throwIfNotNumber(wi);
 		this.#height = throwIfNotNumber(he);
 		this.#scale = throwIfNotNumber(scale);
@@ -46,7 +40,8 @@ export class CanvasRender extends AbstractRender {
 		this.#ctx = cnv.getContext('2d');
 	}
 
-	///Implement AbstractRender
+	//#region Implement AbstractRender
+
 	clear(x, y, wi, he) {
 		this.#ctx.clearRect(x, y, wi, he);
 	}
@@ -101,4 +96,6 @@ export class CanvasRender extends AbstractRender {
 			x, y, wi, he
 		);
 	}
+
+	//#endregion
 }
