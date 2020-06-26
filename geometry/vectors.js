@@ -77,3 +77,38 @@ export class Vector3 extends Vector2 {
 		return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
 	}
 }
+
+export class IVector {
+	get x() { };
+	get y() { };
+	
+
+
+
+}
+
+export class Vector2Decorator {
+
+
+}
+
+export class ShiftedVector2 {
+	#shift;
+	#vector;
+
+	constructor(shift, vector) {
+		this.#vector = throwIfNotInstance(vector, Vector2);
+		this.#shift = throwIfNotInstance(shift, Vector2);
+	}
+
+	get x() {
+		return this.#vector.x + this.#shift.x;
+	}
+
+	add(vector) {
+		this.#vector.add(vector);
+		return this;
+	}
+
+
+}

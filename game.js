@@ -55,11 +55,11 @@ tiles.addEventListener("load", () => {
 		new ScaledBody(new Vector3(5, 5),
 			new ShiftedBody(new Vector3(-25, -25), wm.body)));
 
+
 	engine.start(scene);
 
 }, false);
 tiles.src = 'tiles.png';
-
 
 class WWSpawner {
 	constructor(scene, render, interval, startNum, area) {
@@ -126,4 +126,9 @@ class ScaledBody extends BodyDecorator {
 		const size = super.size;
 		return new Vector3(super.size.x * this.#scale.x, super.size.y * this.#scale.y, super.size.z);
 	}
+}
+
+class PosGenerator {
+	get x() { }
+	get y() { }
 }
