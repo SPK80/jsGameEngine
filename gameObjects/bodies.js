@@ -90,6 +90,35 @@ export class Moving extends BodyDecorator {
 	}
 }
 
+
+export class ShiftedBody extends BodyDecorator {
+	#shift;
+	constructor(shift, object) {
+		super(object);
+
+		this.#shift = throwIfNotInstance(shift, Vector2);
+	}
+
+	get pos() {
+		const pos = super.pos;
+		return new Vector3(pos.x, pos.y, pos.z).
+			add(this.#shift);
+	}
+}
+
+export class ScaledBody extends BodyDecorator {
+	#scale;
+	constructor(scale, object) {
+		super(object);
+		this.#scale = throwIfNotInstance(scale, Vector2);
+	}
+
+	get size() {
+		const size = super.size;
+		return new Vector3(super.size.x * this.#scale.x, super.size.y * this.#scale.y, super.size.z);
+	}
+}
+
 // export class Interation extends BodyDecorator {
 // 	// #target;
 
