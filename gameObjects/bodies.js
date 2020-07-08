@@ -90,7 +90,6 @@ export class Moving extends BodyDecorator {
 	}
 }
 
-
 export class ShiftedBody extends BodyDecorator {
 	#shift;
 	constructor(shift, object) {
@@ -119,35 +118,21 @@ export class ScaledBody extends BodyDecorator {
 	}
 }
 
-// export class Interation extends BodyDecorator {
-// 	// #target;
+export class InteractiveBody extends BodyDecorator {
+	#targets;
+	#behavior = () => { }
 
-// 	constructor(object) {
-// 		super(object);
-// 		// this.#target = target;
-// 	}
+	constructor(targets, behavior, object) {
+		super(object);
+		this.#targets = throwIfNotInstance(targets, Input);
+		this.#behavior = behavior;
+	}
 
-// 	check(target) {
-// 		target.pos
-// 	}
-
-// 	update() {
-// 		super.update();
-// 	}
-// }
-
-// export class Behavior extends BodyDecorator {
-// #reactions;
-// 	constructor(object, reactions) {
-// 		super(object);
-// 		this.#reactions = reactions;
-
-// 	}
-
-// 	update() {
-// 		super.update();
-
-// 		// this.#reactions.do();
-// 	}
-
-// }
+	update() {
+		super.update();
+		const targets = this.#targets.get();
+		targets.forEach(target => {
+			this.#behavior(this, target);
+		});
+	}
+}

@@ -1,3 +1,6 @@
+import { throwIfNotInstance } from "../tools/utils";
+import { IBody } from "../gameObjects/common";
+
 class RectIntersect {
 	constructor(shape) {
 		const includesX = function (x) {
@@ -17,14 +20,4 @@ class RectIntersect {
 		//     return ((this.includesX(obj.x) || insideX(shape.x)) && (shape.includesY(obj.y) || insideY(shape.y)))
 		// }
 	}
-}
-
-class PoligonIntersect {
-	constructor(poligon) {
-
-	}
-}
-
-function Intersect(pa, pb) {
-
 }
