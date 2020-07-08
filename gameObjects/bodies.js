@@ -90,35 +90,49 @@ export class Moving extends BodyDecorator {
 	}
 }
 
-// export class Interation extends BodyDecorator {
-// 	// #target;
+export class ShiftedBody extends BodyDecorator {
+	#shift;
+	constructor(shift, object) {
+		super(object);
 
-// 	constructor(object) {
-// 		super(object);
-// 		// this.#target = target;
-// 	}
+		this.#shift = throwIfNotInstance(shift, Vector2);
+	}
 
-// 	check(target) {
-// 		target.pos
-// 	}
+	get pos() {
+		const pos = super.pos;
+		return new Vector3(pos.x, pos.y, pos.z).
+			add(this.#shift);
+	}
+}
 
-// 	update() {
-// 		super.update();
-// 	}
-// }
+export class ScaledBody extends BodyDecorator {
+	#scale;
+	constructor(scale, object) {
+		super(object);
+		this.#scale = throwIfNotInstance(scale, Vector2);
+	}
 
-// export class Behavior extends BodyDecorator {
-// #reactions;
-// 	constructor(object, reactions) {
-// 		super(object);
-// 		this.#reactions = reactions;
+	get size() {
+		const size = super.size;
+		return new Vector3(super.size.x * this.#scale.x, super.size.y * this.#scale.y, super.size.z);
+	}
+}
 
-// 	}
+export class InteractiveBody extends BodyDecorator {
+	#targets;
+	#behavior = () => { }
 
-// 	update() {
-// 		super.update();
+	constructor(targets, behavior, object) {
+		super(object);
+		this.#targets = throwIfNotInstance(targets, Input);
+		this.#behavior = behavior;
+	}
 
-// 		// this.#reactions.do();
-// 	}
-
-// }
+	update() {
+		super.update();
+		const targets = this.#targets.get();
+		targets.forEach(target => {
+			this.#behavior(this, target);
+		});
+	}
+}

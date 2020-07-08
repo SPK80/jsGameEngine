@@ -18,34 +18,20 @@ export class GrassScene extends Scene {
 		grass.src = "grass.jpg";
 
 		const wws = [];
-		for (let i = 0;i < 9;i++) {
-			wws.push(
-				new WhiteWolker(
-					"WhiteWolker" + i,
-					Math.random() * render.width,
-					Math.random() * render.height,
-					new RndWolk(),
-					tiles,
-					render
-				)
-			);
-		}
+		// for (let i = 0;i < 9;i++) {
+		// 	wws.push(
+		// 		new WhiteWolker(
+		// 			"WhiteWolker" + i,
+		// 			Math.random() * render.width,
+		// 			Math.random() * render.height,
+		// 			new RndWolk(),
+		// 			tiles,
+		// 			render
+		// 		)
+		// 	);
+		// }
 
-		super(wws, render);
-		let i = 10;
-		setInterval(() => {
-			this.addObject(
-				new WhiteWolker(
-					"WhiteWolker" + i,
-					Math.random() * render.width,
-					Math.random() * render.height,
-					new RndWolk(),
-					tiles,
-					render
-				)
-			);
-			i++;
-		}, 2000);
+		super(wws);
 	}
 
 	update() {

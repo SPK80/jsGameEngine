@@ -5,10 +5,15 @@ import { WalkMan } from "./gameObjects/walkMan.js";
 import { KeyboardInput } from "./inputs/keyboardInput.js";
 import { KeyMap } from "./inputs/keyMap.js";
 import { GrassScene } from "./scenes/grassScene.js";
-import { PositionRender } from "./graphics/renderProxy.js";
+import { PositionRender } from "./graphics/positionRender.js";
 import { Closer } from "./gameObjects/closer.js";
-import { Body } from "./gameObjects/bodies.js";
-import { ViewPort } from "./graphics/viewPort.js";
+import { Body, BodyDecorator } from "./gameObjects/bodies.js";
+import { ViewPort } from "./gameObjects/viewPort.js";
+import { Vector2, Vector3 } from "./geometry/vectors.js";
+import { throwIfNotInstance } from "./tools/utils.js";
+import { Spawner } from "./gameObjects/spawner.js";
+import { WhiteWolker } from "./gameObjects/whiteWolker.js";
+import { RndWolk } from "./inputs/rndWolk.js";
 
 const settings = new Settings();
 
@@ -22,7 +27,7 @@ window.onclose = () => {
 	settings.save();
 }
 
-const tiles = new Image();
+export const tiles = new Image();
 tiles.addEventListener("load", () => {
 
 	const kbInput = new KeyboardInput(
@@ -46,7 +51,20 @@ tiles.addEventListener("load", () => {
 	scene.addObject(wm);
 	scene.addObject(viewPort);
 
-	engine.start([scene]);
+	new Spawner(10, () => 2000, (i) => {
+		scene.addObject(
+			new WhiteWolker(
+				"WhiteWolker" + i,
+				Math.random() * wm.body.size.x * 2 + wm.body.pos.x - wm.body.size.x,
+				Math.random() * wm.body.size.y * 2 + wm.body.pos.y - wm.body.size.y,
+				new RndWolk(),
+				tiles,
+				render
+			)
+		);
+	}).start();
+
+	engine.start(scene);
 
 }, false);
 tiles.src = 'tiles.png';

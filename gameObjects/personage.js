@@ -1,4 +1,4 @@
-import { Body, Moving } from "./bodies.js";
+import { Body, Moving, InteractiveBody } from "./bodies.js";
 import { AnimDrawing, EmptyDrawing } from "./drawings.js";
 import { IGameObject } from "./common.js";
 
@@ -13,11 +13,14 @@ export class Personage extends IGameObject {
 	}
 
 	get body() { return this.#moving }
-	constructor(name, x, y, wi, he, input, tiles, animations, render) {
+
+	constructor(name, x, y, wi, he, input,
+		tiles, animations, render, targetsGetter, behavior) {
 		super();
 		this.#name = name;
-		this.#moving = new Moving(input,
-			new Body(x, y, 1, wi, he));
+		this.#moving = new InteractiveBody(targetsGetter, behavior,
+			new Moving(input,
+				new Body(x, y, 1, wi, he));
 
 		this.#assembly =
 			new AnimDrawing(tiles, animations,

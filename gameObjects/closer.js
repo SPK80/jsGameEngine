@@ -1,5 +1,7 @@
 import { Vector2 } from "../geometry/vectors.js";
 import { BodyDecorator } from "./bodies.js";
+import { throwIfNotInstance } from "../tools/utils.js";
+import { IBody } from "./common.js";
 
 export class Closer extends BodyDecorator {
 	#target;
@@ -7,7 +9,7 @@ export class Closer extends BodyDecorator {
 
 	constructor(target, speed, object) {
 		super(object);
-		this.#target = target;
+		this.#target = throwIfNotInstance(target, IBody);
 		this.#speed = speed;
 	}
 
