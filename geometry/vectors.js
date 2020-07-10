@@ -53,7 +53,7 @@ export class Vector3 extends Vector2 {
 
 	scMul(scalar) {
 		super.scMul(scalar);
-		this.z *= scalar;
+		this.#z *= scalar;
 		return this;
 	}
 

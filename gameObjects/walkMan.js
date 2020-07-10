@@ -38,4 +38,8 @@ export class WalkMan extends Personage {
 		};
 		super(name, x, y, 32, 32, input, tiles, anims, render);
 	}
+	update() {
+		super.update();
+		console.log(this.body);
+	}
 }
