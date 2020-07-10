@@ -1,7 +1,7 @@
 import { Input } from "./input.js";
 
 export class LasyInput extends Input {
-	#getter = () => { new []; };
+	#getter = () => [];
 
 	init(getter) {
 		this.#getter = getter;

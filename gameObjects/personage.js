@@ -9,7 +9,7 @@ export class Personage extends IGameObject {
 
 	#assembly;
 	#moving;
-	
+
 	setInput(input) {
 		this.#moving.input = input;
 	}
@@ -26,9 +26,9 @@ export class Personage extends IGameObject {
 		tiles, animations, render, behavior) {
 		super();
 		this.#name = name;
-		this.#moving = new InteractiveBody(this.#targetsInput, behavior,
+		this.#moving = //new InteractiveBody(this.#targetsInput, behavior,
 			new Moving(input,
-				new Body(x, y, 1, wi, he)));
+				new Body(x, y, 1, wi, he));
 
 		this.#assembly =
 			new AnimDrawing(tiles, animations,
@@ -37,5 +37,12 @@ export class Personage extends IGameObject {
 
 	update() {
 		this.#assembly.update();
+		this.#assembly.render.text(
+			this.body.pos.x,
+			this.body.pos.y,
+			`${this.#moving.direction.x} ${this.#moving.direction.y}`,
+			'red',
+			'12px arial',
+			true);
 	}
 }

@@ -1,4 +1,4 @@
-import { IGameObject, IComposite, IInteractive } from "./common.js";
+import { IGameObject, IComposite } from "./common.js";
 import { throwIfNotInstance } from "../tools/utils.js";
 
 export class Composite extends IComposite {
@@ -92,21 +92,3 @@ export class SortingComposite extends CompositeDecorator {
 		this.#sortedZ = false;
 	}
 }
-
-// class InteractiveComposite extends CompositeDecorator {
-// 	update() {
-// 		super.update();
-// 		const items = super.get();
-// 		items.forEach(_item => {
-// 			this.interact(_item);
-// 		});
-// 	}
-
-// 	interact(item) {
-// 		const items = super.get();
-// 		items.forEach(_item => {
-// 			if (item != _item)
-// 				item.interact(_item);
-// 		});
-// 	}
-// }
