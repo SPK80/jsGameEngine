@@ -61,7 +61,6 @@ tiles.addEventListener("load", () => {
 	// 		)
 	// 	);
 	// }).start();
-	// scene.update();
 	engine.start(scene);
 
 }, false);

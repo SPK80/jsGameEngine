@@ -1,7 +1,7 @@
-import { Vector3 } from "../geometry/vectors.js";
-import { BodyDecorator } from "./bodies.js";
-import { throwIfNotInstance } from "../tools/utils.js";
-import { Input } from "../inputs/input.js";
+import { Vector3 } from "../../geometry/vectors.js";
+import { BodyDecorator } from "../bodies.js";
+import { throwIfNotInstance } from "../../tools/utils.js";
+import { Input } from "../../inputs/input.js";
 
 // export class DeltaPosBody extends BodyDecorator {
 // 	#pred = new Vector3();
@@ -38,7 +38,7 @@ export class PhisicsBody extends BodyDecorator {
 		const forces = this.#forces.get();
 		if (forces && forces.length > 0) {
 			forces.forEach(f => force.add(f)); //sum of all forces			
-			console.log(force);
+			// console.log(force);
 		}
 		return force;
 	}
@@ -60,5 +60,9 @@ export class PhisicsBody extends BodyDecorator {
 		const dp = new Vector3(this.#velocity.x, this.#velocity.y, this.#velocity.z).
 			scMul(this.#deltaTime);
 		this.pos.add(dp);
+		if (this.#velocity.length > 0.1)
+			this.#velocity.scMul(0.9);
+		else
+			this.#velocity = new Vector3();
 	}
 }

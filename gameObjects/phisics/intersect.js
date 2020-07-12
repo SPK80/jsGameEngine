@@ -1,5 +1,5 @@
-import { throwIfNotInstance } from "../tools/utils";
-import { IBody } from "../gameObjects/common";
+import { throwIfNotInstance } from "../../tools/utils";
+import { IBody } from "../common";
 
 class RectIntersect {
 	constructor(shape) {

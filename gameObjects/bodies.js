@@ -20,7 +20,6 @@ export class Body extends IBody {
 		this.#pos = new Vector3(x, y, z);
 		this.#size = new Vector3(wi, he, 0);
 
-
 		if (state)
 			this.#state = throwIfNotInstance(state, Input);
 		// console.log(this.#state);
@@ -54,6 +53,7 @@ export class Moving extends BodyDecorator {
 	get input() {
 		return this.#input;
 	}
+
 	set input(input) {
 		this.#input = throwIfNotInstance(input, Input);
 	}
