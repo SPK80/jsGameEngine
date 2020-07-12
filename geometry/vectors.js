@@ -73,7 +73,7 @@ export class Vector3 extends Vector2 {
 		return this;
 	}
 
-	length() {
+	get length() {
 		return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
 	}
 }
@@ -81,7 +81,7 @@ export class Vector3 extends Vector2 {
 export class IVector {
 	get x() { };
 	get y() { };
-	
+
 
 
 

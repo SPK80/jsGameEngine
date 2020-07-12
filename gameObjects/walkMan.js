@@ -40,6 +40,6 @@ export class WalkMan extends Personage {
 	}
 	update() {
 		super.update();
-		console.log(this.body);
+		// console.log(this.body);
 	}
 }

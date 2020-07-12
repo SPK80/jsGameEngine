@@ -4,6 +4,7 @@ import { IGameObject } from "./common.js";
 import { Input } from "../inputs/input.js";
 import { PhisicsBody } from "./phisicsBody.js";
 import { Vector3 } from "../geometry/vectors.js";
+import { clone } from "../tools/utils.js";
 // import { LasyInput } from "../inputs/LasyInput.js";
 
 export class Personage extends IGameObject {
@@ -29,7 +30,7 @@ export class Personage extends IGameObject {
 		tiles, animations, render) {
 		super();
 		this.#name = name;
-		this.#moving = new PhisicsBody(new ForcesSource(input), 0.00001, 1,
+		this.#moving = new PhisicsBody(new ForcesSource(input), 0.1, 0.1,
 			new Body(x, y, 1, wi, he));
 
 		this.#assembly =
@@ -54,17 +55,26 @@ class ForcesSource extends Input {
 	constructor(input) {
 		super();
 		this.#input = input;
+		this.#predActions = [];
 	}
+
+	#predActions = [];
 
 	get() {
 		const actions = this.#input.get();
+
 		const forces = [];
 		actions.forEach(act => {
-			if (act == 'moveRight') forces.push(new Vector3(1, 0, 0));
-			if (act == 'moveLeft') forces.push(new Vector3(-1, 0, 0));
-			if (act == 'moveDown') forces.push(new Vector3(0, 1, 0));
-			if (act == 'moveUp') forces.push(new Vector3(0, -1, 0));
+			console.log(this.#predActions);
+			const inc = this.#predActions.includes(act);
+			if (!inc) {
+				if (act == 'moveRight') forces.push(new Vector3(1, 0, 0));
+				if (act == 'moveLeft') forces.push(new Vector3(-1, 0, 0));
+				if (act == 'moveDown') forces.push(new Vector3(0, 1, 0));
+				if (act == 'moveUp') forces.push(new Vector3(0, -1, 0));
+			}
 		});
+		this.#predActions = actions.slice();
 		return forces;
 	}
 }
