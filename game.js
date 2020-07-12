@@ -49,18 +49,18 @@ tiles.addEventListener("load", () => {
 	scene.addObject(wm);
 	scene.addObject(viewPort);
 
-	// new Spawner(10, () => 2000, (i) => {
-	// 	scene.addObject(
-	// 		new WhiteWolker(
-	// 			"WhiteWolker" + i,
-	// 			Math.random() * wm.body.size.x * 2 + wm.body.pos.x - wm.body.size.x,
-	// 			Math.random() * wm.body.size.y * 2 + wm.body.pos.y - wm.body.size.y,
-	// 			new RndWolk(),
-	// 			tiles,
-	// 			render
-	// 		)
-	// 	);
-	// }).start();
+	new Spawner(10, () => 2000, (i) => {
+		scene.addObject(
+			new WhiteWolker(
+				"WhiteWolker" + i,
+				Math.random() * wm.body.size.x * 2 + wm.body.pos.x - wm.body.size.x,
+				Math.random() * wm.body.size.y * 2 + wm.body.pos.y - wm.body.size.y,
+				new RndWolk(),
+				tiles,
+				render
+			)
+		);
+	}).start();
 	engine.start(scene);
 
 }, false);

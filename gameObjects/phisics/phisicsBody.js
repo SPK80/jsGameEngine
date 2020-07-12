@@ -3,28 +3,6 @@ import { BodyDecorator } from "../bodies.js";
 import { throwIfNotInstance } from "../../tools/utils.js";
 import { Input } from "../../inputs/input.js";
 
-// export class DeltaPosBody extends BodyDecorator {
-// 	#pred = new Vector3();
-// 	get pos() {
-// 		return new Vector3(
-// 			this.pos.x,
-// 			this.pos.y,
-// 			this.pos.z
-// 		).sub(this.#pred);
-// 	}
-// }
-
-// export class DeltaSizeBody extends BodyDecorator {
-// 	#pred = new Vector3();
-// 	get size() {
-// 		return new Vector3(
-// 			this.pos.x,
-// 			this.pos.y,
-// 			this.pos.z
-// 		).sub(this.#pred);
-// 	}
-// }
-
 export class PhisicsBody extends BodyDecorator {
 	#mass = 1;
 	#deltaTime = 0.01;
@@ -43,6 +21,8 @@ export class PhisicsBody extends BodyDecorator {
 		return force;
 	}
 
+	#resistance = 0.7;
+
 	constructor(forcesSource, deltaTime, mass, object) {
 		super(object);
 		this.#forces = throwIfNotInstance(forcesSource, Input);
@@ -53,16 +33,20 @@ export class PhisicsBody extends BodyDecorator {
 	update() {
 		super.update();
 		const force = this.force;
-		if (force.length > 0) {
+		const fl = force.length;
+		if (fl > 0) {
 			const accel = force.scMul(1 / this.#mass);
 			this.#velocity.add(accel.scMul(this.#deltaTime));
 		}
 		const dp = new Vector3(this.#velocity.x, this.#velocity.y, this.#velocity.z).
 			scMul(this.#deltaTime);
 		this.pos.add(dp);
-		if (this.#velocity.length > 0.1)
-			this.#velocity.scMul(0.9);
-		else
+
+
+		if (fl < 0.1)
+			this.#velocity.scMul(this.#resistance);
+
+		if (this.#velocity.length < 0.1)
 			this.#velocity = new Vector3();
 	}
 }
