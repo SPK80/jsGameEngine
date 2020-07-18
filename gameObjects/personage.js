@@ -2,7 +2,7 @@ import { Body, Moving, InteractiveBody } from "./bodies.js";
 import { AnimDrawing, EmptyDrawing } from "./drawings.js";
 import { IGameObject } from "./common.js";
 import { Input } from "../inputs/input.js";
-import { PhisicsBody } from "./phisics/phisicsBody.js";
+import { MassBody, NonMassBody } from "./phisics/phisicsBody.js";
 import { Vector3 } from "../geometry/vectors.js";
 import { clone } from "../tools/utils.js";
 import { State } from "./state.js";
@@ -31,7 +31,7 @@ export class Personage extends IGameObject {
 		tiles, animations, render) {
 		super();
 		this.#name = name;
-		this.#body = new PhisicsBody(new ForcesSource(input), 0.1, 1,
+		this.#body = new MassBody(new ForcesSource(input), 0.1, 2,
 			new Body(x, y, 1, wi, he, new LastInputState(input)));
 
 		this.#assembly = new AnimDrawing(tiles, animations,

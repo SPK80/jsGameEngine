@@ -92,3 +92,29 @@ export class SortingComposite extends CompositeDecorator {
 		this.#sortedZ = false;
 	}
 }
+
+export class ResistantComposite extends CompositeDecorator {
+	#resistance;
+	get resistance() {
+		return this.#resistance;
+	}
+	set resistance(value) {
+		this.#resistance = value;
+		this.#factor = 1 / (1 + value);
+	}
+
+	#factor = 1;
+
+	constructor(resistance, object) {
+		super(object);
+		this.resistance = resistance;
+	}
+
+	update() {
+		super.update();
+		this.get().forEach((item) => {
+			const v = item.body.velocity;
+			if (v) v.scMul(this.#factor)
+		});
+	}
+}

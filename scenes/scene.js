@@ -1,5 +1,5 @@
 import { IGameObject } from "../gameObjects/common.js";
-import { Composite, SortingComposite } from "../gameObjects/composite.js";
+import { Composite, SortingComposite, ResistantComposite } from "../gameObjects/composite.js";
 
 
 export class Scene extends IGameObject {
@@ -7,8 +7,9 @@ export class Scene extends IGameObject {
 
 	constructor(objects) {
 		super();
-		this.#assembly = new SortingComposite(
-			new Composite(objects));
+		this.#assembly = new ResistantComposite(0.1,
+			new SortingComposite(
+				new Composite(objects)));
 	}
 
 	addObject(object) {
