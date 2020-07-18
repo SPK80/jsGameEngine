@@ -104,6 +104,7 @@ export class ResistantComposite extends CompositeDecorator {
 	}
 
 	#factor = 1;
+	#minSpeed = 0.01;
 
 	constructor(resistance, object) {
 		super(object);
@@ -114,7 +115,11 @@ export class ResistantComposite extends CompositeDecorator {
 		super.update();
 		this.get().forEach((item) => {
 			const v = item.body.velocity;
-			if (v) v.scMul(this.#factor)
+			if (v) {
+				if (v.length > this.#minSpeed)
+					v.scMul(this.#factor);
+				else v.sub(v);
+			}
 		});
 	}
 }

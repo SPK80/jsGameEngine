@@ -31,7 +31,7 @@ export class Personage extends IGameObject {
 		tiles, animations, render) {
 		super();
 		this.#name = name;
-		this.#body = new MassBody(new ForcesSource(input), 0.1, 2,
+		this.#body = new MassBody(new ForcesSource(input), 0.1, 1,
 			new Body(x, y, 1, wi, he, new LastInputState(input)));
 
 		this.#assembly = new AnimDrawing(tiles, animations,
@@ -40,13 +40,13 @@ export class Personage extends IGameObject {
 
 	update() {
 		this.#assembly.update();
-		this.#assembly.render.text(
-			this.body.pos.x,
-			this.body.pos.y,
-			`${this.#body.velocity.x} ${this.#body.velocity.y}`,
-			'red',
-			'12px arial',
-			true);
+		// this.#assembly.render.text(
+		// 	this.body.pos.x,
+		// 	this.body.pos.y,
+		// 	`${this.#body.velocity.x} ${this.#body.velocity.y}`,
+		// 	'red',
+		// 	'12px arial',
+		// 	true);
 	}
 }
 

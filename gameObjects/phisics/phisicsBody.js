@@ -2,6 +2,7 @@ import { Vector3 } from "../../geometry/vectors.js";
 import { BodyDecorator } from "../bodies.js";
 import { throwIfNotInstance } from "../../tools/utils.js";
 import { Input } from "../../inputs/input.js";
+import { DrawingDecorator, AnimDrawing } from "../drawings.js";
 
 export class NonMassBody extends BodyDecorator {
 	#maxSpeed = 100;
@@ -45,6 +46,13 @@ export class NonMassBody extends BodyDecorator {
 	update() {
 		super.update();
 		this._updateVelocity();
+		
+		// if (this.#velocity.length < 0.1 && this.state.get() != 'idle') {
+		// 	this.state.set('idle');
+		// 	// this.#velocity = new Vector3();
+		// 	console.log('idle');
+		// }
+
 		this._updatePos();
 	}
 }
@@ -63,5 +71,11 @@ export class MassBody extends NonMassBody {
 			const dv = pulse.scMul(1 / this.#mass);
 			this.velocity.add(dv);
 		}
+	}
+}
+
+export class PhisicsAnimDrawing extends AnimDrawing {
+	update() {
+		super.update();
 	}
 }
