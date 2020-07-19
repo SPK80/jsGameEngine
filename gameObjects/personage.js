@@ -46,7 +46,7 @@ export class Personage extends IGameObject {
 		this.#assembly.render.text(
 			this.body.pos.x,
 			this.body.pos.y,
-			`${this.#body.state} ${vx} ${vy}`,
+			`${this.#body.state.get()} ${vx} ${vy}`,
 			'red',
 			'12px arial',
 			true);

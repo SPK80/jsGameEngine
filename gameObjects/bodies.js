@@ -2,6 +2,7 @@ import { throwIfNotInstance } from "../tools/utils.js";
 import { Vector2, Vector3 } from "../geometry/vectors.js";
 import { Input } from "../inputs/input.js";
 import { IBody } from "./common.js";
+import { State, IdleStates, MoveStates } from "./state.js";
 
 export class Body extends IBody {
 
@@ -11,19 +12,20 @@ export class Body extends IBody {
 	#size = new Vector3();
 	get size() { return this.#size }
 
-	#state = '';
+	#state = new State([
+		IdleStates.idle,
+		MoveStates.moveDown,
+		MoveStates.moveUp,
+		MoveStates.moveLeft,
+		MoveStates.moveRight
+	]);
 	get state() { return this.#state }
-	set state(value) {
-		if (value)
-			this.#state = value;
-		else
-			this.#state = '';
-	}
 
 	constructor(x, y, z, wi, he) {
 		super();
 		this.#pos = new Vector3(x, y, z);
 		this.#size = new Vector3(wi, he, 0);
+		console.log(this.#state);
 	}
 
 	update() {
@@ -36,7 +38,6 @@ export class BodyDecorator extends IBody {
 	get pos() { return this.#object.pos }
 	get size() { return this.#object.size }
 	get state() { return this.#object.state }
-	set state(value) { this.#object.state = value }
 	#object;
 
 	constructor(object) {
@@ -48,49 +49,6 @@ export class BodyDecorator extends IBody {
 		this.#object.update();
 	}
 }
-
-// export class Moving extends BodyDecorator {
-
-// 	#input;
-// 	get input() {
-// 		return this.#input;
-// 	}
-
-// 	set input(input) {
-// 		this.#input = throwIfNotInstance(input, Input);
-// 	}
-
-// 	#speed = 1;
-// 	get speed() { return this.#speed };
-
-// 	#direction = new Vector2(0, 0);
-// 	get direction() { return this.#direction };
-
-// 	constructor(input, object) {
-// 		super(object);
-// 		this.input = input;
-// 	}
-
-// 	update() {
-// 		super.update();
-
-// 		this.#direction = new Vector2(0, 0);
-// 		const commands = this.#input.get();
-// 		if (commands.length > 0)
-// 			this.state.set(commands[commands.length - 1]);
-// 		commands.forEach(comm => {
-// 			if (comm == 'moveRight') this.#direction.add(new Vector2(1, 0));
-// 			if (comm == 'moveLeft') this.#direction.add(new Vector2(-1, 0));
-// 			if (comm == 'moveDown') this.#direction.add(new Vector2(0, 1));
-// 			if (comm == 'moveUp') this.#direction.add(new Vector2(0, -1));
-// 		});
-
-// 		if (Math.abs(this.#direction.x) < 1 && Math.abs(this.#direction.y) < 1) return;
-// 		this.#direction.normalize().scMul(this.#speed);
-
-// 		this.pos.add(this.#direction);
-// 	}
-// }
 
 export class ShiftedBody extends BodyDecorator {
 	#shift;

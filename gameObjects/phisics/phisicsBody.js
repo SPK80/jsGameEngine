@@ -3,6 +3,7 @@ import { BodyDecorator } from "../bodies.js";
 import { throwIfNotInstance } from "../../tools/utils.js";
 import { Input } from "../../inputs/input.js";
 import { AnimDrawing } from "../drawings.js";
+import { MoveStates, IdleStates } from "../state.js";
 
 export class NonMassBody extends BodyDecorator {
 	#maxSpeed = 100;
@@ -49,7 +50,7 @@ export class NonMassBody extends BodyDecorator {
 	_updateState() {
 		const newState = this.#stateQualifier.get();
 		if (newState) {
-			this.state = newState;
+			this.state.set(newState);
 			// if (this.state == 'idle' && this.#velocity.length > 0) {
 			// 	this.#velocity = new Vector3();
 			// }
@@ -105,16 +106,17 @@ class MoveStateQualifier {
 		if (ax <= this.#threshold &&
 			ay <= this.#threshold) {
 			// console.log('idle');
-			return 'idle';
+			return IdleStates.idle;
 		}
 
 		const pulses = this.#pulses.get();
 		if (pulses && pulses.length > 0) {
 			const p = pulses[pulses.length - 1];
-			if (p.x > this.#threshold) return 'moveRight';
-			if (p.x < -this.#threshold) return 'moveLeft';
-			if (p.y > this.#threshold) return 'moveDown';
-			if (p.y < -this.#threshold) return 'moveUp';
+
+			if (p.x > this.#threshold) return MoveStates.moveRight;
+			if (p.x < -this.#threshold) return MoveStates.moveLeft;
+			if (p.y > this.#threshold) return MoveStates.moveDown;
+			if (p.y < -this.#threshold) return MoveStates.moveUp;
 		}
 		// return 'idle';
 		// if (ax > ay) {
