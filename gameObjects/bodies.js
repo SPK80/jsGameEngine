@@ -24,13 +24,10 @@ export class Body extends IBody {
 	constructor(x, y, z, wi, he) {
 		super();
 		this.#pos = new Vector3(x, y, z);
-		this.#size = new Vector3(wi, he, 0);
-		console.log(this.#state);
+		this.#size = new Vector3(wi, he, 0);		
 	}
 
-	update() {
-		// console.log('Body', this);
-	}
+	update() {	}
 }
 
 export class BodyDecorator extends IBody {

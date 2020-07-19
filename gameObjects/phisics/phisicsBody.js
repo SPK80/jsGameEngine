@@ -2,7 +2,6 @@ import { Vector3 } from "../../geometry/vectors.js";
 import { BodyDecorator } from "../bodies.js";
 import { throwIfNotInstance } from "../../tools/utils.js";
 import { Input } from "../../inputs/input.js";
-import { AnimDrawing } from "../drawings.js";
 import { MoveStates, IdleStates } from "../state.js";
 
 export class NonMassBody extends BodyDecorator {
@@ -68,8 +67,8 @@ export class NonMassBody extends BodyDecorator {
 export class MassBody extends NonMassBody {
 	#mass = 1;
 
-	constructor(forcesSource, deltaTime, mass, object) {
-		super(forcesSource, deltaTime, 100, object);
+	constructor(pulsesSource, deltaTime, mass, object) {
+		super(pulsesSource, deltaTime, 100, object);
 		this.#mass = mass;
 	}
 
@@ -79,12 +78,6 @@ export class MassBody extends NonMassBody {
 			const dv = pulse.scMul(1 / this.#mass);
 			this.velocity.add(dv);
 		}
-	}
-}
-
-export class PhisicsAnimDrawing extends AnimDrawing {
-	update() {
-		super.update();
 	}
 }
 
@@ -105,7 +98,6 @@ class MoveStateQualifier {
 		const ay = Math.abs(v.y);
 		if (ax <= this.#threshold &&
 			ay <= this.#threshold) {
-			// console.log('idle');
 			return IdleStates.idle;
 		}
 
@@ -118,15 +110,5 @@ class MoveStateQualifier {
 			if (p.y > this.#threshold) return MoveStates.moveDown;
 			if (p.y < -this.#threshold) return MoveStates.moveUp;
 		}
-		// return 'idle';
-		// if (ax > ay) {
-		// 	if (v.x > this.#threshold) return 'moveRight';
-		// 	if (v.x < -this.#threshold) return 'moveLeft';
-		// }
-		// else {
-		// 	if (v.y > this.#threshold) return 'moveDown';
-		// 	if (v.y < -this.#threshold) return 'moveUp';
-		// }
-
 	}
 }

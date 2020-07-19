@@ -21,17 +21,11 @@ export class Personage extends IGameObject {
 
 	get body() { return this.#body }
 
-	// init(targetsInput) {
-	// 	this.#targetsInput.init(targetsInput.get);
-	// }
-
-	// #targetsInput = new LasyInput();
-
 	constructor(name, x, y, wi, he, input,
 		tiles, animations, render) {
 		super();
 		this.#name = name;
-		this.#body = new MassBody(new ForcesSource(input), 0.1, 1,
+		this.#body = new MassBody(new PulsesSource(input), 0.1, 1,
 			new Body(x, y, 1, wi, he));
 
 		this.#assembly = new AnimDrawing(tiles, animations,
@@ -53,7 +47,7 @@ export class Personage extends IGameObject {
 	}
 }
 
-class ForcesSource extends Input {
+class PulsesSource extends Input {
 	#input;
 	constructor(input) {
 		super();
@@ -65,19 +59,19 @@ class ForcesSource extends Input {
 	get() {
 		const actions = this.#input.get();
 
-		const forces = [];
+		const pulses = [];
 		actions.forEach(act => {
 			// console.log(this.#predActions);
 			//if (!this.#predActions.includes(act)) {
-			if (act == 'moveRight') forces.push(new Vector3(1, 0, 0));
-			if (act == 'moveLeft') forces.push(new Vector3(-1, 0, 0));
-			if (act == 'moveDown') forces.push(new Vector3(0, 1, 0));
-			if (act == 'moveUp') forces.push(new Vector3(0, -1, 0));
+			if (act == 'moveRight') pulses.push(new Vector3(1, 0, 0));
+			if (act == 'moveLeft') pulses.push(new Vector3(-1, 0, 0));
+			if (act == 'moveDown') pulses.push(new Vector3(0, 1, 0));
+			if (act == 'moveUp') pulses.push(new Vector3(0, -1, 0));
 			// if (act == 'idle') forces.push(new Vector3(0, 0, 0));
 			//}
 		});
 		// this.#predActions = actions.slice();
-		return forces;
+		return pulses;
 	}
 }
 
