@@ -2,7 +2,7 @@ import { Vector3 } from "../../geometry/vectors.js";
 import { BodyDecorator } from "../bodies.js";
 import { throwIfNotInstance } from "../../tools/utils.js";
 import { Input } from "../../inputs/input.js";
-import { DrawingDecorator, AnimDrawing } from "../drawings.js";
+import { AnimDrawing } from "../drawings.js";
 
 export class NonMassBody extends BodyDecorator {
 	#maxSpeed = 100;
@@ -43,16 +43,18 @@ export class NonMassBody extends BodyDecorator {
 		}
 	}
 
+	_updateState() {
+		if (this.#velocity.length < 0.05) {
+			if (this.state != 'idle') this.state.set('idle');
+			this.#velocity = new Vector3();
+			// console.log('idle', this.#velocity);
+		}
+	}
+
 	update() {
 		super.update();
 		this._updateVelocity();
-		
-		// if (this.#velocity.length < 0.1 && this.state.get() != 'idle') {
-		// 	this.state.set('idle');
-		// 	// this.#velocity = new Vector3();
-		// 	console.log('idle');
-		// }
-
+		this._updateState();
 		this._updatePos();
 	}
 }

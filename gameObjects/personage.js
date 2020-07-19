@@ -1,12 +1,12 @@
-import { Body, Moving, InteractiveBody } from "./bodies.js";
+import { Body } from "./bodies.js";
 import { AnimDrawing, EmptyDrawing } from "./drawings.js";
 import { IGameObject } from "./common.js";
 import { Input } from "../inputs/input.js";
 import { MassBody, NonMassBody } from "./phisics/phisicsBody.js";
 import { Vector3 } from "../geometry/vectors.js";
-import { clone } from "../tools/utils.js";
 import { State } from "./state.js";
-// import { LasyInput } from "../inputs/LasyInput.js";
+import { numberRound } from "../tools/extentions.js";
+numberRound();
 
 export class Personage extends IGameObject {
 	#name = 'noName';
@@ -40,13 +40,16 @@ export class Personage extends IGameObject {
 
 	update() {
 		this.#assembly.update();
-		// this.#assembly.render.text(
-		// 	this.body.pos.x,
-		// 	this.body.pos.y,
-		// 	`${this.#body.velocity.x} ${this.#body.velocity.y}`,
-		// 	'red',
-		// 	'12px arial',
-		// 	true);
+
+		const vx = this.#body.velocity.x.round(2);
+		const vy = this.#body.velocity.y.round(2);
+		this.#assembly.render.text(
+			this.body.pos.x,
+			this.body.pos.y,
+			`${this.#body.state.get()} ${vx} ${vy}`,
+			'red',
+			'12px arial',
+			true);
 	}
 }
 
@@ -90,7 +93,7 @@ class LastInputState extends State {
 		const inp = this.#input.get();
 		if (inp && inp.length > 0) {
 			const state = inp[inp.length - 1];
-			this.set(state);
+			// this.set(state);
 			return state;
 		}
 		else

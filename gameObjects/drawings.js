@@ -87,6 +87,7 @@ export class AnimDrawing extends DrawingDecorator {
 		const _state = this.body.state.get();
 		this.#animator.start(_state);
 	}
+	
 	update() {
 		super.update();
 		this._startAnim();
