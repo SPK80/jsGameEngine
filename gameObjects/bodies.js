@@ -2,7 +2,6 @@ import { throwIfNotInstance } from "../tools/utils.js";
 import { Vector2, Vector3 } from "../geometry/vectors.js";
 import { Input } from "../inputs/input.js";
 import { IBody } from "./common.js";
-import { State } from "./state.js";
 
 export class Body extends IBody {
 
@@ -12,17 +11,19 @@ export class Body extends IBody {
 	#size = new Vector3();
 	get size() { return this.#size }
 
-	#state = new State();
+	#state = '';
 	get state() { return this.#state }
+	set state(value) {
+		if (value)
+			this.#state = value;
+		else
+			this.#state = '';
+	}
 
-	constructor(x, y, z, wi, he, state) {
+	constructor(x, y, z, wi, he) {
 		super();
 		this.#pos = new Vector3(x, y, z);
 		this.#size = new Vector3(wi, he, 0);
-
-		if (state)
-			this.#state = throwIfNotInstance(state, Input);
-		// console.log(this.#state);
 	}
 
 	update() {
@@ -35,6 +36,7 @@ export class BodyDecorator extends IBody {
 	get pos() { return this.#object.pos }
 	get size() { return this.#object.size }
 	get state() { return this.#object.state }
+	set state(value) { this.#object.state = value }
 	#object;
 
 	constructor(object) {

@@ -22,11 +22,14 @@ export class NonMassBody extends BodyDecorator {
 		return pulse;
 	}
 
+	#stateQualifier;
+
 	constructor(pulsesSource, deltaTime, maxSpeed, object) {
 		super(object);
 		this.#pulses = throwIfNotInstance(pulsesSource, Input);
 		this.#deltaTime = deltaTime;
 		this.#maxSpeed = maxSpeed;
+		this.#stateQualifier = new MoveStateQualifier(this.velocity, pulsesSource, 0.5);
 	}
 
 	_updatePos() {
@@ -44,10 +47,12 @@ export class NonMassBody extends BodyDecorator {
 	}
 
 	_updateState() {
-		if (this.#velocity.length < 0.05) {
-			if (this.state != 'idle') this.state.set('idle');
-			this.#velocity = new Vector3();
-			// console.log('idle', this.#velocity);
+		const newState = this.#stateQualifier.get();
+		if (newState) {
+			this.state = newState;
+			// if (this.state == 'idle' && this.#velocity.length > 0) {
+			// 	this.#velocity = new Vector3();
+			// }
 		}
 	}
 
@@ -79,5 +84,47 @@ export class MassBody extends NonMassBody {
 export class PhisicsAnimDrawing extends AnimDrawing {
 	update() {
 		super.update();
+	}
+}
+
+class MoveStateQualifier {
+	#velocity;
+	#pulses;
+	#threshold = 0.001;
+
+	constructor(velocity, pulsesSource, threshold = 0.1) {
+		this.#velocity = velocity;
+		this.#pulses = pulsesSource;
+		this.#threshold = threshold;
+	}
+
+	get() {
+		const v = this.#velocity;
+		const ax = Math.abs(v.x);
+		const ay = Math.abs(v.y);
+		if (ax <= this.#threshold &&
+			ay <= this.#threshold) {
+			// console.log('idle');
+			return 'idle';
+		}
+
+		const pulses = this.#pulses.get();
+		if (pulses && pulses.length > 0) {
+			const p = pulses[pulses.length - 1];
+			if (p.x > this.#threshold) return 'moveRight';
+			if (p.x < -this.#threshold) return 'moveLeft';
+			if (p.y > this.#threshold) return 'moveDown';
+			if (p.y < -this.#threshold) return 'moveUp';
+		}
+		// return 'idle';
+		// if (ax > ay) {
+		// 	if (v.x > this.#threshold) return 'moveRight';
+		// 	if (v.x < -this.#threshold) return 'moveLeft';
+		// }
+		// else {
+		// 	if (v.y > this.#threshold) return 'moveDown';
+		// 	if (v.y < -this.#threshold) return 'moveUp';
+		// }
+
 	}
 }

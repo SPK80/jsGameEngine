@@ -32,7 +32,7 @@ export class Personage extends IGameObject {
 		super();
 		this.#name = name;
 		this.#body = new MassBody(new ForcesSource(input), 0.1, 1,
-			new Body(x, y, 1, wi, he, new LastInputState(input)));
+			new Body(x, y, 1, wi, he));
 
 		this.#assembly = new AnimDrawing(tiles, animations,
 			new EmptyDrawing(render, this.#body));
@@ -46,7 +46,7 @@ export class Personage extends IGameObject {
 		this.#assembly.render.text(
 			this.body.pos.x,
 			this.body.pos.y,
-			`${this.#body.state.get()} ${vx} ${vy}`,
+			`${this.#body.state} ${vx} ${vy}`,
 			'red',
 			'12px arial',
 			true);
