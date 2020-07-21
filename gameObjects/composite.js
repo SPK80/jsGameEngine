@@ -68,7 +68,7 @@ export class SortingComposite extends CompositeDecorator {
 	update() {
 		this.get()
 			.sort((a, b) => a.body.pos.y - b.body.pos.y)
-			.forEach((item) => {
+			.forEach(item => {
 				item.update();
 			});
 	}

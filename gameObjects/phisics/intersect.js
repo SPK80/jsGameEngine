@@ -1,38 +1,37 @@
-import { throwIfNotInstance } from "../../tools/utils";
-import { IBody } from "../common";
+import { Body } from "../bodies.js";
+import { CompositeDecorator } from "../composite.js";
 
-class RectIntersect {
-	constructor(shape) {
-		const includesX = function (x) {
-			return (x > shape.x && x < shape.right());
-		}
+export class IntersectComposite extends CompositeDecorator {
+	#intersectDetect;
 
-		const includesY = function (y) {
-			return (y > shape.y && y < shape.buttom());
-		}
+	constructor(intersectDetect) {
+		this.#intersectDetect = intersectDetect;
+	}
 
-		this.includes = function (x, y) {
-			return includesX(x) && includesY(y);
-		}
-
-
-		// this.intersectRect = function(obj) {
-		//     return ((this.includesX(obj.x) || insideX(shape.x)) && (shape.includesY(obj.y) || insideY(shape.y)))
-		// }
+	update() {
+		//Apply intersectDetect foreach IntersectBody
+		//If true, call body1.interaction(body2); body2.interaction(body1)
+		const bodies = this.get().filter(body => body instanceof IntersectBody);
+		bodies.forEach(body1 => {
+			bodies.forEach(body2 => {
+				if (body2 != body1 &&
+					this.#intersectDetect(body1, body2)) {
+					body1.interaction(body2);
+					body2.interaction(body1);
+				}
+			});
+		});
 	}
 }
 
-export class IntersectComposite extends CompositeDecorator {
-#intersectDetect;
-update(){
-//TODO: Apply intersectDetect foreach IntersectBody
-//If true, call body1.intersect(body2); body2.intersect(body1)
-}
-}
-
 export class IntersectBody extends Body {
-#behavior;
-intersect(body){
-this.#behavior(this, body)
-}
+	#behavior;
+
+	constructor(behavior) {
+		this.#behavior = behavior;
+	}
+
+	interaction(body) {
+		this.#behavior(this, body)
+	}
 }
