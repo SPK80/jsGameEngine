@@ -1,17 +1,19 @@
-import { Body } from "../bodies.js";
+import { BodyDecorator } from "../bodies.js";
 import { CompositeDecorator } from "../composite.js";
 
 export class IntersectComposite extends CompositeDecorator {
 	#intersectDetect;
 
-	constructor(intersectDetect) {
+	constructor(intersectDetect, object) {
+		super(object);
 		this.#intersectDetect = intersectDetect;
 	}
 
 	update() {
+		super.update();
 		//Apply intersectDetect foreach IntersectBody
 		//If true, call body1.interaction(body2); body2.interaction(body1)
-		const bodies = this.get().filter(body => body instanceof IntersectBody);
+		const bodies = this.get().filter(body => body instanceof InteractBody);
 		bodies.forEach(body1 => {
 			bodies.forEach(body2 => {
 				if (body2 != body1 &&
@@ -24,10 +26,11 @@ export class IntersectComposite extends CompositeDecorator {
 	}
 }
 
-export class IntersectBody extends Body {
+export class InteractBody extends BodyDecorator {
 	#behavior;
 
-	constructor(behavior) {
+	constructor(behavior, object) {
+		super(object);
 		this.#behavior = behavior;
 	}
 
