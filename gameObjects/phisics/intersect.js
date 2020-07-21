@@ -21,3 +21,18 @@ class RectIntersect {
 		// }
 	}
 }
+
+export class IntersectComposite extends CompositeDecorator {
+#intersectDetect;
+update(){
+//TODO: Apply intersectDetect foreach IntersectBody
+//If true, call body1.intersect(body2); body2.intersect(body1)
+}
+}
+
+export class IntersectBody extends Body {
+#behavior;
+intersect(body){
+this.#behavior(this, body)
+}
+}
