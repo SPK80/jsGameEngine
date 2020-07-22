@@ -18,6 +18,10 @@ export class IGameObject extends IUpdating {
 	get body() { throw ('body must be implemented') };
 }
 
+export class InteractGameObject extends IGameObject{
+	interaction(body){throw ('interaction must be implemented')}
+}
+
 export class IComposite extends IUpdating {
 	add(item) { throw ('add must be implemented') };
 	get(name) { throw ('get must be implemented') };

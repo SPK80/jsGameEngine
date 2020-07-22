@@ -12,6 +12,7 @@ import { ViewPort } from "./gameObjects/viewPort.js";
 import { Spawner } from "./gameObjects/spawner.js";
 import { WhiteWolker } from "./gameObjects/whiteWolker.js";
 import { RndWolk } from "./inputs/rndWolk.js";
+import { Ui } from "./gameObjects/ui.js";
 
 const settings = new Settings();
 
@@ -41,26 +42,39 @@ tiles.addEventListener("load", () => {
 	const render = new PositionRender(renderBody,
 		new CanvasRender(settings.render.width, settings.render.height, ''));
 
-	const wm = new WalkMan('WalkMan', 300, 200, kbInput, tiles, render);
+	const wm = new WalkMan('WalkMan', 400, 300, kbInput, tiles, render);
 	const viewPort = new ViewPort('ViewPort',
 		new Closer(wm.body, 0.05, renderBody));
 
-	const scene = new GrassScene(render, tiles);
+	const ui = new Ui(viewPort.body, render);
+
+	const scene = new GrassScene(render);
 	scene.addObject(wm);
 	scene.addObject(viewPort);
+	scene.addObject(ui);
 
-	new Spawner(10, () => 2000, (i) => {
-		scene.addObject(
-			new WhiteWolker(
-				"WhiteWolker" + i,
-				Math.random() * wm.body.size.x * 2 + wm.body.pos.x - wm.body.size.x,
-				Math.random() * wm.body.size.y * 2 + wm.body.pos.y - wm.body.size.y,
-				new RndWolk(),
-				tiles,
-				render
-			)
-		);
-	}).start();
+	// new Spawner(10, () => 2000, (i) => {
+	// 	scene.addObject(
+	// 		new WhiteWolker(
+	// 			"WhiteWolker" + i,
+	// 			Math.random() * wm.body.size.x * 2 + wm.body.pos.x - wm.body.size.x,
+	// 			Math.random() * wm.body.size.y * 2 + wm.body.pos.y - wm.body.size.y,
+	// 			new RndWolk(),
+	// 			tiles,
+	// 			render
+	// 		)
+	// 	);
+	// }).start();
+	scene.addObject(
+		new WhiteWolker(
+			"WhiteWolker1",
+			Math.random() * wm.body.size.x * 2 + wm.body.pos.x - wm.body.size.x,
+			Math.random() * wm.body.size.y * 2 + wm.body.pos.y - wm.body.size.y,
+			new RndWolk(),
+			tiles,
+			render
+		)
+	);
 	engine.start(scene);
 
 }, false);

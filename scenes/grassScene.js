@@ -1,13 +1,12 @@
 import { EmptyDrawing, ImageDrawing } from "../gameObjects/drawings.js";
 import { Body } from "../gameObjects/bodies.js";
-import { WhiteWolker } from "../gameObjects/whiteWolker.js";
-import { RndWolk } from "../inputs/rndWolk.js";
 import { Scene } from "./scene.js";
+import { Vector3 } from "../geometry/vectors.js";
 
 export class GrassScene extends Scene {
 	#landscape = { update() { } };
 
-	constructor(render, tiles) {
+	constructor(render) {
 		const grass = new Image();
 		grass.addEventListener("load", () => {
 			this.#landscape = new ImageDrawing(
@@ -17,21 +16,11 @@ export class GrassScene extends Scene {
 		});
 		grass.src = "grass.jpg";
 
-		const wws = [];
-		// for (let i = 0;i < 9;i++) {
-		// 	wws.push(
-		// 		new WhiteWolker(
-		// 			"WhiteWolker" + i,
-		// 			Math.random() * render.width,
-		// 			Math.random() * render.height,
-		// 			new RndWolk(),
-		// 			tiles,
-		// 			render
-		// 		)
-		// 	);
-		// }
-
-		super(wws);
+		super([],
+			(body1, body2) => {
+				const dist = new Vector3().add(body1.pos).sub(body2.pos).length;
+				return dist < 0.5 * (body1.size.length + body2.size.length);
+			});
 	}
 
 	update() {

@@ -87,7 +87,6 @@ export class SortingComposite extends CompositeDecorator {
 
 	add(item) {
 		const items = super.get();
-		// console.log(items);
 		items.push(item);
 		this.#sortedZ = false;
 	}
