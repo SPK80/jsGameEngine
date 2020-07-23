@@ -5,6 +5,10 @@ export class Settings {
 		scale: 1.5,
 		backgroundColor: '#004020',
 	}
+	
+	engine = {
+		frameRate: 60
+	}
 
 	#path = 'settings.json';
 	constructor(path) {
