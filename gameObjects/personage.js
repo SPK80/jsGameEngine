@@ -1,10 +1,10 @@
-import { Body } from "./bodies.js";
+import { Body, MassivBody } from "./bodies.js";
 import { AnimDrawing, EmptyDrawing } from "./drawings.js";
 import { IGameObject, InteractGameObject } from "./common.js";
 import { Input } from "../inputs/input.js";
-import { MassBody, NonMassBody } from "./phisics/phisicsBody.js";
-import { Vector3 } from "../geometry/vectors.js";
-import { State } from "./state.js";
+// import { MassBody, NonMassBody } from "./phisics/phisicsBody.js";
+import { Vector2 } from "../geometry/vectors.js";
+import { State, MoveStates, IdleStates } from "./state.js";
 import { numberRound } from "../tools/extentions.js";
 numberRound();
 
@@ -15,9 +15,13 @@ export class Personage extends InteractGameObject {
 	#assembly;
 	#body;
 
+	#input;
+
 	setInput(input) {
-		this.#body.input = input;
+		this.#input = input;
 	}
+
+	#state;
 
 	get body() { return this.#body }
 
@@ -25,10 +29,14 @@ export class Personage extends InteractGameObject {
 		tiles, animations, render) {
 		super();
 		this.#name = name;
-		this.#body = new MassBody(new PulsesSource(input), 0.1, 1,
-			new Body(x, y, 1, wi, he));
+		this.#input = input;
 
-		this.#assembly = new AnimDrawing(tiles, animations,
+		this.#body = new MassivBody(x, y, 1, wi, he, 1);
+
+		this.#state = new PersonageState(this.#body.velocity,
+			new PulsesSource(this.#input));
+
+		this.#assembly = new AnimDrawing(tiles, animations, this.#state,
 			new EmptyDrawing(render, this.#body));
 	}
 
@@ -48,6 +56,19 @@ export class Personage extends InteractGameObject {
 	}
 
 	update() {
+
+		const actions = this.#input.get();
+		if (actions && actions.length > 0) {
+			const pulse = new Vector2();
+			actions.forEach(act => {
+				if (act == 'moveRight') pulse.add(new Vector2(1, 0));
+				if (act == 'moveLeft') pulse.add(new Vector2(-1, 0));
+				if (act == 'moveDown') pulse.add(new Vector2(0, 1));
+				if (act == 'moveUp') pulse.add(new Vector2(0, -1));
+			});
+			this.#body.pulse(pulse);
+		}
+
 		this.#assembly.update();
 		if (this.#intersectTarget != this)
 			this.#textAbove(this.#intersectTarget.name);
@@ -59,14 +80,13 @@ export class Personage extends InteractGameObject {
 	}
 }
 
+
 class PulsesSource extends Input {
 	#input;
 	constructor(input) {
 		super();
 		this.#input = input;
 	}
-
-	// #predActions = [];
 
 	get() {
 		const actions = this.#input.get();
@@ -75,10 +95,10 @@ class PulsesSource extends Input {
 		actions.forEach(act => {
 			// console.log(this.#predActions);
 			//if (!this.#predActions.includes(act)) {
-			if (act == 'moveRight') pulses.push(new Vector3(1, 0, 0));
-			if (act == 'moveLeft') pulses.push(new Vector3(-1, 0, 0));
-			if (act == 'moveDown') pulses.push(new Vector3(0, 1, 0));
-			if (act == 'moveUp') pulses.push(new Vector3(0, -1, 0));
+			if (act == MoveStates.moveRight) pulses.push(new Vector2(1, 0));
+			if (act == MoveStates.moveLeft) pulses.push(new Vector2(-1, 0));
+			if (act == MoveStates.moveDown) pulses.push(new Vector2(0, 1));
+			if (act == MoveStates.moveUp) pulses.push(new Vector2(0, -1));
 			// if (act == 'idle') forces.push(new Vector3(0, 0, 0));
 			//}
 		});
@@ -104,5 +124,46 @@ class LastInputState extends State {
 		}
 		else
 			return super.get();
+	}
+}
+
+class PersonageState extends State {
+	#velocity;
+	#pulses;
+	#threshold;
+
+	constructor(velocity, pulsesSource, threshold = 0.1) {
+		super([
+			IdleStates.idle,
+			MoveStates.moveDown,
+			MoveStates.moveUp,
+			MoveStates.moveLeft,
+			MoveStates.moveRight
+		]);
+		this.#velocity = velocity;
+		this.#pulses = pulsesSource;
+		this.#threshold = threshold;
+	}
+
+	get() {
+		const v = this.#velocity;
+		const ax = Math.abs(v.x);
+		const ay = Math.abs(v.y);
+
+		if (ax <= this.#threshold &&
+			ay <= this.#threshold) {
+			super.set(IdleStates.idle);
+		}
+
+		const pulses = this.#pulses.get();
+		if (pulses && pulses.length > 0) {
+			const p = pulses[pulses.length - 1];
+
+			if (p.x > this.#threshold) super.set(MoveStates.moveRight);
+			if (p.x < -this.#threshold) super.set(MoveStates.moveLeft);
+			if (p.y > this.#threshold) super.set(MoveStates.moveDown);
+			if (p.y < -this.#threshold) super.set(MoveStates.moveUp);
+		}
+		return super.get();
 	}
 }

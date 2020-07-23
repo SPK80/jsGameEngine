@@ -65,16 +65,16 @@ tiles.addEventListener("load", () => {
 	// 		)
 	// 	);
 	// }).start();
-	scene.addObject(
-		new WhiteWolker(
-			"WhiteWolker1",
-			Math.random() * wm.body.size.x * 2 + wm.body.pos.x - wm.body.size.x,
-			Math.random() * wm.body.size.y * 2 + wm.body.pos.y - wm.body.size.y,
-			new RndWolk(),
-			tiles,
-			render
-		)
-	);
+	// scene.addObject(
+	// 	new WhiteWolker(
+	// 		"WhiteWolker1",
+	// 		Math.random() * wm.body.size.x * 2 + wm.body.pos.x - wm.body.size.x,
+	// 		Math.random() * wm.body.size.y * 2 + wm.body.pos.y - wm.body.size.y,
+	// 		new RndWolk(),
+	// 		tiles,
+	// 		render
+	// 	)
+	// );
 	engine.start(scene);
 
 }, false);

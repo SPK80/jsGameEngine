@@ -76,15 +76,17 @@ export class AnimDrawing extends DrawingDecorator {
 	#image;
 	#animator;
 	// #speed = 1;
+	#state;
 
-	constructor(image, animations, object) {
+	constructor(image, animations, state, object) {
 		super(object);
 		this.#image = throwIfNotInstance(image, Image);
 		this.#animator = new Animator(animations);
+		this.#state = state;
 	}
 
 	_startAnim(speed=1) {
-		this.#animator.start(this.body.state.get(), speed);
+		this.#animator.start(this.#state.get(), speed);
 	}
 	
 	update() {
