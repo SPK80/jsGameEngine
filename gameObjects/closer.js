@@ -20,7 +20,7 @@ export class Closer extends BodyDecorator {
 		const v = new Vector2(this.pos.x, this.pos.y).
 			add(ms).sub(ts).sub(this.#target.pos);
 
-		if (v.length() > 1)
+		if (v.length > 1)
 			this.pos.sub(v.scMul(this.#speed));
 	}
 }
