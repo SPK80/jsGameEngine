@@ -33,11 +33,11 @@ export class Vector2 {
 	}
 
 	normalize() {
-		this.scMul(1.0 / this.length());
+		this.scMul(1.0 / this.length);
 		return this;
 	}
 
-	length() {
+	get length() {
 		return Math.sqrt(this.#x * this.#x + this.#y * this.#y);
 	}
 }
@@ -69,7 +69,7 @@ export class Vector3 extends Vector2 {
 	}
 
 	normalize() {
-		this.scMul(1.0 / this.length());
+		this.scMul(1.0 / this.length);
 		return this;
 	}
 
