@@ -10,7 +10,7 @@ export class IDrawing extends IUpdating {
 export class IBody extends IUpdating {
 	get pos() { throw ('pos() must be implemented') };
 	get size() { throw ('size() must be implemented') };
-	get state() { throw ('state() must be implemented') };
+	// get state() { throw ('state() must be implemented') };
 }
 
 export class IGameObject extends IUpdating {
@@ -18,8 +18,8 @@ export class IGameObject extends IUpdating {
 	get body() { throw ('body must be implemented') };
 }
 
-export class InteractGameObject extends IGameObject{
-	interaction(body){throw ('interaction must be implemented')}
+export class InteractGameObject extends IGameObject {
+	interaction(body) { throw ('interaction must be implemented') }
 }
 
 export class IComposite extends IUpdating {

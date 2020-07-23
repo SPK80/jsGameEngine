@@ -1,4 +1,4 @@
-import { BodyDecorator } from "../bodies.js";
+// import { BodyDecorator } from "../bodies.js";
 import { CompositeDecorator } from "../composite.js";
 import { InteractGameObject } from "../common.js";
 
