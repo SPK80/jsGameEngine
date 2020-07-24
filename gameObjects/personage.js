@@ -12,8 +12,9 @@ export class Personage extends InteractGameObject {
 	#name = 'noName';
 	get name() { return this.#name }
 
-	#assembly;
+	
 	#body;
+	get body() { return this.#body }
 
 	#input;
 
@@ -22,8 +23,7 @@ export class Personage extends InteractGameObject {
 	}
 
 	#state;
-
-	get body() { return this.#body }
+	#assembly;
 
 	constructor(name, x, y, wi, he, input,
 		tiles, animations, render) {
@@ -61,10 +61,10 @@ export class Personage extends InteractGameObject {
 		if (actions && actions.length > 0) {
 			const pulse = new Vector2();
 			actions.forEach(act => {
-				if (act == 'moveRight') pulse.add(new Vector2(1, 0));
-				if (act == 'moveLeft') pulse.add(new Vector2(-1, 0));
-				if (act == 'moveDown') pulse.add(new Vector2(0, 1));
-				if (act == 'moveUp') pulse.add(new Vector2(0, -1));
+				if (act == MoveStates.moveRight) pulse.add(new Vector2(1, 0));
+				if (act == MoveStates.moveLeft) pulse.add(new Vector2(-1, 0));
+				if (act == MoveStates.moveDown) pulse.add(new Vector2(0, 1));
+				if (act == MoveStates.moveUp) pulse.add(new Vector2(0, -1));
 			});
 			this.#body.pulse(pulse);
 		}

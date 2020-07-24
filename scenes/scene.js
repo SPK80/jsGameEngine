@@ -1,8 +1,6 @@
 import { IGameObject } from "../gameObjects/common.js";
 import { Composite, SortingComposite, ResistantComposite } from "../gameObjects/composite.js";
 import { IntersectComposite } from "../gameObjects/phisics/intersect.js";
-import { Vector3 } from "../geometry/vectors.js";
-
 
 export class Scene extends IGameObject {
 	#assembly;
@@ -23,10 +21,8 @@ export class Scene extends IGameObject {
 		this.#assembly.remove(object);
 	}
 
-	setInput(objectName, input) {
-		const obj = this.#assembly.get(objectName);
-		if (obj)
-			obj.setInput(input);
+	getObject(name) {
+		this.#assembly.get(name);
 	}
 
 	update() {
