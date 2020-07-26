@@ -22,7 +22,7 @@ export class Body extends IBody {
 }
 
 export class MovingBody extends Body {
-	#deltaTime = 0.1;
+	#deltaTime=0.1;
 	get deltaTime() { return this.#deltaTime }
 
 	#velocity = new Vector2();
@@ -33,9 +33,7 @@ export class MovingBody extends Body {
 
 		const dp = new Vector3(this.#velocity.x, this.#velocity.y, 0).
 			scMul(this.#deltaTime);
-
 		this.pos.add(dp);
-
 	}
 }
 
@@ -61,67 +59,3 @@ export class MassivBody extends MovingBody {
 		throw ('hit not implemented yet..')
 	}
 }
-
-// export class BodyDecorator extends IBody {
-
-// 	get pos() { return this.#object.pos }
-// 	get size() { return this.#object.size }
-// 	get state() { return this.#object.state }
-// 	#object;
-
-// 	constructor(object) {
-// 		super();
-// 		this.#object = throwIfNotInstance(object, IBody);
-// 	}
-
-// 	update() {
-// 		this.#object.update();
-// 	}
-// }
-
-// export class ShiftedBody extends BodyDecorator {
-// 	#shift;
-// 	constructor(shift, object) {
-// 		super(object);
-
-// 		this.#shift = throwIfNotInstance(shift, Vector2);
-// 	}
-
-// 	get pos() {
-// 		const pos = super.pos;
-// 		return new Vector3(pos.x, pos.y, pos.z).
-// 			add(this.#shift);
-// 	}
-// }
-
-// export class ScaledBody extends BodyDecorator {
-// 	#scale;
-// 	constructor(scale, object) {
-// 		super(object);
-// 		this.#scale = throwIfNotInstance(scale, Vector2);
-// 	}
-
-// 	get size() {
-// 		const size = super.size;
-// 		return new Vector3(super.size.x * this.#scale.x, super.size.y * this.#scale.y, super.size.z);
-// 	}
-// }
-
-// export class InteractiveBody extends BodyDecorator {
-// 	#targets;
-// 	#behavior = () => { }
-
-// 	constructor(targets, behavior, object) {
-// 		super(object);
-// 		this.#targets = throwIfNotInstance(targets, Input);
-// 		this.#behavior = behavior;
-// 	}
-
-// 	update() {
-// 		super.update();
-// 		const targets = this.#targets.get();
-// 		targets.forEach(target => {
-// 			this.#behavior(this, target);
-// 		});
-// 	}
-// }
