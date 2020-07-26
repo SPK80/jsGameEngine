@@ -1,27 +1,21 @@
-import { Body, MassivBody } from "./bodies.js";
+import { Body } from "./bodies.js";
 import { AnimDrawing, EmptyDrawing } from "./drawings.js";
-import { IGameObject, InteractGameObject } from "./common.js";
-import { Input } from "../inputs/input.js";
-// import { MassBody, NonMassBody } from "./phisics/phisicsBody.js";
-import { Vector2 } from "../geometry/vectors.js";
+import { IGameObject } from "./common.js";
 import { State, MoveStates, IdleStates } from "./state.js";
 import { numberRound } from "../tools/extentions.js";
 import { MovingBodyDec, MassivBodyDec } from "./bodyDecorators.js";
+import { PulsesSource } from "./phisics/pulsesSource.js";
 numberRound();
 
-export class Personage extends InteractGameObject {
+export class Personage extends IGameObject {
 	#name = 'noName';
 	get name() { return this.#name }
-
 
 	#body;
 	get body() { return this.#body }
 
 	#input;
-
-	setInput(input) {
-		this.#input = input;
-	}
+	setInput(input) { this.#input = input; }
 
 	#state;
 	#assembly;
@@ -32,22 +26,21 @@ export class Personage extends InteractGameObject {
 		this.#name = name;
 		this.#input = input;
 		const ps = new PulsesSource(this.#input);
-		// this.#body = new MassivBody(x, y, 1, wi, he, 1);
+
 		this.#body = new MassivBodyDec(1, ps,
 			new MovingBodyDec(0.1,
 				new Body(x, y, 1, wi, he)));
 
-		this.#state = new PersonageState(this.#body.velocity,
-			ps);
+		this.#state = new PersonageState(this.#body.velocity, ps);
 
 		this.#assembly = new AnimDrawing(tiles, animations, this.#state,
 			new EmptyDrawing(render, this.#body));
 	}
 
-	#intersectTarget = this;
-	interaction(obj) {
-		this.#intersectTarget = obj;
-	}
+	// #intersectTarget = this;
+	// interaction(obj) {
+	// 	this.#intersectTarget = obj;
+	// }
 
 	#textAbove = function (text) {
 		this.#assembly.render.text(
@@ -60,76 +53,24 @@ export class Personage extends InteractGameObject {
 	}
 
 	update() {
-
-		// const actions = this.#input.get();
-		// if (actions && actions.length > 0) {
-		// 	const pulse = new Vector2();
-		// 	actions.forEach(act => {
-		// 		if (act == MoveStates.moveRight) pulse.add(new Vector2(1, 0));
-		// 		if (act == MoveStates.moveLeft) pulse.add(new Vector2(-1, 0));
-		// 		if (act == MoveStates.moveDown) pulse.add(new Vector2(0, 1));
-		// 		if (act == MoveStates.moveUp) pulse.add(new Vector2(0, -1));
-		// 	});
-		// 	this.#body.pulse(pulse);
-		// }
+		// if (this.#intersectTarget != this)
+		// 	this.#textAbove(this.#intersectTarget.name);
+		// this.#intersectTarget = this;
 
 		this.#assembly.update();
-		if (this.#intersectTarget != this)
-			this.#textAbove(this.#intersectTarget.name);
-		this.#intersectTarget = this;
-
-		// const vx = this.#body.velocity.x.round(2);
-		// const vy = this.#body.velocity.y.round(2);
-		// this.#textAbove(`${this.#body.state.get()} ${vx} ${vy}`);
 	}
 }
 
+// class InteractPersonage  extends Personage {
+// constructor(name, x, y, wi, he, input,
+// 	tiles, animations, render){
+// 	super(name, x, y, wi, he, input,
+// 		tiles, animations, render)
+// 		const id = InteractPersonageDecorator(this);
 
-class PulsesSource extends Input {
-	#input;
-	constructor(input) {
-		super();
-		this.#input = input;
-	}
+// }
 
-	get() {
-		const actions = this.#input.get();
-
-		const pulses = [];
-		actions.forEach(act => {
-			// console.log(this.#predActions);
-			//if (!this.#predActions.includes(act)) {
-			if (act == MoveStates.moveRight) pulses.push(new Vector2(1, 0));
-			if (act == MoveStates.moveLeft) pulses.push(new Vector2(-1, 0));
-			if (act == MoveStates.moveDown) pulses.push(new Vector2(0, 1));
-			if (act == MoveStates.moveUp) pulses.push(new Vector2(0, -1));
-			// if (act == 'idle') forces.push(new Vector3(0, 0, 0));
-			//}
-		});
-		// this.#predActions = actions.slice();
-		return pulses;
-	}
-}
-
-class LastInputState extends State {
-	#input;
-
-	constructor(input, def = 'idle') {
-		super(def);
-		this.#input = input;
-	}
-
-	get() {
-		const inp = this.#input.get();
-		if (inp && inp.length > 0) {
-			const state = inp[inp.length - 1];
-			// this.set(state);
-			return state;
-		}
-		else
-			return super.get();
-	}
-}
+// }
 
 class PersonageState extends State {
 	#velocity;

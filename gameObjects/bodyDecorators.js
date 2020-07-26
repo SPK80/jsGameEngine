@@ -2,7 +2,6 @@ import { IBody } from "./common.js";
 import { Vector2, Vector3 } from "../geometry/vectors.js";
 import { throwIfNotInstance } from "../tools/utils.js";
 
-
 export class BodyDecorator extends IBody {
 
 	get pos() { return this.#body.pos }
