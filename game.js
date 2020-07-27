@@ -6,7 +6,7 @@ import { KeyboardInput } from "./inputs/keyboardInput.js";
 import { KeyMap } from "./inputs/keyMap.js";
 import { GrassScene } from "./scenes/grassScene.js";
 import { PositionRender } from "./graphics/positionRender.js";
-import { Closer } from "./gameObjects/closer.js";
+import { BodyCloser } from "./gameObjects/bodyCloser.js";
 import { Body } from "./gameObjects/bodies.js";
 import { ViewPort } from "./gameObjects/viewPort.js";
 import { Spawner } from "./gameObjects/spawner.js";
@@ -44,7 +44,7 @@ tiles.addEventListener("load", () => {
 
 	const wm = new WalkMan('WalkMan', 400, 300, kbInput, tiles, render);
 	const viewPort = new ViewPort('ViewPort',
-		new Closer(wm.body, 0.05, renderBody));
+		new BodyCloser(wm.body, 0.05, renderBody));
 
 	const ui = new Ui(viewPort.body, render);
 

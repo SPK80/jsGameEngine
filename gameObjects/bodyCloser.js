@@ -2,7 +2,7 @@ import { Vector2 } from "../geometry/vectors.js";
 import { throwIfNotInstance } from "../tools/utils.js";
 import { IBody } from "./common.js";
 
-export class Closer extends IBody {
+export class BodyCloser extends IBody {
 	#target;
 	#speed;
 	#body;
