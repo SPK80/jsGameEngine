@@ -4,7 +4,16 @@ import { IntersectComposite } from "../gameObjects/phisics/intersect.js";
 
 export class Scene extends IGameObject {
 	#assembly;
-	#events = [];	
+	#events = [];
+
+	addEvent(name, callback) {
+		const i = this._findEventIndex(name);
+		if (i) {
+			this.#events[i].subscribe(callback);
+		} else {
+			this.#events.push(new GameEvent(name, callback));
+		}
+	}
 
 	constructor(objects, intersectDetect) {
 		super();
@@ -32,11 +41,12 @@ export class Scene extends IGameObject {
 }
 
 
-class gameEvent {
+class GameEvent {
 	#name = '';
 
-	constructor(name) {
+	constructor(name, firstCallbacks) {
 		this.#name = name;
+		if (firstCallbacks) subscribe(firstCallbacks);
 	}
 	#callbacks = [];
 
