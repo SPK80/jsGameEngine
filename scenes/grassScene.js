@@ -16,11 +16,15 @@ export class GrassScene extends Scene {
 		});
 		grass.src = "grass.jpg";
 
-		super([],
-			(body1, body2) => {
-				const dist = new Vector3().add(body1.pos).sub(body2.pos).length;
-				return dist < 0.5 * (body1.size.length + body2.size.length);
-			});
+		super([]);
+
+		// this.listenEvent('interact', (args) => {
+		// 	if (!args.body1 || !args.body2) throw ('body1 or body2 undifined', args);
+		// 	const body1 = args.body1;
+		// 	const body2 = args.body2;
+		// 	const dist = new Vector3().add(body1.pos).sub(body2.pos).length;
+		// 	return dist < 0.5 * (body1.size.length + body2.size.length);
+		// });
 	}
 
 	update() {

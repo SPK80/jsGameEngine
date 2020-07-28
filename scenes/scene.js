@@ -1,6 +1,7 @@
 import { IGameObject } from "../gameObjects/common.js";
 import { Composite, SortingComposite, ResistantComposite } from "../gameObjects/composite.js";
 import { IntersectComposite } from "../gameObjects/phisics/intersect.js";
+import { GameEvent } from "../gameObjects/events/GameEvent.js";
 
 export class Scene extends IGameObject {
 	#assembly;
@@ -37,31 +38,5 @@ export class Scene extends IGameObject {
 
 	update() {
 		this.#assembly.update();
-	}
-}
-
-
-class GameEvent {
-	#name = '';
-
-	constructor(name, firstCallbacks) {
-		this.#name = name;
-		if (firstCallbacks) subscribe(firstCallbacks);
-	}
-	#callbacks = [];
-
-	subscribe(callback) {
-		this.#callbacks.push(callback);
-	}
-
-	unsubscribe(callback) {
-		const i = this.#callbacks.indexOf(callback);
-		delete this.#callbacks[i];
-	}
-
-	call(args) {
-		this.#callbacks.forEach(callback => {
-			callback(args);
-		});
 	}
 }

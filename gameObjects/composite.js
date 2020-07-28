@@ -6,13 +6,15 @@ export class Composite extends IComposite {
 
 	constructor(items) {
 		super();
-		items.forEach((it) => {
-			if (it instanceof IGameObject) {
-				if (this.get(it.name))
-					return;
-				this.#items.push(it);
-			}
-		});
+		if (items && items.length > 0) {
+			items.forEach((it) => {
+				if (it instanceof IGameObject) {
+					if (this.get(it.name))
+						return;
+					this.#items.push(it);
+				}
+			});
+		}
 	}
 
 	get(name) {

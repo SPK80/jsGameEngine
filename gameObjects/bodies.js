@@ -1,8 +1,5 @@
-import { throwIfNotInstance } from "../tools/utils.js";
 import { Vector2, Vector3 } from "../geometry/vectors.js";
-import { Input } from "../inputs/input.js";
 import { IBody } from "./common.js";
-import { State, IdleStates, MoveStates } from "./state.js";
 
 export class Body extends IBody {
 
@@ -15,6 +12,7 @@ export class Body extends IBody {
 	constructor(x, y, z, wi, he) {
 		super();
 		this.#pos = new Vector3(x, y, z);
+		// if(wi && he)
 		this.#size = new Vector3(wi, he, 0);
 	}
 
@@ -22,7 +20,7 @@ export class Body extends IBody {
 }
 
 export class MovingBody extends Body {
-	#deltaTime=0.1;
+	#deltaTime = 0.1;
 	get deltaTime() { return this.#deltaTime }
 
 	#velocity = new Vector2();

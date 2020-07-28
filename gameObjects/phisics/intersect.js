@@ -1,13 +1,13 @@
 // import { BodyDecorator } from "../bodies.js";
 import { CompositeDecorator } from "../composite.js";
-import { InteractGameObject } from "../common.js";
+import { InteractGameObject, IUpdating } from "../common.js";
 
-export class IntersectComposite extends CompositeDecorator {
-	#intersectDetect;
+export class IntersectSceneDec extends UpdatingDecorator {
+	#predicate;
 
-	constructor(intersectDetect, object) {
+	constructor(predicate, object) {
 		super(object);
-		this.#intersectDetect = intersectDetect;
+		this.#predicate = predicate;
 	}
 
 	update() {
@@ -19,11 +19,20 @@ export class IntersectComposite extends CompositeDecorator {
 		objects.forEach(obj1 => {
 			objects.forEach(obj2 => {
 				if (obj2 != obj1 &&
-					this.#intersectDetect(obj1.body, obj2.body)) {
-					obj1.interaction(obj2);
-					obj2.interaction(obj1);
+					this.#predicate(obj1.body, obj2.body)) {
+					object._callEvent('intersect', { object1: obj1, object2: obj2 });
 				}
 			});
 		});
+	}
+}
+
+export class UpdatingDecorator extends IUpdating {
+	#object;
+	update() { this.#object.update(); }
+
+	constructor(object) {
+		super();
+		this.#object = throwIfNotInstance(object, IUpdating);
 	}
 }
