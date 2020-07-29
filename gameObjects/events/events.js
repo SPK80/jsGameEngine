@@ -10,7 +10,7 @@ export class Events {
 			event.call(args);
 	}
 
-	listen(eventName, callback) {
+	subscribe(eventName, callback) {
 		const event = this.find(eventName);
 		if (event) {
 			event.subscribe(callback);

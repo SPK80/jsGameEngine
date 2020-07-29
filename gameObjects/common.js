@@ -33,8 +33,3 @@ export class IScene extends IUpdating {
 	removeObject(object) { throw ('removeObject must be implemented') }
 	getObject(name) { throw ('getObject must be implemented') }
 }
-
-export class IEventsScene extends IScene {
-	listenEvent(eventName, callback) { throw ('listenEvent must be implemented') }
-	callEvent(eventName, args) { throw ('callEvent must be implemented') }
-}
