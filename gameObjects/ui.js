@@ -1,5 +1,5 @@
 import { IGameObject } from "./common.js";
-import { EmptyDrawing } from "./drawings.js";
+import { EmptyDrawing } from "./drawings/drawings.js";
 
 export class Ui extends IGameObject {
 	get name() { return 'UserInterface' };
@@ -32,5 +32,4 @@ export class Ui extends IGameObject {
 		this.#assembly.update();
 		this.#drawText();
 	}
-
 }

@@ -1,6 +1,6 @@
-import { IBody } from "./common.js";
-import { Vector2, Vector3 } from "../geometry/vectors.js";
-import { throwIfNotInstance } from "../tools/utils.js";
+import { Vector2, Vector3 } from "../../geometry/vectors.js";
+import { throwIfNotInstance } from "../../tools/utils.js";
+import { IBody } from "./interfaces.js";
 
 export class BodyDecorator extends IBody {
 

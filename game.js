@@ -6,13 +6,13 @@ import { KeyboardInput } from "./inputs/keyboardInput.js";
 import { KeyMap } from "./inputs/keyMap.js";
 import { GrassScene } from "./scenes/grassScene.js";
 import { PositionRender } from "./graphics/positionRender.js";
-import { BodyCloser } from "./gameObjects/bodyCloser.js";
-import { Body } from "./gameObjects/bodies.js";
 import { ViewPort } from "./gameObjects/viewPort.js";
 import { Spawner } from "./gameObjects/spawner.js";
 import { WhiteWolker } from "./gameObjects/whiteWolker.js";
 import { RndWolk } from "./inputs/rndWolk.js";
 import { Ui } from "./gameObjects/ui.js";
+import { BodyCloser } from "./gameObjects/bodies/bodyCloser.js";
+import { Body } from "./gameObjects/bodies/bodies.js";
 
 const settings = new Settings();
 
@@ -38,44 +38,14 @@ tiles.addEventListener("load", () => {
 		])
 	);
 
-	const renderBody = new Body(0, 0, 0, settings.render.width, settings.render.height);
-	const render = new PositionRender(renderBody,
+	const render = new PositionRender(
+		new Body(0, 0, 0, settings.render.width, settings.render.height),
 		new CanvasRender(settings.render.width, settings.render.height, ''));
 
-	const wm = new WalkMan('WalkMan', 400, 300, kbInput, tiles, render);
-	const viewPort = new ViewPort('ViewPort',
-		new BodyCloser(wm.body, 0.05, renderBody));
+	const scene = new GrassScene(render, kbInput, tiles);
 
-	const ui = new Ui(viewPort.body, render);
-
-	const scene = new GrassScene(render);
-	scene.addObject(wm);
-	scene.addObject(viewPort);
-	scene.addObject(ui);
-
-	// new Spawner(10, () => 2000, (i) => {
-	// 	scene.addObject(
-	// 		new WhiteWolker(
-	// 			"WhiteWolker" + i,
-	// 			Math.random() * wm.body.size.x * 2 + wm.body.pos.x - wm.body.size.x,
-	// 			Math.random() * wm.body.size.y * 2 + wm.body.pos.y - wm.body.size.y,
-	// 			new RndWolk(),
-	// 			tiles,
-	// 			render
-	// 		)
-	// 	);
-	// }).start();
-	scene.addObject(
-		new WhiteWolker(
-			"WhiteWolker1",
-			Math.random() * wm.body.size.x * 2 + wm.body.pos.x - wm.body.size.x,
-			Math.random() * wm.body.size.y * 2 + wm.body.pos.y - wm.body.size.y,
-			new RndWolk(),
-			tiles,
-			render
-		)
-	);
 	engine.start(scene);
+	// scene.update()
 
 }, false);
 tiles.src = 'tiles.png';

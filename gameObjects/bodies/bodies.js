@@ -1,5 +1,5 @@
-import { Vector2, Vector3 } from "../geometry/vectors.js";
-import { IBody } from "./common.js";
+import { Vector3, Vector2 } from "../../geometry/vectors.js";
+import { IBody } from "./interfaces.js";
 
 export class Body extends IBody {
 

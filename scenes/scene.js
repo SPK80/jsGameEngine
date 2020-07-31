@@ -1,24 +1,25 @@
 import { IGameObject } from "../gameObjects/common.js";
 import { Composite, SortingComposite, ResistantComposite } from "../gameObjects/composite.js";
-import { IntersectComposite } from "../gameObjects/phisics/intersect.js";
-import { PlugBus } from "../gameObjects/plugins/PlugBus.js";
+// import { IntersectComposite } from "../gameObjects/phisics/intersect.js";
+// import { PlugBus } from "../gameObjects/plugins/PlugBus.js";
 import { Events } from "../gameObjects/events/events.js";
+// import { Plugin } from "../gameObjects/plugins/plugin.js";
 
-export class BaseScene extends IGameObject {
+export class Scene extends IGameObject {
 
 	#events = new Events();
 	get events() { return this.#events }
 
-	#plugBus = new PlugBus();
-	get plugins() { return this.#plugBus }
-
-	addPlugin(object) {
-		this.#plugBus.plugin(object);
-	}
-
 	subscribeEvent(name, callback) {
 		this.#events.subscribe(name, callback);
 	}
+
+	// #plugBus = new PlugBus();
+	// get plugins() { return this.#plugBus }
+
+	// addPlugin(object) {
+	// 	this.#plugBus.plugin(object);
+	// }
 
 	// constructor(objects, intersectDetect) {
 	// 	super();
@@ -29,6 +30,10 @@ export class BaseScene extends IGameObject {
 	// }
 
 	#assembly = new Composite();
+	decorateAssembly(_class, ...params) {
+		this.#assembly = new _class(...params, this.#assembly);
+	}
+
 
 	addObject(object) {
 		this.#assembly.add(object);
@@ -39,43 +44,19 @@ export class BaseScene extends IGameObject {
 	}
 
 	getObject(name) {
-		this.#assembly.get(name);
+		return this.#assembly.get(name);
 	}
 
 	update() {
-		this.#plugBus.update();
-		this.#assembly.update();
-	}
-}
-
-export class Scene extends BaseScene {
-	constructor() {
-		const os = new ZSorter();
-		this.addPlugin(SortingComposite)
-	}
-
-	addObject(object) {
-
-	}
-
-	getObject(name) {
-		this.#assembly.get(name);
+		// this.#plugBus.update();
+		if (this.#assembly) this.#assembly.update();
 	}
 
 }
 
-class ZSorter {
-	#composite;
+// export class Scene extends BaseScene {
+// 	constructor() {
+// 		super();
 
-	constructor(composite) {
-		this.#composite = composite;
-	}
-
-	sort(){
-		this.#composite.get()
-			.sort((a, b) => a.body.pos.y - b.body.pos.y)
-			.forEach(item => {
-				item.update();
-			});
-	}
-}
+// 	}
+// }

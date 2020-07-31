@@ -6,6 +6,7 @@ export class PositionRender extends AbstractRender {
 	get height() { return this.#render.height }
 
 	#body;
+	get body() { return this.#body }
 
 	constructor(body, render) {
 		super();

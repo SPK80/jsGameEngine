@@ -1,6 +1,6 @@
-import { Vector2 } from "../geometry/vectors.js";
-import { throwIfNotInstance } from "../tools/utils.js";
-import { IBody } from "./common.js";
+import { Vector2 } from "../../geometry/vectors.js";
+import { throwIfNotInstance } from "../../tools/utils.js";
+import { IBody } from "./interfaces.js";
 
 export class BodyCloser extends IBody {
 	#target;

@@ -1,5 +1,5 @@
-import { throwIfNotInstance } from "../../tools/utils";
-import { IPlugBus, IPlugin } from "../common";
+import { throwIfNotInstance } from "../../tools/utils.js";
+import { IPlugBus } from "./interfaces.js";
 
 export class PlugBus extends IPlugBus {
 

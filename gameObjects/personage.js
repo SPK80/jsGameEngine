@@ -1,10 +1,10 @@
-import { Body } from "./bodies.js";
-import { AnimDrawing, EmptyDrawing } from "./drawings.js";
 import { IGameObject } from "./common.js";
 import { State, MoveStates, IdleStates } from "./state.js";
 import { numberRound } from "../tools/extentions.js";
-import { MovingBodyDec, MassivBodyDec } from "./bodyDecorators.js";
 import { PulsesSource } from "./phisics/pulsesSource.js";
+import { Body } from "./bodies/bodies.js";
+import { MovingBodyDec, MassivBodyDec } from "./bodies/bodyDecorators.js";
+import { AnimDrawing, EmptyDrawing } from "./drawings/drawings.js";
 numberRound();
 
 export class Personage extends IGameObject {

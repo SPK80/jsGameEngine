@@ -1,7 +1,8 @@
-import { throwIfNotInstance } from "../tools/utils.js";
-import { AbstractRender } from "../graphics/abstractRender.js";
-import { Animator } from "../animations/animator.js";
-import { IDrawing, IBody } from "./common.js";
+import { throwIfNotInstance } from "../../tools/utils.js";
+import { AbstractRender } from "../../graphics/abstractRender.js";
+import { Animator } from "../../animations/animator.js";
+import { IBody } from "../bodies/interfaces.js";
+import { IDrawing } from "./interfaces.js";
 
 export class EmptyDrawing extends IDrawing {
 

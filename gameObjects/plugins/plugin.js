@@ -1,4 +1,4 @@
-import { IPlugin } from "../common";
+import { IPlugin } from "./interfaces.js";
 
 export class Plugin extends IPlugin {
 	#bus;
