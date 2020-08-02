@@ -1,21 +1,13 @@
 import { Engine } from "./engine.js";
 import { Settings } from "./settings.js";
 import { CanvasRender } from "./graphics/canvasRender.js";
-import { WalkMan } from "./gameObjects/walkMan.js";
 import { KeyboardInput } from "./inputs/keyboardInput.js";
 import { KeyMap } from "./inputs/keyMap.js";
 import { GrassScene } from "./scenes/grassScene.js";
 import { PositionRender } from "./graphics/positionRender.js";
-import { ViewPort } from "./gameObjects/viewPort.js";
-import { Spawner } from "./gameObjects/spawner.js";
-import { WhiteWolker } from "./gameObjects/whiteWolker.js";
-import { RndWolk } from "./inputs/rndWolk.js";
-import { Ui } from "./gameObjects/ui.js";
-import { BodyCloser } from "./gameObjects/bodies/bodyCloser.js";
 import { Body } from "./gameObjects/bodies/bodies.js";
 
 const settings = new Settings();
-
 const engine = new Engine(settings);
 
 window.onclose = () => {

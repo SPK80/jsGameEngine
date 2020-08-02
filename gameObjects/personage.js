@@ -37,11 +37,6 @@ export class Personage extends IGameObject {
 			new EmptyDrawing(render, this.#body));
 	}
 
-	// #intersectTarget = this;
-	// interaction(obj) {
-	// 	this.#intersectTarget = obj;
-	// }
-
 	#textAbove = function (text) {
 		this.#assembly.render.text(
 			this.body.pos.x,
@@ -53,24 +48,9 @@ export class Personage extends IGameObject {
 	}
 
 	update() {
-		// if (this.#intersectTarget != this)
-		// 	this.#textAbove(this.#intersectTarget.name);
-		// this.#intersectTarget = this;
-
 		this.#assembly.update();
 	}
 }
-
-// class InteractPersonage  extends Personage {
-// constructor(name, x, y, wi, he, input,
-// 	tiles, animations, render){
-// 	super(name, x, y, wi, he, input,
-// 		tiles, animations, render)
-// 		const id = InteractPersonageDecorator(this);
-
-// }
-
-// }
 
 class PersonageState extends State {
 	#velocity;

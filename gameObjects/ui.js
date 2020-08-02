@@ -1,7 +1,7 @@
 import { IGameObject } from "./common.js";
 import { EmptyDrawing } from "./drawings/drawings.js";
 
-export class Ui extends IGameObject {
+export class UiText extends IGameObject {
 	get name() { return 'UserInterface' };
 
 	#assembly;

@@ -4,7 +4,6 @@ import { Vector3 } from "../geometry/vectors.js";
 import { SortingComposite, ResistantComposite } from "../gameObjects/composite.js";
 import { Body } from "../gameObjects/bodies/bodies.js";
 import { IntersectComposite } from "../gameObjects/phisics/intersect.js";
-import { Ui as UiText } from "../gameObjects/ui.js";
 import { WalkMan } from "../gameObjects/walkMan.js";
 import { ViewPort } from "../gameObjects/viewPort.js";
 import { BodyCloser } from "../gameObjects/bodies/bodyCloser.js";
@@ -12,6 +11,7 @@ import { WhiteWolker } from "../gameObjects/whiteWolker.js";
 import { RndWolk } from "../inputs/rndWolk.js";
 import { Spawner } from "../gameObjects/spawner.js";
 import { IBody } from "../gameObjects/bodies/interfaces.js";
+import { UiText } from "../gameObjects/ui.js";
 
 export class GrassScene extends Scene {
 	#landscape = { update() { } };
@@ -24,7 +24,6 @@ export class GrassScene extends Scene {
 	}
 
 	#uiText;
-
 	#controlledPersonageBody = new BodyProxy();
 
 	constructor(render, input, tiles) {
@@ -40,7 +39,7 @@ export class GrassScene extends Scene {
 		super([]);
 
 		const viewPort = new ViewPort('ViewPort',
-			new BodyCloser(this.#controlledPersonageBody), 0.05, render.body);
+			new BodyCloser(this.#controlledPersonageBody, 0.05, render.body));
 		this.addObject(viewPort);
 
 		this.#uiText = new UiText(viewPort.body, render);
@@ -50,7 +49,6 @@ export class GrassScene extends Scene {
 		this.addObject(new WalkMan('WalkMan', 400, 300, input, tiles, render));
 		this.selectPersonage('WalkMan');
 		console.log(this.#controlledPersonageBody);
-
 
 		new WwSpawner(2000, this, this.#controlledPersonageBody, tiles, render);
 
@@ -65,8 +63,6 @@ export class GrassScene extends Scene {
 				const dist = new Vector3().add(body1.pos).sub(body2.pos).length;
 				return dist < 0.5 * (body1.size.length + body2.size.length);
 			});
-
-
 	}
 
 	update() {
