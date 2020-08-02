@@ -43,36 +43,32 @@ export class MassivBodyDec extends BodyDecorator {
 	#mass;
 	get mass() { return this.#mass }
 
-	#pulses;
+	// #pulsEvent;
 
 	#velocity = new Vector2();
 	get velocity() { return this.#velocity }
 
-	constructor(mass, pulses, body) {
+	constructor(mass, pulsEventSubscribe, body) {
 		super(body);
 
 		if (body instanceof MovingBodyDec)
 			this.#velocity = body.velocity;
 
 		this.#mass = mass;
-		this.#pulses = pulses;
+		pulsEventSubscribe((pulses) => {
+			if (pulses && pulses.length > 0) {
+				const sumPuls = new Vector2();
+				pulses.forEach(puls => {
+					sumPuls.add(puls);
+				});
+
+				if (sumPuls.length > this.#threshold) {
+					const dv = sumPuls.scMul(1 / this.#mass);
+					this.#velocity.add(dv);
+				}
+			}
+		});
 	}
 
 	#threshold = 0.01;
-	
-	update() {
-		const pulses = this.#pulses.get();
-		if (pulses && pulses.length > 0) {
-			const sumPuls = new Vector2();
-			pulses.forEach(puls => {
-				sumPuls.add(puls);
-			});
-
-			if (sumPuls.length > this.#threshold) {
-				const dv = sumPuls.scMul(1 / this.#mass);
-				this.#velocity.add(dv);
-			}
-		}
-		super.update();
-	}
 }

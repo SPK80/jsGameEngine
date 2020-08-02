@@ -1,10 +1,12 @@
-import { IGameObject } from "./common.js";
+import { IGameObject, IUpdating } from "./common.js";
 import { State, MoveStates, IdleStates } from "./state.js";
 import { numberRound } from "../tools/extentions.js";
 import { PulsesSource } from "./phisics/pulsesSource.js";
+import { Events } from "./events/events.js";
 import { Body } from "./bodies/bodies.js";
 import { MovingBodyDec, MassivBodyDec } from "./bodies/bodyDecorators.js";
 import { AnimDrawing, EmptyDrawing } from "./drawings/drawings.js";
+import { Vector2 } from "../geometry/vectors.js";
 numberRound();
 
 export class Personage extends IGameObject {
@@ -20,6 +22,9 @@ export class Personage extends IGameObject {
 	#state;
 	#assembly;
 
+	#events = new Events();
+	#pulsesEvent;
+
 	constructor(name, x, y, wi, he, input,
 		tiles, animations, render) {
 		super();
@@ -27,7 +32,11 @@ export class Personage extends IGameObject {
 		this.#input = input;
 		const ps = new PulsesSource(this.#input);
 
-		this.#body = new MassivBodyDec(1, ps,
+		const pulsEventSubscribe = (callback) => {
+			this.#events.subscribe('pulses', callback);
+		};
+
+		this.#body = new MassivBodyDec(1, pulsEventSubscribe,
 			new MovingBodyDec(0.1,
 				new Body(x, y, 1, wi, he)));
 
@@ -35,6 +44,8 @@ export class Personage extends IGameObject {
 
 		this.#assembly = new AnimDrawing(tiles, animations, this.#state,
 			new EmptyDrawing(render, this.#body));
+
+		this.#pulsesEvent = new PulsesEvent(this.#input, this.#events)
 	}
 
 	#textAbove = function (text) {
@@ -48,7 +59,37 @@ export class Personage extends IGameObject {
 	}
 
 	update() {
+		this.#pulsesEvent.update();
 		this.#assembly.update();
+	}
+}
+
+class PulsesEvent extends IUpdating {
+	#input;
+	#events;
+
+	constructor(input, events) {
+		super();
+		this.#input = input;
+		this.#events = events;
+	}
+
+	update() {
+		const actions = this.#input.get();
+		if (actions && actions.length > 0) {
+			const pulses = [];
+			actions.forEach(act => {
+				if (act == MoveStates.moveRight)
+					pulses.push(new Vector2(1, 0));
+				if (act == MoveStates.moveLeft)
+					pulses.push(new Vector2(-1, 0));
+				if (act == MoveStates.moveDown)
+					pulses.push(new Vector2(0, 1));
+				if (act == MoveStates.moveUp)
+					pulses.push(new Vector2(0, -1));
+			});
+			this.#events.call('pulses', pulses);
+		}
 	}
 }
 
