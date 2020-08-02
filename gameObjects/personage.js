@@ -32,11 +32,11 @@ export class Personage extends IGameObject {
 		this.#input = input;
 		const ps = new PulsesSource(this.#input);
 
-		const pulsEventSubscribe = (callback) => {
+		const pulsEventSubscriber = (callback) => {
 			this.#events.subscribe('pulses', callback);
 		};
 
-		this.#body = new MassivBodyDec(1, pulsEventSubscribe,
+		this.#body = new MassivBodyDec(1, pulsEventSubscriber,
 			new MovingBodyDec(0.1,
 				new Body(x, y, 1, wi, he)));
 
@@ -131,5 +131,11 @@ class PersonageState extends State {
 			if (p.y < -this.#threshold) super.set(MoveStates.moveUp);
 		}
 		return super.get();
+	}
+}
+
+class IntersectPersonage {
+	constructor(personage, behavior, intersectEventSubscriber) {
+		intersectEventSubscriber();
 	}
 }
