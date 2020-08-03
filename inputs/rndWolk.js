@@ -1,35 +1,41 @@
 import { Input } from "./input.js";
 import { RndCounter } from "../tools/counters.js";
 
-export class RndWolk extends Input {
-	#commands = ['idle', 'moveRight', 'moveLeft', 'moveDown', 'moveUp'];
-	#counter = new RndCounter(0, this.#commands.length - 1);
-	#current = this.#commands[0];
-
-	get() {
-		return [this.#commands[this.#current]];
-	}
-
-	#timer;
-	constructor() {
+export class Walker extends Input {
+	#current;
+	constructor(timeoutFunc, commandFunc) {
 		super();
 
 		const loop = () => {
-			this.#current = this.#counter.getNext();
-			this.#timer = setTimeout(loop, Math.floor(Math.random() * 5000));
+			const nextCommand = commandFunc();
+			this.#current = nextCommand;
+			setTimeout(loop, timeoutFunc());
 		}
 		loop();
 	}
-}
-
-export class Stand extends Input {
-	#commands = ['idle'];
 
 	get() {
-		return this.#commands;
-	}
-
-	constructor() {
-		super();
+		return [this.#current];
 	}
 }
+
+export class RndWalk extends Walker {
+	constructor() {
+		const commands = ['idle', 'moveRight', 'moveLeft', 'moveDown', 'moveUp'];
+		const counter = new RndCounter(0, commands.length - 1);
+		super(() => Math.floor(Math.random() * 5000),
+			() => commands[counter.next]);
+	}
+}
+
+// export class RndWalk2 extends Walker {
+// 	constructor(targetBody) {
+// 		const commands = ['idle', 'moveRight', 'moveLeft', 'moveDown', 'moveUp'];
+
+// 		const counter = new RndCounter(0, commands.length - 1);
+
+
+// 		super(() => Math.floor(Math.random() * 5000),
+// 			() => commands[counter.getNext()]);
+// 	}
+// }

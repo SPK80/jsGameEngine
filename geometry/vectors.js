@@ -8,6 +8,13 @@ export class Vector2 {
 	constructor(x = 0, y = 0) {
 		this.#x = x;
 		this.#y = y;
+
+		// this.prototype.toString = () => `Vector2 ${this.x} ${this.y}`;		
+
+	}
+	
+	get [Symbol.toStringTag]() {
+		return `Vector2 ${this.x} ${this.y}`;
 	}
 
 	scMul(scalar) {
@@ -49,7 +56,13 @@ export class Vector3 extends Vector2 {
 	constructor(x = 0, y = 0, z = 0) {
 		super(x, y);
 		this.#z = z;
+		// this.prototype.toString = () => `Vector3 ${this.x} ${this.y} ${this.z}`;
 	}
+
+	get [Symbol.toStringTag]() {
+		return `Vector3 ${this.x} ${this.y} ${this.z}`;
+	}
+
 
 	scMul(scalar) {
 		super.scMul(scalar);

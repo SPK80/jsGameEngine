@@ -3,11 +3,11 @@ import { IGameObject } from "../common.js";
 
 export class IntersectComposite extends CompositeDecorator {
 	#predicate;
-	#events;
-	constructor(events, predicate, object) {
+	#event;
+	constructor(event, predicate, object) {
 		super(object);
 		this.#predicate = predicate;
-		this.#events = events;
+		this.#event = event;
 	}
 
 	update() {
@@ -17,7 +17,7 @@ export class IntersectComposite extends CompositeDecorator {
 			objects.forEach(obj2 => {
 				if (obj2 != obj1 &&
 					this.#predicate(obj1, obj2)) {
-					this.#events.call('intersect', { object1: obj1, object2: obj2 });
+					this.#event.call({ object1: obj1, object2: obj2 });
 				}
 			});
 		});

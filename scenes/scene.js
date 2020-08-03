@@ -2,17 +2,17 @@ import { IGameObject } from "../gameObjects/common.js";
 import { Composite, SortingComposite, ResistantComposite } from "../gameObjects/composite.js";
 // import { IntersectComposite } from "../gameObjects/phisics/intersect.js";
 // import { PlugBus } from "../gameObjects/plugins/PlugBus.js";
-import { Events } from "../gameObjects/events/events.js";
+// import { Events } from "../gameObjects/events/events.js";
 // import { Plugin } from "../gameObjects/plugins/plugin.js";
 
 export class Scene extends IGameObject {
 
-	#events = new Events();
-	get events() { return this.#events }
+	// #events = new Events();
+	// get events() { return this.#events }
 
-	subscribeEvent(name, callback) {
-		this.#events.subscribe(name, callback);
-	}
+	// subscribeEvent(name, callback) {
+	// 	this.#events.subscribe(name, callback);
+	// }
 
 	// #plugBus = new PlugBus();
 	// get plugins() { return this.#plugBus }
@@ -44,6 +44,7 @@ export class Scene extends IGameObject {
 	}
 
 	getObject(name) {
+		console.log(name, this.#assembly);
 		return this.#assembly.get(name);
 	}
 

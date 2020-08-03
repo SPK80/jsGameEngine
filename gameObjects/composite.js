@@ -54,7 +54,10 @@ export class Composite extends IComposite {
 export class CompositeDecorator extends IComposite {
 	#object;
 	add(item) { return this.#object.add(item) };
-	get(name) { return this.#object.get(name) };
+	get(name) {
+		// console.log(name, this.#object);
+		return this.#object.get(name)
+	};
 	remove(item) { return this.#object.remove(item) };
 	update() { this.#object.update(); }
 
@@ -84,7 +87,7 @@ export class SortingComposite extends CompositeDecorator {
 			}
 			return items;
 		}
-		else super.get(name);
+		else return super.get(name);
 	}
 
 	add(item) {

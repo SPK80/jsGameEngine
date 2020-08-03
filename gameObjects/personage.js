@@ -1,12 +1,10 @@
 import { IGameObject, IUpdating } from "./common.js";
 import { State, MoveStates, IdleStates } from "./state.js";
 import { numberRound } from "../tools/extentions.js";
-import { PulsesSource } from "./phisics/pulsesSource.js";
-import { Events } from "./events/events.js";
+import { PulsesEvent } from "./phisics/pulsesSource.js";
 import { Body } from "./bodies/bodies.js";
 import { MovingBodyDec, MassivBodyDec } from "./bodies/bodyDecorators.js";
 import { AnimDrawing, EmptyDrawing } from "./drawings/drawings.js";
-import { Vector2 } from "../geometry/vectors.js";
 numberRound();
 
 export class Personage extends IGameObject {
@@ -22,30 +20,25 @@ export class Personage extends IGameObject {
 	#state;
 	#assembly;
 
-	#events = new Events();
-	#pulsesEvent;
+	#onPulses;
 
 	constructor(name, x, y, wi, he, input,
 		tiles, animations, render) {
 		super();
 		this.#name = name;
 		this.#input = input;
-		const ps = new PulsesSource(this.#input);
 
-		const pulsEventSubscriber = (callback) => {
-			this.#events.subscribe('pulses', callback);
-		};
+		this.#onPulses = new PulsesEvent(this.#input);
 
-		this.#body = new MassivBodyDec(1, pulsEventSubscriber,
+		this.#body = new MassivBodyDec(1, this.#onPulses,
 			new MovingBodyDec(0.1,
 				new Body(x, y, 1, wi, he)));
 
-		this.#state = new PersonageState(this.#body.velocity, ps);
+		this.#state = new PersonageState(this.#body.velocity, this.#onPulses);
 
 		this.#assembly = new AnimDrawing(tiles, animations, this.#state,
 			new EmptyDrawing(render, this.#body));
 
-		this.#pulsesEvent = new PulsesEvent(this.#input, this.#events)
 	}
 
 	#textAbove = function (text) {
@@ -59,46 +52,17 @@ export class Personage extends IGameObject {
 	}
 
 	update() {
-		this.#pulsesEvent.update();
+		this.#onPulses.update();
 		this.#assembly.update();
 	}
 }
 
-class PulsesEvent extends IUpdating {
-	#input;
-	#events;
-
-	constructor(input, events) {
-		super();
-		this.#input = input;
-		this.#events = events;
-	}
-
-	update() {
-		const actions = this.#input.get();
-		if (actions && actions.length > 0) {
-			const pulses = [];
-			actions.forEach(act => {
-				if (act == MoveStates.moveRight)
-					pulses.push(new Vector2(1, 0));
-				if (act == MoveStates.moveLeft)
-					pulses.push(new Vector2(-1, 0));
-				if (act == MoveStates.moveDown)
-					pulses.push(new Vector2(0, 1));
-				if (act == MoveStates.moveUp)
-					pulses.push(new Vector2(0, -1));
-			});
-			this.#events.call('pulses', pulses);
-		}
-	}
-}
 
 class PersonageState extends State {
 	#velocity;
-	#pulses;
 	#threshold;
 
-	constructor(velocity, pulsesSource, threshold = 0.1) {
+	constructor(velocity, onPulses, threshold = 0.1) {
 		super([
 			IdleStates.idle,
 			MoveStates.moveDown,
@@ -107,8 +71,18 @@ class PersonageState extends State {
 			MoveStates.moveRight
 		]);
 		this.#velocity = velocity;
-		this.#pulses = pulsesSource;
 		this.#threshold = threshold;
+
+		onPulses.subscribe((pulses) => {
+			if (pulses && pulses.length > 0) {
+				const p = pulses[pulses.length - 1];
+
+				if (p.x > this.#threshold) super.set(MoveStates.moveRight);
+				if (p.x < -this.#threshold) super.set(MoveStates.moveLeft);
+				if (p.y > this.#threshold) super.set(MoveStates.moveDown);
+				if (p.y < -this.#threshold) super.set(MoveStates.moveUp);
+			}
+		});
 	}
 
 	get() {
@@ -121,18 +95,10 @@ class PersonageState extends State {
 			super.set(IdleStates.idle);
 		}
 
-		const pulses = this.#pulses.get();
-		if (pulses && pulses.length > 0) {
-			const p = pulses[pulses.length - 1];
-
-			if (p.x > this.#threshold) super.set(MoveStates.moveRight);
-			if (p.x < -this.#threshold) super.set(MoveStates.moveLeft);
-			if (p.y > this.#threshold) super.set(MoveStates.moveDown);
-			if (p.y < -this.#threshold) super.set(MoveStates.moveUp);
-		}
 		return super.get();
 	}
 }
+
 
 class IntersectPersonage {
 	constructor(personage, behavior, intersectEventSubscriber) {
