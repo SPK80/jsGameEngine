@@ -1,59 +1,48 @@
-import { IGameObject, IUpdating } from "./common.js";
 import { State, MoveStates, IdleStates } from "./state.js";
 import { numberRound } from "../tools/extentions.js";
 import { PulsesEvent } from "./phisics/pulsesSource.js";
-import { Body } from "./bodies/bodies.js";
 import { MovingBodyDec, MassivBodyDec } from "./bodies/bodyDecorators.js";
-import { AnimDrawing, EmptyDrawing } from "./drawings/drawings.js";
+import { AnimDrawing } from "./drawings/drawings.js";
+import { DrawingGameObject } from "./gameObject.js";
+import { Vector3, Vector2 } from "../geometry/vectors.js";
 numberRound();
 
-export class Personage extends IGameObject {
-	#name = 'noName';
-	get name() { return this.#name }
-
-	#body;
-	get body() { return this.#body }
-
+export class Personage extends DrawingGameObject {
 	#input;
 	setInput(input) { this.#input = input; }
 
 	#state;
-	#assembly;
-
 	#onPulses;
 
 	constructor(name, x, y, wi, he, input,
 		tiles, animations, render) {
-		super();
-		this.#name = name;
+		super(name, new Vector3(x, y, 1), new Vector2(wi, he), render);
+
 		this.#input = input;
 
 		this.#onPulses = new PulsesEvent(this.#input);
+		this.decorateBody(MovingBodyDec, 0.1);
+		this.decorateBody(MassivBodyDec, 1, this.#onPulses);
 
-		this.#body = new MassivBodyDec(1, this.#onPulses,
-			new MovingBodyDec(0.1,
-				new Body(x, y, 1, wi, he)));
+		this.#state = new PersonageState(this.body.velocity, this.#onPulses);
 
-		this.#state = new PersonageState(this.#body.velocity, this.#onPulses);
-
-		this.#assembly = new AnimDrawing(tiles, animations, this.#state,
-			new EmptyDrawing(render, this.#body));
-
+		this.decorateDrawing(AnimDrawing, tiles, animations, this.#state);
 	}
 
-	#textAbove = function (text) {
-		this.#assembly.render.text(
-			this.body.pos.x,
-			this.body.pos.y,
-			text,
-			'red',
-			'12px arial',
-			true);
-	}
+	// #textAbove = function (text) {
+	// 	this.#assembly.render.text(
+	// 		this.body.pos.x,
+	// 		this.body.pos.y,
+	// 		text,
+	// 		'red',
+	// 		'12px arial',
+	// 		true);
+	// }
 
 	update() {
 		this.#onPulses.update();
-		this.#assembly.update();
+		console.log(this.children);
+		super.update();
 	}
 }
 

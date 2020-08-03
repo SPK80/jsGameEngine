@@ -21,10 +21,12 @@ export class GrassScene extends Scene {
 	get controlledPersonage() { return this.#controlledPersonage }
 
 	#controlledPersonageBody = new BodyProxy();
+
 	selectPersonage(name) {
+		console.log(name, this.getObject(name));
 		this.#controlledPersonage = this.getObject(name);
 		this.#controlledPersonageBody.setBody(this.#controlledPersonage.body);
-		
+
 	}
 
 	#onIntersect = new GameEvent('intersect');
@@ -42,9 +44,9 @@ export class GrassScene extends Scene {
 
 		super([]);
 
-		this.decorateAssembly(SortingComposite);
-		this.decorateAssembly(ResistantComposite, 0.1);
-		this.decorateAssembly(IntersectComposite, this.#onIntersect,
+		this.decorateChildren(SortingComposite);
+		this.decorateChildren(ResistantComposite, 0.1);
+		this.decorateChildren(IntersectComposite, this.#onIntersect,
 			(p1, p2) => {
 				if (p1.name == 'ViewPort' || p2.name == 'ViewPort') return false;
 				if (p1.name == 'UserInterface' || p2.name == 'UserInterface') return false;
@@ -102,8 +104,9 @@ export class GrassScene extends Scene {
 
 	update() {
 		// this.#uiText.text = '~~~~~~~~~~~~~';
-		this.#landscape.update();
+		
 		super.update();
+		this.#landscape.update();
 	}
 }
 

@@ -1,7 +1,7 @@
-import { GameObject } from "./gameObject.js";
+import { BodyGameObject } from "./gameObject.js";
 import { throwIfUndefined } from "../tools/classUtils.js";
 
-export class Landscape extends GameObject {
+export class Landscape extends BodyGameObject {
 
 	#tiles = null;
 	#tileWidth = 0;
