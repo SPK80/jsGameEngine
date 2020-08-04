@@ -7,26 +7,11 @@ import { MovingBodyDec, MassivBodyDec } from "./bodies/bodyDecorators.js";
 import { AnimDrawing, EmptyDrawing } from "./drawings/drawings.js";
 import { Input } from "../inputs/input.js";
 import { throwIfNotInstance } from "../tools/utils.js";
+import { GameObject } from "./gameObject.js";
+import { Vector3, Vector2 } from "../geometry/vectors.js";
 numberRound();
 
-export class Personage extends IGameObject {
-	#name = 'noName';
-	get name() { return this.#name }
-
-	#body;
-	get body() { return this.#body }
-
-	decorateBody(_class, ...params) {
-		this.#body = new _class(...params, this.#body);
-	}
-
-	#drawing;
-	get drawing() { return this.#drawing }
-
-	decorateDrawing(_class, ...params) {
-		this.#drawing = new _class(...params, this.#drawing);
-	}
-
+export class Personage extends GameObject {
 	#state;
 	get state() { return this.#state }
 
@@ -39,31 +24,19 @@ export class Personage extends IGameObject {
 
 	#onPulses;
 
-	constructor(name, x, y, wi, he, input,
+	constructor(name, pos, size, input,
 		tiles, animations, render) {
-		super();
-		this.#name = name;
-
+		super(name, pos, size, render);
 		this.#input = new InputDecor(input);
-
 		this.#onPulses = new PulsesEvent(this.#input);
-		// this.decorateBody(MovingBodyDec, 0.1);
-		// this.decorateBody(MassivBodyDec, 1, this.#onPulses);
-
-		this.#body = new MassivBodyDec(1, this.#onPulses,
-			new MovingBodyDec(0.1,
-				new Body(x, y, 1, wi, he)));
-
-		this.#state = new PersonageState(this.#body.velocity, this.#onPulses);
-
-		this.#drawing = new AnimDrawing(tiles, animations, this.#state,
-			new EmptyDrawing(render, this.#body));
-
+		this.decorateBody(MovingBodyDec, 0.1);
+		this.decorateBody(MassivBodyDec, 1, this.#onPulses);
+		this.#state = new PersonageState(this.body.velocity, this.#onPulses);
 		this.decorateDrawing(AnimDrawing, tiles, animations, this.#state);
 	}
 
 	#textAbove = function (text) {
-		this.#drawing.render.text(
+		this.drawing.render.text(
 			this.body.pos.x,
 			this.body.pos.y,
 			text,
@@ -74,8 +47,7 @@ export class Personage extends IGameObject {
 
 	update() {
 		this.#onPulses.update();
-		this.#body.update();
-		this.#drawing.update();
+		super.update();
 	}
 }
 

@@ -1,6 +1,7 @@
 import { Animation } from "../animations/animation.js";
 import { Frame } from "../animations/frame.js";
 import { Personage } from "./personage.js";
+import { Vector3, Vector2 } from "../geometry/vectors.js";
 
 export class WhiteWolker extends Personage {
 
@@ -36,6 +37,6 @@ export class WhiteWolker extends Personage {
 				new Frame(6 * 32, 11 * 32, 32, 32, idleDelay)
 			], [0, 1, 2, 3], true),
 		};
-		super(name, x, y, 32, 32, input, tiles, anims, render);
+		super(name, new Vector3(x, y, 1), new Vector2(32, 32), input, tiles, anims, render);
 	}
 }
