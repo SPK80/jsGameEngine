@@ -90,13 +90,17 @@ export class GrassScene extends Scene {
 
 		});
 
-		let count = 10;
+		let count = 5;
 		const timer = setInterval(() => {
 			count--;
 			if (count < 0) {
-				clearInterval(timer);
-				console.log(this.getObject());
-				this.selectPersonage('WhiteWolker');
+				// clearInterval(timer);
+				if (this.#controlledPersonage.name == 'WalkMan')
+					this.selectPersonage('WhiteWolker');
+				else
+					if (this.#controlledPersonage.name == 'WhiteWolker')
+						this.selectPersonage('WalkMan');
+				count = 5;
 			}
 			else
 				this.#uiText.text = `${count}`;
@@ -106,22 +110,9 @@ export class GrassScene extends Scene {
 	}
 
 	update() {
-		// this.#uiText.text = '~~~~~~~~~~~~~';
 		this.#landscape.update();
 		super.update();
 	}
-}
-
-class TimeoutCounter {
-	constructor(count, timeout, func) {
-
-		const timer = setInterval(() => {
-
-			count--
-		}, timeout);
-
-	}
-
 }
 
 class WwSpawner extends Spawner {

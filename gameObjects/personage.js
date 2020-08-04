@@ -7,7 +7,6 @@ import { MovingBodyDec, MassivBodyDec } from "./bodies/bodyDecorators.js";
 import { AnimDrawing, EmptyDrawing } from "./drawings/drawings.js";
 import { Input } from "../inputs/input.js";
 import { throwIfNotInstance } from "../tools/utils.js";
-import { LasyInput } from "../inputs/lasyInput.js";
 numberRound();
 
 export class Personage extends IGameObject {
@@ -48,6 +47,8 @@ export class Personage extends IGameObject {
 		this.#input = new InputDecor(input);
 
 		this.#onPulses = new PulsesEvent(this.#input);
+		// this.decorateBody(MovingBodyDec, 0.1);
+		// this.decorateBody(MassivBodyDec, 1, this.#onPulses);
 
 		this.#body = new MassivBodyDec(1, this.#onPulses,
 			new MovingBodyDec(0.1,
@@ -58,6 +59,7 @@ export class Personage extends IGameObject {
 		this.#drawing = new AnimDrawing(tiles, animations, this.#state,
 			new EmptyDrawing(render, this.#body));
 
+		this.decorateDrawing(AnimDrawing, tiles, animations, this.#state);
 	}
 
 	#textAbove = function (text) {
