@@ -18,7 +18,6 @@ export class EmptyDrawing extends IDrawing {
 	}
 
 	update() {
-		this.#body.update();
 	}
 }
 
@@ -86,10 +85,10 @@ export class AnimDrawing extends DrawingDecorator {
 		this.#state = state;
 	}
 
-	_startAnim(speed=1) {
+	_startAnim(speed = 1) {
 		this.#animator.start(this.#state.get(), speed);
 	}
-	
+
 	update() {
 		super.update();
 		this._startAnim();
@@ -117,3 +116,4 @@ export class AnimDrawing extends DrawingDecorator {
 		}
 	}
 }
+

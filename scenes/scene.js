@@ -1,63 +1,26 @@
-import { IGameObject } from "../gameObjects/common.js";
-import { Composite, SortingComposite, ResistantComposite } from "../gameObjects/composite.js";
-// import { IntersectComposite } from "../gameObjects/phisics/intersect.js";
-// import { PlugBus } from "../gameObjects/plugins/PlugBus.js";
-// import { Events } from "../gameObjects/events/events.js";
-// import { Plugin } from "../gameObjects/plugins/plugin.js";
+import { Composite } from "../gameObjects/composite.js";
 
-export class Scene extends IGameObject {
+export class Scene {
 
-	// #events = new Events();
-	// get events() { return this.#events }
-
-	// subscribeEvent(name, callback) {
-	// 	this.#events.subscribe(name, callback);
-	// }
-
-	// #plugBus = new PlugBus();
-	// get plugins() { return this.#plugBus }
-
-	// addPlugin(object) {
-	// 	this.#plugBus.plugin(object);
-	// }
-
-	// constructor(objects, intersectDetect) {
-	// 	super();
-	// 	this.#assembly = new IntersectComposite(intersectDetect,
-	// 		new ResistantComposite(0.1,
-	// 			new SortingComposite(
-	// 				new Composite(objects))));
-	// }
-
-	#assembly = new Composite();
-	decorateAssembly(_class, ...params) {
-		this.#assembly = new _class(...params, this.#assembly);
+	#children = new Composite();
+	decorateChildren(_class, ...params) {
+		this.#children = new _class(...params, this.#children);
 	}
 
-
 	addObject(object) {
-		this.#assembly.add(object);
+		this.#children.add(object);
 	}
 
 	removeObject(object) {
-		this.#assembly.remove(object);
+		this.#children.remove(object);
 	}
 
 	getObject(name) {
-		console.log(name, this.#assembly);
-		return this.#assembly.get(name);
+		console.log(name, this.#children);
+		return this.#children.get(name);
 	}
 
 	update() {
-		// this.#plugBus.update();
-		if (this.#assembly) this.#assembly.update();
+		this.#children.update();
 	}
-
 }
-
-// export class Scene extends BaseScene {
-// 	constructor() {
-// 		super();
-
-// 	}
-// }

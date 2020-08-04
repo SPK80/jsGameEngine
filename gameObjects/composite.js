@@ -7,11 +7,11 @@ export class Composite extends IComposite {
 	constructor(items) {
 		super();
 		if (items && items.length > 0) {
-			items.forEach((it) => {
-				if (it instanceof IGameObject) {
-					if (this.get(it.name))
+			items.forEach((item) => {
+				if (item instanceof IGameObject) {
+					if (this.get(item.name))
 						return;
-					this.#items.push(it);
+					this.#items.push(item);
 				}
 			});
 		}

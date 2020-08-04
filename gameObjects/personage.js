@@ -5,6 +5,9 @@ import { PulsesEvent } from "./phisics/pulsesSource.js";
 import { Body } from "./bodies/bodies.js";
 import { MovingBodyDec, MassivBodyDec } from "./bodies/bodyDecorators.js";
 import { AnimDrawing, EmptyDrawing } from "./drawings/drawings.js";
+import { Input } from "../inputs/input.js";
+import { throwIfNotInstance } from "../tools/utils.js";
+import { LasyInput } from "../inputs/lasyInput.js";
 numberRound();
 
 export class Personage extends IGameObject {
@@ -14,11 +17,26 @@ export class Personage extends IGameObject {
 	#body;
 	get body() { return this.#body }
 
-	#input;
-	setInput(input) { this.#input = input; }
+	decorateBody(_class, ...params) {
+		this.#body = new _class(...params, this.#body);
+	}
+
+	#drawing;
+	get drawing() { return this.#drawing }
+
+	decorateDrawing(_class, ...params) {
+		this.#drawing = new _class(...params, this.#drawing);
+	}
 
 	#state;
-	#assembly;
+	get state() { return this.#state }
+
+	decorateState(_class, ...params) {
+		this.#state = new _class(...params, this.#state);
+	}
+
+	#input;
+	setInput(input) { this.#input.setInput(input); }
 
 	#onPulses;
 
@@ -26,7 +44,8 @@ export class Personage extends IGameObject {
 		tiles, animations, render) {
 		super();
 		this.#name = name;
-		this.#input = input;
+
+		this.#input = new InputDecor(input);
 
 		this.#onPulses = new PulsesEvent(this.#input);
 
@@ -36,13 +55,13 @@ export class Personage extends IGameObject {
 
 		this.#state = new PersonageState(this.#body.velocity, this.#onPulses);
 
-		this.#assembly = new AnimDrawing(tiles, animations, this.#state,
+		this.#drawing = new AnimDrawing(tiles, animations, this.#state,
 			new EmptyDrawing(render, this.#body));
 
 	}
 
 	#textAbove = function (text) {
-		this.#assembly.render.text(
+		this.#drawing.render.text(
 			this.body.pos.x,
 			this.body.pos.y,
 			text,
@@ -53,10 +72,10 @@ export class Personage extends IGameObject {
 
 	update() {
 		this.#onPulses.update();
-		this.#assembly.update();
+		this.#body.update();
+		this.#drawing.update();
 	}
 }
-
 
 class PersonageState extends State {
 	#velocity;
@@ -99,9 +118,19 @@ class PersonageState extends State {
 	}
 }
 
+class InputDecor extends Input {
+	#input;
+	setInput(input) {
+		this.#input = throwIfNotInstance(input, Input);
+	};
 
-class IntersectPersonage {
-	constructor(personage, behavior, intersectEventSubscriber) {
-		intersectEventSubscriber();
+	constructor(input) {
+		super();
+		this.#input = input;
+	}
+
+	get() {
+		const result = this.#input.get();
+		return result;
 	}
 }

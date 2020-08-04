@@ -22,13 +22,16 @@ export class GrassScene extends Scene {
 
 	#controlledPersonageBody = new BodyProxy();
 	selectPersonage(name) {
+		if (this.#controlledPersonage)
+			this.#controlledPersonage.setInput(new RndWalk());
 		this.#controlledPersonage = this.getObject(name);
+		this.#controlledPersonage.setInput(this.#input);
 		this.#controlledPersonageBody.setBody(this.#controlledPersonage.body);
-		
 	}
 
 	#onIntersect = new GameEvent('intersect');
 	#uiText;
+	#input;
 
 	constructor(render, input, tiles) {
 		const grass = new Image();
@@ -40,11 +43,13 @@ export class GrassScene extends Scene {
 		});
 		grass.src = "grass.jpg";
 
-		super([]);
+		super();
 
-		this.decorateAssembly(SortingComposite);
-		this.decorateAssembly(ResistantComposite, 0.1);
-		this.decorateAssembly(IntersectComposite, this.#onIntersect,
+		this.#input = input;
+
+		this.decorateChildren(SortingComposite);
+		this.decorateChildren(ResistantComposite, 0.1);
+		this.decorateChildren(IntersectComposite, this.#onIntersect,
 			(p1, p2) => {
 				if (p1.name == 'ViewPort' || p2.name == 'ViewPort') return false;
 				if (p1.name == 'UserInterface' || p2.name == 'UserInterface') return false;
@@ -62,7 +67,7 @@ export class GrassScene extends Scene {
 		this.addObject(this.#uiText);
 
 
-		this.addObject(new WalkMan('WalkMan', 400, 300, input, tiles, render));
+		this.addObject(new WalkMan('WalkMan', 400, 300, new RndWalk(), tiles, render));
 		this.selectPersonage('WalkMan');
 
 		// new WwSpawner(2000, this, this.#controlledPersonageBody, tiles, render);
