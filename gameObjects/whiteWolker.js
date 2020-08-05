@@ -5,7 +5,7 @@ import { Vector3, Vector2 } from "../geometry/vectors.js";
 
 export class WhiteWolker extends Personage {
 
-	constructor(name, x, y, input, tiles, render) {
+	constructor(name, x, y, tiles, render) {
 		const order = [0, 1, 2];
 		const moveDelay = 100;
 		const idleDelay = 1000;
@@ -37,6 +37,6 @@ export class WhiteWolker extends Personage {
 				new Frame(6 * 32, 11 * 32, 32, 32, idleDelay)
 			], [0, 1, 2, 3], true),
 		};
-		super(name, new Vector3(x, y, 1), new Vector2(32, 32), input, tiles, anims, render);
+		super(name, new Vector3(x, y, 1), new Vector2(32, 32), tiles, anims, render);
 	}
 }

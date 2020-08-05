@@ -6,7 +6,7 @@ export class KeyMap {
 			this.add(kmap.action, kmap.keys);
 		});
 	}
-	
+
 	add(action, keys) {
 		this.#items[action] = [];
 		keys.forEach(key => {

@@ -1,14 +1,11 @@
-import { IGameObject, IUpdating } from "./common.js";
 import { State, MoveStates, IdleStates } from "./state.js";
 import { numberRound } from "../tools/extentions.js";
 import { PulsesEvent } from "./phisics/pulsesSource.js";
-import { Body } from "./bodies/bodies.js";
 import { MovingBodyDec, MassivBodyDec } from "./bodies/bodyDecorators.js";
-import { AnimDrawing, EmptyDrawing } from "./drawings/drawings.js";
-import { Input } from "../inputs/input.js";
+import { AnimDrawing } from "./drawings/drawings.js";
+import { Input, EnptyInput } from "../inputs/input.js";
 import { throwIfNotInstance } from "../tools/utils.js";
 import { GameObject } from "./gameObject.js";
-import { Vector3, Vector2 } from "../geometry/vectors.js";
 numberRound();
 
 export class Personage extends GameObject {
@@ -20,14 +17,17 @@ export class Personage extends GameObject {
 	}
 
 	#input;
-	setInput(input) { this.#input.setInput(input); }
+	setInput(input) {
+		this.#input.setInput(input);
+		// this.#input = input;
+	}
 
 	#onPulses;
 
-	constructor(name, pos, size, input,
+	constructor(name, pos, size,
 		tiles, animations, render) {
 		super(name, pos, size, render);
-		this.#input = new InputDecor(input);
+		this.#input = new InputDecor(new EnptyInput());
 		this.#onPulses = new PulsesEvent(this.#input);
 		this.decorateBody(MovingBodyDec, 0.1);
 		this.decorateBody(MassivBodyDec, 1, this.#onPulses);
@@ -93,18 +93,23 @@ class PersonageState extends State {
 }
 
 class InputDecor extends Input {
-	#input;
+	#input = new EnptyInput();
 	setInput(input) {
 		this.#input = throwIfNotInstance(input, Input);
 	};
 
 	constructor(input) {
 		super();
-		this.#input = input;
+		if (input)
+			this.#input = input;
 	}
 
 	get() {
 		const result = this.#input.get();
 		return result;
+	}
+
+	subscribe(callback) {
+		this.#input.subscribe(callback);
 	}
 }

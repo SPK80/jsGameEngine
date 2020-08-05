@@ -16,7 +16,6 @@ export class Scene {
 	}
 
 	getObject(name) {
-		console.log(name, this.#children);
 		return this.#children.get(name);
 	}
 

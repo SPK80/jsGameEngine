@@ -17,6 +17,10 @@ import { GameEvent } from "../gameObjects/events/gameEvent.js";
 export class GrassScene extends Scene {
 	#landscape = { update() { } };
 
+	#onIntersect = new GameEvent('intersect');
+	#uiText;
+	#input;
+
 	#controlledPersonage;
 	get controlledPersonage() { return this.#controlledPersonage }
 
@@ -29,11 +33,8 @@ export class GrassScene extends Scene {
 		this.#controlledPersonageBody.setBody(this.#controlledPersonage.body);
 	}
 
-	#onIntersect = new GameEvent('intersect');
-	#uiText;
-	#input;
-
 	constructor(render, input, tiles) {
+
 		const grass = new Image();
 		grass.addEventListener("load", () => {
 			this.#landscape = new ImageDrawing(
@@ -66,25 +67,25 @@ export class GrassScene extends Scene {
 		this.#uiText = new UiText(viewPort.body, render);
 		this.addObject(this.#uiText);
 
-
-		this.addObject(new WalkMan('WalkMan', 400, 300, new RndWalk(), tiles, render));
+		const wm = new WalkMan('WalkMan', 400, 300, tiles, render);
+		wm.setInput(new RndWalk());
+		this.addObject(wm);
 		this.selectPersonage('WalkMan');
 
 		// new WwSpawner(2000, this, this.#controlledPersonageBody, tiles, render);
 		const spot = this.#controlledPersonageBody;
-		this.addObject(
-			new WhiteWalker(
-				'WhiteWolker',
-				Math.random() * spot.size.x * 2 + spot.pos.x - spot.size.x,
-				Math.random() * spot.size.y * 2 + spot.pos.y - spot.size.y,
-				new RndWalk(),
-				tiles,
-				render
-			)
+
+		const ww = new WhiteWalker(
+			'WhiteWolker',
+			Math.random() * spot.size.x * 2 + spot.pos.x - spot.size.x,
+			Math.random() * spot.size.y * 2 + spot.pos.y - spot.size.y,
+			tiles,
+			render
 		);
+		ww.setInput(new RndWalk());
+		this.addObject(ww);
 
 		this.#onIntersect.subscribe((obj1, obj2) => {
-			// console.log('intersect', obj1, obj2);
 			this.#uiText.text = 'intersect';
 			// setTimeout(() => this.#uiText.text = '~~~~~~~~~~~~~', 1000);
 
@@ -115,22 +116,22 @@ export class GrassScene extends Scene {
 	}
 }
 
-class WwSpawner extends Spawner {
-	constructor(interval, scene, spot, tiles, render) {
-		super(10, () => interval, (i) => {
-			scene.addObject(
-				new WhiteWalker(
-					"WhiteWolker" + i,
-					Math.random() * spot.size.x * 2 + spot.pos.x - spot.size.x,
-					Math.random() * spot.size.y * 2 + spot.pos.y - spot.size.y,
-					new RndWalk(),
-					tiles,
-					render
-				)
-			);
-		}).start();
-	}
-}
+// class WwSpawner extends Spawner {
+// 	constructor(interval, scene, spot, tiles, render) {
+// 		super(10, () => interval, (i) => {
+// 			scene.addObject(
+// 				new WhiteWalker(
+// 					"WhiteWolker" + i,
+// 					Math.random() * spot.size.x * 2 + spot.pos.x - spot.size.x,
+// 					Math.random() * spot.size.y * 2 + spot.pos.y - spot.size.y,
+// 					new RndWalk(),
+// 					tiles,
+// 					render
+// 				)
+// 			);
+// 		}).start();
+// 	}
+// }
 
 class BodyProxy extends IBody {
 	#body = new Body();

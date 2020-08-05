@@ -5,7 +5,7 @@ export class GameEvent {
 	#callbacks = [];
 
 	constructor(name, firstCallback) {
-		this.#name = name;
+		if (name) this.#name = name;
 		if (firstCallback)
 			this.subscribe(firstCallback);
 	}

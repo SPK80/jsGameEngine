@@ -1,41 +1,63 @@
 import { Input } from "./input.js";
-import { KeyMap } from "./keyMap.js";
+import { GameEvent } from "../gameObjects/events/gameEvent.js";
 
 export class KeyboardInput extends Input {
 
-	#actions = [];
-	#keyMap = null;
+	#keys = [];
+	#onUpdate = new GameEvent('InputUpdate');
 
-	constructor(keyMap) {
+	subscribe(callback) {
+		this.#onUpdate.subscribe(callback);
+	}
+
+	constructor() {
 		super();
-		if (keyMap instanceof KeyMap)
-			this.#keyMap = keyMap;
 
 		window.addEventListener('keydown', e => {
-			const act = this.#keyMap.get(e.keyCode);
-			// console.log(act);
+			const key = e.keyCode;
+			if (key && !this.#keys.includes(key))
+				this.#keys.push(key);
 
-			if (act && !this.#actions.includes(act))
-				this.#actions.push(act);
+			this.#onUpdate.call(['keydown', e.keyCode]);
 		});
 
 		window.addEventListener('keyup', e => {
-			const actions = [];
-			for (let i = 0; i < this.#actions.length; i++) {
-				const action = this.#actions[i];
-				if (action != this.#keyMap.get(e.keyCode))
-					actions.push(action);
+			const newKeys = [];
+			for (let i = 0;i < this.#keys.length;i++) {
+				const key = this.#keys[i];
+				if (key != e.keyCode)
+					newKeys.push(key);
 			}
-			this.#actions = actions;
+			this.#keys = newKeys;
+			this.#onUpdate.call(['keyup', e.keyCode]);
 		});
 	}
 
 	get() {
-		// console.log(this.#actions);
-		return this.#actions;
+		return this.#keys;
 	}
 }
 
+export class InputMapper extends Input {
+	#mapper = () => this.#input.get();
+	#input;
+
+	constructor(input, mapper) {
+		super();
+		this.#input = input;
+		this.#mapper = mapper;
+	}
+
+	get() {
+		const inp = this.#input.get();
+		return inp.map(this.#mapper);
+	}
+
+	subscribe(callback) {
+		this.#input.subscribe(callback);
+	}
+
+}
 
 // export class AltKeyBoardInput extends Input {
 
