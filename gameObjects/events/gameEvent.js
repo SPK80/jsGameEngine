@@ -21,7 +21,7 @@ export class GameEvent {
 
 	call(args) {
 		this.#callbacks.forEach(callback => {
-			const result = callback(args);
+			const result = callback(this.#name, args);
 			if (result)
 				this.unsubscribe(callback);
 		});

@@ -55,7 +55,7 @@ export class MassivBodyDec extends BodyDecorator {
 			this.#velocity = body.velocity;
 
 		this.#mass = mass;
-		onPulses.subscribe((pulses) => {
+		onPulses.subscribe((eventName, pulses) => {
 			if (pulses && pulses.length > 0) {
 				const sumPuls = new Vector2();
 				pulses.forEach(puls => {

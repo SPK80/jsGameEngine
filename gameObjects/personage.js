@@ -3,7 +3,7 @@ import { numberRound } from "../tools/extentions.js";
 import { PulsesEvent } from "./phisics/pulsesSource.js";
 import { MovingBodyDec, MassivBodyDec } from "./bodies/bodyDecorators.js";
 import { AnimDrawing } from "./drawings/drawings.js";
-import { Input, EnptyInput } from "../inputs/input.js";
+import { IInput, EnptyInput } from "../inputs/input.js";
 import { throwIfNotInstance } from "../tools/utils.js";
 import { GameObject } from "./gameObject.js";
 numberRound();
@@ -19,7 +19,6 @@ export class Personage extends GameObject {
 	#input;
 	setInput(input) {
 		this.#input.setInput(input);
-		// this.#input = input;
 	}
 
 	#onPulses;
@@ -29,9 +28,10 @@ export class Personage extends GameObject {
 		super(name, pos, size, render);
 		this.#input = new InputDecor(new EnptyInput());
 		this.#onPulses = new PulsesEvent(this.#input);
+		// this.#onPulses.subscribe((n, p) => console.log(n, p));
 		this.decorateBody(MovingBodyDec, 0.1);
 		this.decorateBody(MassivBodyDec, 1, this.#onPulses);
-		this.#state = new PersonageState(this.body.velocity, this.#onPulses);
+		this.#state = new PersonageState(name + 'State', this.body.velocity, this.#onPulses);
 		this.decorateDrawing(AnimDrawing, tiles, animations, this.#state);
 	}
 
@@ -55,8 +55,8 @@ class PersonageState extends State {
 	#velocity;
 	#threshold;
 
-	constructor(velocity, onPulses, threshold = 0.1) {
-		super([
+	constructor(name, velocity, onPulses, threshold = 0.1) {
+		super(name, [
 			IdleStates.idle,
 			MoveStates.moveDown,
 			MoveStates.moveUp,
@@ -66,7 +66,7 @@ class PersonageState extends State {
 		this.#velocity = velocity;
 		this.#threshold = threshold;
 
-		onPulses.subscribe((pulses) => {
+		onPulses.subscribe((name, pulses) => {
 			if (pulses && pulses.length > 0) {
 				const p = pulses[pulses.length - 1];
 
@@ -92,10 +92,10 @@ class PersonageState extends State {
 	}
 }
 
-class InputDecor extends Input {
+class InputDecor extends IInput {
 	#input = new EnptyInput();
 	setInput(input) {
-		this.#input = throwIfNotInstance(input, Input);
+		this.#input = throwIfNotInstance(input, IInput);
 	};
 
 	constructor(input) {

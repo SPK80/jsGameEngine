@@ -14,7 +14,7 @@ export class InfinitImageDrawing extends DrawingDecorator {
 
 	relocate(shiftX, shiftY) {
 		const shiftVector = new Vector2(shiftX * this.body.size.x, shiftY * this.body.size.y);
-		console.log(shiftVector);
+		// console.log(shiftVector);
 		this.body.pos.add(shiftVector);
 	}
 

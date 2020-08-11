@@ -1,9 +1,9 @@
-import { Input } from "../../inputs/input.js";
+import { IInput } from "../../inputs/input.js";
 import { Vector2 } from "../../geometry/vectors.js";
 import { MoveStates } from "../state.js";
 import { GameEvent } from "../events/gameEvent.js";
 
-export class PulsesSource extends Input {
+export class PulsesSource extends IInput {
 	#input;
 	constructor(input) {
 		super();

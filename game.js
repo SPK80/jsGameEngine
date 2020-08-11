@@ -39,6 +39,6 @@ tiles.addEventListener("load", () => {
 	const scene = new GrassScene(render, input, tiles);
 
 	engine.start(scene);
-	// scene.update()
+	// scene.update();
 }, false);
 tiles.src = 'tiles.png';

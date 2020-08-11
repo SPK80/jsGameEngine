@@ -1,4 +1,3 @@
-import { EmptyDrawing, ImageDrawing } from "../gameObjects/drawings/drawings.js";
 import { Scene } from "./scene.js";
 import { Vector3 } from "../geometry/vectors.js";
 import { SortingComposite, ResistantComposite } from "../gameObjects/composite.js";
@@ -86,17 +85,14 @@ export class GrassScene extends Scene {
 
 		let count = 5;
 		const timer = setInterval(() => {
-			// console.log(new Vector3().add(render.body.pos).sub(viewPort.body.pos));
-			// console.log(viewPort.body.pos);
-			// console.log(render.body.pos.x - this.#landscape.body.pos.x + this.#landscape.body.size.x);
 			count--;
 			if (count < 0) {
-				// clearInterval(timer);
-				// if (this.#controlledPersonage.name == 'WalkMan')
-				// 	this.selectPersonage('WhiteWolker');
-				// else
-				// 	if (this.#controlledPersonage.name == 'WhiteWolker')
-				// 		this.selectPersonage('WalkMan');
+				clearInterval(timer);
+				if (this.#controlledPersonage.name == 'WalkMan')
+					this.selectPersonage('WhiteWolker');
+				else
+					if (this.#controlledPersonage.name == 'WhiteWolker')
+						this.selectPersonage('WalkMan');
 				count = 5;
 			}
 			else

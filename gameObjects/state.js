@@ -3,8 +3,8 @@ import { Input } from "../inputs/input.js";
 export class State extends Input {
 
 	#def = '';
-	constructor(available, def) {
-		super();
+	constructor(name, available, def) {
+		super(name);
 		if (def)
 			this.#def = def;
 		else

@@ -1,4 +1,4 @@
-import { Input } from "./input.js";
+import { IInput, Input } from "./input.js";
 import { GameEvent } from "../gameObjects/events/gameEvent.js";
 
 export class KeyboardInput extends Input {
@@ -11,7 +11,7 @@ export class KeyboardInput extends Input {
 	}
 
 	constructor() {
-		super();
+		super('KeyboardInput');
 
 		window.addEventListener('keydown', e => {
 			const key = e.keyCode;
@@ -38,7 +38,7 @@ export class KeyboardInput extends Input {
 	}
 }
 
-export class InputMapper extends Input {
+export class InputMapper extends IInput {
 	#mapper = () => this.#input.get();
 	#input;
 
