@@ -30,7 +30,7 @@ tiles.addEventListener("load", () => {
 
 	const input = new InputMapper(new KeyboardInput(), (key) => keyMap.get(key));
 
-	input.subscribe((args) => console.log(...args));
+	// input.subscribe((args) => console.log(...args));
 
 	const render = new PositionRender(
 		new Body(0, 0, 0, settings.render.width, settings.render.height),

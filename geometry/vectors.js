@@ -8,11 +8,12 @@ export class Vector2 {
 	constructor(x = 0, y = 0) {
 		this.#x = x;
 		this.#y = y;
-
-		// this.prototype.toString = () => `Vector2 ${this.x} ${this.y}`;		
-
 	}
-	
+
+	static fromVector(vector) {
+		return new Vector2(vector.x, vector.y);
+	}
+
 	get [Symbol.toStringTag]() {
 		return `Vector2 ${this.x} ${this.y}`;
 	}
@@ -56,7 +57,10 @@ export class Vector3 extends Vector2 {
 	constructor(x = 0, y = 0, z = 0) {
 		super(x, y);
 		this.#z = z;
-		// this.prototype.toString = () => `Vector3 ${this.x} ${this.y} ${this.z}`;
+	}
+
+	static fromVector(vector) {
+		return new Vector3(vector.x, vector.y, vector.z);
 	}
 
 	get [Symbol.toStringTag]() {
