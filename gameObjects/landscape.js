@@ -7,14 +7,14 @@ import { InfinitImageDrawing } from "./drawings/infinitImageDrawing.js";
 export class Landscape extends GameObject {
 	constructor(name, image, render) {
 		throwIfNotInstance(image, Image);
-		super(name, new Vector3(), new Vector2(image.width, image.height), render);
+		super(name, render, new Vector3(), new Vector2(image.width, image.height));
 		this.decorateDrawing(ImageDrawing, image);
 	}
 }
 
 export class InfinitLandscape extends GameObject {
 	constructor(name, image, render) {
-		super(name, new Vector3(), new Vector2(image.width, image.height), render);
+		super(name, render, new Vector3(), new Vector2(image.width, image.height));
 		this.decorateDrawing(InfinitImageDrawing, image);
 	}
 }

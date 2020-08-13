@@ -18,6 +18,7 @@ export class Personage extends GameObject {
 
 	#input;
 	setInput(input) {
+		// this.#input.delete();
 		this.#input.setInput(input);
 	}
 
@@ -25,9 +26,10 @@ export class Personage extends GameObject {
 
 	constructor(name, pos, size,
 		tiles, animations, render) {
-		super(name, pos, size, render);
+		super(name, render, pos, size);
 		this.#input = new InputDecor(new EnptyInput());
 		this.#onPulses = new PulsesEvent(this.#input);
+		// this.#onPulses.onIncoming(()=>);
 		// this.#onPulses.subscribe((n, p) => console.log(n, p));
 		this.decorateBody(MovingBodyDec, 0.1);
 		this.decorateBody(MassivBodyDec, 1, this.#onPulses);
@@ -46,7 +48,7 @@ export class Personage extends GameObject {
 	}
 
 	update() {
-		this.#onPulses.update();
+		this.#onPulses._update();
 		super.update();
 	}
 }
@@ -95,13 +97,13 @@ class PersonageState extends State {
 class InputDecor extends IInput {
 	#input = new EnptyInput();
 	setInput(input) {
-		this.#input = throwIfNotInstance(input, IInput);
+		if (input)
+			this.#input = throwIfNotInstance(input, IInput);
 	};
 
 	constructor(input) {
 		super();
-		if (input)
-			this.#input = input;
+		this.setInput(input);
 	}
 
 	get() {
@@ -109,7 +111,7 @@ class InputDecor extends IInput {
 		return result;
 	}
 
-	subscribe(callback) {
-		this.#input.subscribe(callback);
+	onIncoming(callback) {
+		this.#input.onIncoming(callback);
 	}
 }

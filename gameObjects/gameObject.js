@@ -3,7 +3,7 @@ import { IGameObject } from "./common.js";
 import { EmptyDrawing } from "./drawings/drawings.js";
 
 export class GameObject extends IGameObject {
-	#name = 'GameObject';
+	#name;
 	get name() { return this.#name; }
 
 	#body = new Body();
@@ -20,7 +20,7 @@ export class GameObject extends IGameObject {
 		this.#drawing = new _class(...params, this.#drawing);
 	}
 
-	constructor(name, pos, size, render) {
+	constructor(name, render, pos, size) {
 		super();
 		this.#name = name;
 		if (pos && size)

@@ -33,10 +33,12 @@ export class PulsesEvent extends GameEvent {
 
 	constructor(input) {
 		super('pulses');
+
 		this.#input = input;
+		this.#input.onIncoming(() => { this._update() });
 	}
 
-	update() {
+	_update() {
 		const actions = this.#input.get();
 		if (actions && actions.length > 0) {
 			const pulses = [];
@@ -50,6 +52,7 @@ export class PulsesEvent extends GameEvent {
 				if (act == MoveStates.moveUp)
 					pulses.push(new Vector2(0, -1));
 			});
+			// console.log(this, pulses);
 			this.call(pulses);
 		}
 	}

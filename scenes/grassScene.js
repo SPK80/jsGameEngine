@@ -59,7 +59,7 @@ export class GrassScene extends Scene {
 		this.#uiText = new UiText(viewPort.body, render);
 		this.objects.add(this.#uiText);
 
-		const wm = new WalkMan('WalkMan', 400, 300, tiles, render);
+		const wm = new WalkMan('WalkMan', 400, 300, tiles, render);		
 		wm.setInput(new RndWalk());
 		this.objects.add(wm);
 		this.selectPersonage('WalkMan');
