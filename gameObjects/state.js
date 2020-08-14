@@ -1,38 +1,35 @@
-import { Input } from "../inputs/input.js";
+import { ISource } from "../inputs/input.js";
 
-export class State extends Input {
+export class State extends ISource {
 
-	#def = '';
-	constructor(name, available, def) {
-		super(name);
-		if (def)
-			this.#def = def;
-		else
-			this.#def = available[0];
+	// #def = '';
+	// constructor(name, available, def) {
+	// 	super(name);
+	// 	if (def)
+	// 		this.#def = def;
+	// 	else
+	// 		this.#def = available[0];
 
-		this.#available.push(...available);
-	}
+	// 	this.#available.push(...available);
+	// }
+
+	// #available = [];
 
 	#state = '';
-	#available = [];
 
 	get() {
 		return this.#state;
 	}
 
-	set(state) {
-		if (this.#available.includes(state))
-			this.#state = state;
+	#onChanged = new GameEvent('State');
+
+	onIncoming(callback) {
+		this.#onChanged.subscribe(callback);
 	}
-}
 
-export const MoveStates = {
-	moveRight : 'moveRight',
-	moveLeft : 'moveLeft',
-	moveDown : 'moveDown',
-	moveUp : 'moveUp'
-}
-
-export const IdleStates ={
-	idle : 'idle'
+	set _state(value) { //-protected
+		// if (this.#available.includes(state))
+		this.#state = value;
+		this.#onChanged.call(this.#state);
+	}
 }

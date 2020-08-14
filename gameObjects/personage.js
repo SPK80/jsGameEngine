@@ -3,7 +3,7 @@ import { numberRound } from "../tools/extentions.js";
 import { PulsesEvent } from "./phisics/pulsesSource.js";
 import { MovingBodyDec, MassivBodyDec } from "./bodies/bodyDecorators.js";
 import { AnimDrawing } from "./drawings/drawings.js";
-import { IInput, EnptyInput } from "../inputs/input.js";
+import { ISource, EnptyInput } from "../inputs/input.js";
 import { throwIfNotInstance } from "../tools/utils.js";
 import { GameObject } from "./gameObject.js";
 numberRound();
@@ -19,29 +19,25 @@ export class Personage extends GameObject {
 	#input;
 	setInput(input) {//rename plugControl
 		// this.#input.delete();
-		this.#input.setInput(input); 
-//change: input.onIncoming((commands)=>{
-controlledBehavior(commands);
-}
+		this.#input.setInput(input);
+		//change: input.onIncoming((commands)=>{controlledBehavior(commands)}
 	}
 
-unplugControl(){
-...
-}
+	unplugControl() {
+		// ...
+	}
 
-controlledBehavior(commands){
-...
-}
+	controlledBehavior(commands) {
+		// ...
+	}
 
-ownBehavior(){
-...
-}
-
+	ownBehavior() {
+		// ...
+	}
 
 	#onPulses;
 
-	constructor(name, pos, size,
-		tiles, animations, render) {
+	constructor(name, pos, size, tiles, animations, render) {
 		super(name, render, pos, size);
 		this.#input = new InputDecor(new EnptyInput());
 		this.#onPulses = new PulsesEvent(this.#input); // change to PulsesGenerator(this.#state)
@@ -110,11 +106,11 @@ class PersonageState extends State {
 	}
 }
 
-class InputDecor extends IInput {
+class InputDecor extends ISource {
 	#input = new EnptyInput();
 	setInput(input) {
 		if (input)
-			this.#input = throwIfNotInstance(input, IInput);
+			this.#input = throwIfNotInstance(input, ISource);
 	};
 
 	constructor(input) {
@@ -130,4 +126,15 @@ class InputDecor extends IInput {
 	onIncoming(callback) {
 		this.#input.onIncoming(callback);
 	}
+}
+
+export const MoveStates = {
+	moveRight: 'moveRight',
+	moveLeft: 'moveLeft',
+	moveDown: 'moveDown',
+	moveUp: 'moveUp'
+}
+
+export const IdleStates = {
+	idle: 'idle'
 }

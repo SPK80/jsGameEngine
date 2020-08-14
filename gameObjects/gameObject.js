@@ -33,3 +33,4 @@ export class GameObject extends IGameObject {
 		this.drawing.update();
 	}
 }
+

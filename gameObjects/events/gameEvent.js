@@ -12,6 +12,7 @@ export class GameEvent {
 
 	subscribe(callback) {
 		this.#callbacks.push(callback);
+		return () => { unsubscribe(callback) };
 	}
 
 	unsubscribe(callback) {
