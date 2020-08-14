@@ -10,17 +10,33 @@ numberRound();
 
 export class Personage extends GameObject {
 	#state;
-	get state() { return this.#state }
+	get state() { return this.#state }//change: return this.#state.get()
 
 	decorateState(_class, ...params) {
 		this.#state = new _class(...params, this.#state);
 	}
 
 	#input;
-	setInput(input) {
+	setInput(input) {//rename plugControl
 		// this.#input.delete();
-		this.#input.setInput(input);
+		this.#input.setInput(input); 
+//change: input.onIncoming((commands)=>{
+controlledBehavior(commands);
+}
 	}
+
+unplugControl(){
+...
+}
+
+controlledBehavior(commands){
+...
+}
+
+ownBehavior(){
+...
+}
+
 
 	#onPulses;
 
@@ -28,7 +44,7 @@ export class Personage extends GameObject {
 		tiles, animations, render) {
 		super(name, render, pos, size);
 		this.#input = new InputDecor(new EnptyInput());
-		this.#onPulses = new PulsesEvent(this.#input);
+		this.#onPulses = new PulsesEvent(this.#input); // change to PulsesGenerator(this.#state)
 		// this.#onPulses.onIncoming(()=>);
 		// this.#onPulses.subscribe((n, p) => console.log(n, p));
 		this.decorateBody(MovingBodyDec, 0.1);
