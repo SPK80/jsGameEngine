@@ -1,4 +1,4 @@
-import { IInput, Input } from "./input.js";
+import { ISource, Input } from "./input.js";
 import { GameEvent } from "../gameObjects/events/gameEvent.js";
 
 export class KeyboardInput extends Input {
@@ -38,7 +38,7 @@ export class KeyboardInput extends Input {
 	}
 }
 
-export class InputMapper extends IInput {
+export class InputMapper extends ISource {
 	#mapper = () => this.#input.get();
 	#input;
 

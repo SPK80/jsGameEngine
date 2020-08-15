@@ -1,4 +1,4 @@
-import { State, MoveStates, IdleStates } from "./state.js";
+import { State } from "./state.js";
 import { numberRound } from "../tools/extentions.js";
 import { PulsesEvent } from "./phisics/pulsesSource.js";
 import { MovingBodyDec, MassivBodyDec } from "./bodies/bodyDecorators.js";
@@ -21,18 +21,6 @@ export class Personage extends GameObject {
 		// this.#input.delete();
 		this.#input.setInput(input);
 		//change: input.onIncoming((commands)=>{controlledBehavior(commands)}
-	}
-
-	unplugControl() {
-		// ...
-	}
-
-	controlledBehavior(commands) {
-		// ...
-	}
-
-	ownBehavior() {
-		// ...
 	}
 
 	#onPulses;

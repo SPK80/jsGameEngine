@@ -67,10 +67,11 @@ class Generator extends Input {
 	// #input;
 	#data;
 	#stoped = false;
+	#eventTimer;
 
 	constructor(name, interval) {
 		super(name);
-		// this.#input = throwIfNotInstance(input, IInput);
+		// this.#input = throwIfNotInstance(input, ISource);
 		this.onIncoming((data) => this.#data = data);
 
 		this.#eventTimer = setInterval(() => {

@@ -1,7 +1,7 @@
 import { ISource } from "../../inputs/input.js";
 import { Vector2 } from "../../geometry/vectors.js";
-import { MoveStates } from "../state.js";
 import { GameEvent } from "../events/gameEvent.js";
+import { MoveStates } from "../personage.js";
 
 export class PulsesSource extends ISource {
 	#input;
