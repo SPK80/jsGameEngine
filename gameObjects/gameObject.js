@@ -22,9 +22,17 @@ export class GameObject extends IGameObject {
 
 	constructor(name, render, pos, size) {
 		super();
+
+		if (typeof name != "string") throw ('name must be string');
 		this.#name = name;
-		if (pos && size)
+
+		if (pos && size) {
+			if (!(pos instanceof Vector2)) throw ('pos must be Vector2');
+			if (!(size instanceof Vector2)) throw ('size must be Vector2');
 			this.#body = new Body(pos.x, pos.y, pos.z, size.x, size.y);
+		}
+		else this.#body = new Body();
+
 		this.#drawing = new EmptyDrawing(render, this.#body);
 	}
 

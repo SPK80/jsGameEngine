@@ -2,47 +2,18 @@ import { IGameObject } from "./common.js";
 import { Vector2 } from "../geometry/vectors.js";
 import { MovingBodyDec, MassivBodyDec } from "./bodies/bodyDecorators.js";
 import { State } from "./state.js";
+import { GameObject } from "./gameObject.js";
+import { AnimDrawing } from "./drawings/drawings.js";
+import { Executor } from "./tasks";
 
-export class ReactiveGameObject extends IGameObject {
-	#name;
-	get name() { return this.#name; }
-
-	#body;
-	get body() { return this.#body; }
-
-	decorateBody(_class, ...params) {
-		this.#body = new _class(...params, this.#body);
-	}
-
-	#drawing;
-	get drawing() { return this.#drawing; }
-
-	decorateDrawing(_class, ...params) {
-		this.#drawing = new _class(...params, this.#drawing);
-	}
-
-	constructor(name, pos, size, render) {
-		super();
-		if (typeof name != "string") throw ('name must be string');
-		this.#name = name;
-
-		if (pos && size) {
-			if (!(pos instanceof Vector2)) throw ('pos must be Vector2');
-			if (!(size instanceof Vector2)) throw ('size must be Vector2');
-			this.#body = new Body(pos.x, pos.y, pos.z, size.x, size.y);
-		}
-		else this.#body = new Body();
-
-		this.#drawing = new EmptyDrawing(render, this.#body);
-	}
-
+export class ReactiveGameObject extends GameObject {
 	#unsubscribers = [];
 
-	_subscribeEvent(event, callback) {
-		this.#unsubscribers.push(event.unsubscribe(callback));
+	subscribeEvent(event, callback) {
+		this.#unsubscribers.push(event.subscribe(callback));
 	}
 
-	delete() {
+	remove() {
 		this.#unsubscribers.forEach(unsubscriber => {
 			unsubscriber();
 		});
@@ -53,18 +24,25 @@ export class ReactiveGameObject extends IGameObject {
 export class ReactivePersonage extends ReactiveGameObject {
 
 	#state = new State();
+
 	setControl(source) {
-		_subscribeEvent(source, (task) => { this.#state.set(task) });
+		// _subscribeEvent(source, (task) => { this.#state.set(task) });
 	}
 
-	constructor(name, pos, size, render, tiles, animations) {
-		super(name, pos, size, render);
+	#onPulses = new Pulses();
+
+	#tasks = new Executor();
+
+	constructor(name, render, pos, size, tiles, animations, onTask) {
+		super(name, render, pos, size);
 
 		this.decorateBody(MovingBodyDec, 0.1);
 		this.decorateBody(MassivBodyDec, 1, this.#onPulses);
-
 		this.decorateDrawing(AnimDrawing, tiles, animations, this.#state);
 
+		subscribeEvent(onTask, (evName, newTask) => {
+			this.#tasks.push(newTask);
+		})
 	}
 }
 
@@ -76,4 +54,8 @@ class State {
 	set(value) {
 		this.#state = value;
 	}
+}
+
+class Pulses {
+
 }
