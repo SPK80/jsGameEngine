@@ -51,6 +51,7 @@ export class Task {
 		try {
 			const result = this.#func(args);
 			if (!result) this.#finished = true;
+			return result;
 		}
 		catch {
 			this.#finished = true;
