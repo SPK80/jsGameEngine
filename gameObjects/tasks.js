@@ -1,6 +1,6 @@
 import { throwIfNotInstance } from "../tools/utils.js";
 
-export class TasksExecutor {
+export class TasksRunStack {
 	#tasks = [];
 
 	get curent() {
@@ -17,20 +17,25 @@ export class TasksExecutor {
 		this.#tasks.push(newTask);
 	}
 
-	update(args) {
-		let result;
+	pop() {
+		return this.#tasks.pop();
+	}
+
+	run(args) {
+		let _result;
+		const _curent = this.curent;
 		try {
-			result = this.curent.next(args);
+			_result = _curent.next(args);
 		}
 		catch{ }
 
-		if (!result) {
+		if (!_curent.hasNext) {
 			if (this.#tasks.length > 1)
 				this.#tasks.pop();
 			else
-				throw ('idleTask is damaged!', this.curent);
+				throw (`Task ${_curent.name} is damaged!`, _curent);
 		}
-		return result;
+		return _result;
 	}
 }
 
@@ -44,17 +49,28 @@ export class Task {
 		this.#func = func;
 	}
 
-	#finished = false;
+	#hasNext = true;
+	get hasNext() { return this.#hasNext }
+
+	finish() { this.#hasNext = false }
+
+	#result;
+	get result() { return this.#result }
+
+	#catched = false;
+	get catched() { return this.#catched }
+
+
 	next(args) { //if returns undifined then Task is finished
-		if (this.#finished) return;
+		if (!this.#hasNext) return;
 
 		try {
-			const result = this.#func(args);
-			if (!result) this.#finished = true;
-			return result;
+			this.#result = this.#func(args, this);
+			return this.#result;
 		}
 		catch {
-			this.#finished = true;
+			this.finish();
+			this.#catched = true;
 			return;
 		}
 	}
