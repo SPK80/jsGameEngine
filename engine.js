@@ -1,6 +1,4 @@
-export class Engine {
-	
-	#render = null;
+export class Engine {	
 	#frameDelay;
 	get frameDelay() { return this.#frameDelay }
 
