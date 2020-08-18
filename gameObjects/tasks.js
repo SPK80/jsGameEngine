@@ -60,8 +60,7 @@ export class Task {
 	#catched = false;
 	get catched() { return this.#catched }
 
-
-	next(args) { //if returns undifined then Task is finished
+	next(args) {
 		if (!this.#hasNext) return;
 
 		try {

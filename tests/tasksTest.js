@@ -1,18 +1,17 @@
 import { TasksRunStack, Task } from "../gameObjects/tasks.js";
 
-const tasks = new TasksRunStack(new Task('idle', (args) => {
-	console.log('idle', args);
+const tasks = new TasksRunStack(new Task('idle', (args, t) => {
+	// console.log('idle', args, t);
 	return 'idle';
 }));
 
 console.log('0: ' + tasks.run(0));
 
 let i = 2;
-tasks.push(new Task('t1', (args) => {
-	console.log('  t1:');
+tasks.push(new Task('t0', (args, t) => {
+	console.log('t0');
 	t.finish(); //how to finish and return result?
-	return 't1';
-
+	return 'result t0';
 }));
 
 console.log('1: ' + tasks.run(1));
