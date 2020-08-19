@@ -12,14 +12,16 @@ Scene{
 Constructor(onRender, onPhisics, on...){
 onRender.listen(this.draw)
 onPhisics.listen(this.interact)
+_render = ShiftedRender(this.pos, render)
 }
 
 objects
-draw(render){
-_render = ShiftedRender(this.pos, render)
+draw(){
+
 objects.Forech(o.draw(_render))
 }
-interact(phisics){
+
+interact(){
 
 }
 
