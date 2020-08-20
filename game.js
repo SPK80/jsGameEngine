@@ -33,9 +33,10 @@ import { KeyboardDriver } from "./inputs/keyboardDriver.js";
 		settings.render.scale);
 
 	const keyboard = new KeyboardDriver();
-	const input = new InputEngine(keyboard);
+	const inputEngine = new InputEngine(keyboard);
 
 	const renderEngine = new RenderEngine(canvasRender);
-	const scene = new TestScene(renderEngine, input);
+	const scene = new TestScene(renderEngine, inputEngine);
 	renderEngine.start();
+	inputEngine.start();
 })()

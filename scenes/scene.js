@@ -22,6 +22,7 @@ export class FrameScene {
 		if (!_class) throw (`${_class} must be defined`);
 		this.#drawings = new _class(...params, this.#drawings);
 	}
+
 	constructor(renderEngine, inputEngine) {
 		if (!(renderEngine instanceof IDriverEngine)) throw (`${renderEngine} must be instanceof DriverEngine`)
 		this.#render = renderEngine.interface;
@@ -36,11 +37,11 @@ export class FrameScene {
 	input() {
 		const tasks = this.#input.get();
 		tasks.forEach(task => {
-			this.execTask(task);
+			this.parseAndTransferTask(task);
 		})
 	}
 
-	execTask(task) {
+	parseAndTransferTask(task) {
 		if (!task || task == '') return;
 
 		const [name, action] = task.split('.');
@@ -50,9 +51,7 @@ export class FrameScene {
 			if (controlled)
 				controlled.input(action);
 		}
-
 	}
-
 
 	draw() {
 		this.#render.clear();
