@@ -15,7 +15,8 @@ export class IBody extends IUpdating {
 
 export class IGameObject extends IUpdating {
 	get name() { throw ('name must be implemented') };
-	get body() { throw ('body must be implemented') };
+	//get body() { throw ('body must be implemented') };
+	get accessories(){ throw ('accessories must be implemented') };//may includ body, drawing, interactor and over
 }
 
 export class InteractGameObject extends IGameObject{
