@@ -2,9 +2,10 @@ export class IUpdating {
 	update() { throw ('update() must be implemented') };
 }
 
-export class IDrawing extends IUpdating {
-	get render() { throw ('render must be implemented') };
-	get body() { throw ('body must be implemented') };
+export class IDrawing { //extends IUpdating {
+	// get render() { throw ('render must be implemented') };
+	// get body() { throw ('body must be implemented') };
+	draw(render) { throw ('draw must be implemented') }
 }
 
 export class IBody extends IUpdating {
@@ -13,14 +14,14 @@ export class IBody extends IUpdating {
 	get state() { throw ('state() must be implemented') };
 }
 
-export class IGameObject extends IUpdating {
+export class IGameObject { //extends IUpdating {
 	get name() { throw ('name must be implemented') };
 	//get body() { throw ('body must be implemented') };
-	get accessories(){ throw ('accessories must be implemented') };//may includ body, drawing, interactor and over
+	get accessories() { throw ('accessories must be implemented') };//may includ body, drawing, interactor and over
 }
 
-export class InteractGameObject extends IGameObject{
-	interaction(body){throw ('interaction must be implemented')}
+export class InteractGameObject extends IGameObject {
+	interaction(body) { throw ('interaction must be implemented') }
 }
 
 export class IComposite extends IUpdating {
@@ -28,3 +29,9 @@ export class IComposite extends IUpdating {
 	get(name) { throw ('get must be implemented') };
 	remove(item) { throw ('remove must be implemented') };
 }
+
+export class IInput {
+	get() { throw ('get must be implemented') };
+	setCallback(callback) { throw ('setCallback must be implemented') }
+}
+

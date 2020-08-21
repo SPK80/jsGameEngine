@@ -1,5 +1,5 @@
 import { DriverEngine } from "./engine.js";
-import { KeyboardDriver } from "../inputs/keyboardDriver";
+import { KeyboardDriver } from "../inputs/keyboardDriver.js";
 
 export class RenderEngine extends DriverEngine {
 	constructor(driver, frameRate = 60) {

@@ -1,6 +1,6 @@
 import { IDriverEngine } from "../engines/engine.js";
-import { IGameObject } from "../gameObjects/common.js";
-import { Body } from "../gameObjects/bodies.js";
+import { IGameObject, IDrawing, IInput } from "../gameObjects/common.js";
+
 
 export class FrameScene {
 	#render;
@@ -28,9 +28,9 @@ export class FrameScene {
 		this.#render = renderEngine.interface;
 		renderEngine.setCallback(() => { this.draw() });
 
-		if (!(inputEngine instanceof IInputEngine)) throw (`${inputEngine} must be instanceof IInputEngine`)
-		this.#input = inputEngine.interface;
-		inputEngine.setCallback(() => { this.input() });
+		// if (!(inputEngine instanceof IInput)) throw (`${inputEngine} must be instanceof IInput`)
+		// this.#input = inputEngine.interface;
+		// inputEngine.setCallback(() => { this.input() });
 
 	}
 
@@ -62,39 +62,22 @@ export class FrameScene {
 
 	addObject(object) {
 		if (!(object instanceof IGameObject)) throw (`${object} must be instanceof IGameObject`)
-		if (object instanceof IDrawingGameObject) {
+		const accessories = object.accessories;
+		accessories.forEach(accessory => {
+			if (accessory instanceof IDrawing) {
+				this.#drawings.push(accessory);
+				// } else if (accessory instanceof Input) {
+				// 	this.#inputs.push(accessory);
+			}
+		});
 
-			this.#drawings.push(object);
-		}
+		// if (object instanceof IDrawingGameObject) {
+		// 	this.#drawings.push(object);
+		// }
 
 	}
 }
 
-class IDrawingGameObject extends IGameObject {
-	draw(render) { throw ('draw must be implemented') }
-}
-
-export class RedRect extends IDrawingGameObject {
-
-	// #object;
-
-	get name() { return 'RedRect' };
-
-	#body;
-	get body() { return this.#body };
-
-	constructor(pos, size) {
-		super();
-		this.#body = new Body(pos.x, pos.y, 1, size.x, size.y);
-
-		// if (!(object instanceof IGameObject)) throw (`${object} must be instanceof IGameObject`)
-		// this.#object = gameObject;
-	}
-
-	draw(render) {
-		const pos = this.#body.pos;
-		const size = this.#body.size;
-
-		render.rect(pos.x, pos.y, size.x, size.y, '#F00000', true);
-	}
-}
+// class IDrawingGameObject extends IGameObject {
+// 	draw(render) { throw ('draw must be implemented') }
+// }

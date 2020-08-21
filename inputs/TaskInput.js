@@ -31,7 +31,6 @@ class KeysToTasksMap {
 			const taskKeys = this.#tasks[taskName];
 			if (taskKeys.every(taskKey => keys.some((key) => key == taskKey)))
 				return taskName;
-
 		}
 	}
 }
