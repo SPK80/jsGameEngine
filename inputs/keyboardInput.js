@@ -1,40 +1,69 @@
-import { Input } from "./input.js";
-import { KeyMap } from "./keyMap.js";
+// import { Input } from "./input.js";
+// import { KeyMap } from "./keyMap.js";
+// import { KeyboardDriver } from "./keyboardDriver.js";
+import { IInput } from "../gameObjects/common.js";
+import { GameEvent } from "../events/event.js";
+import { KeyboardDriver } from "./keyboardDriver.js";
 
-export class KeyboardInput extends Input {
+// export class InputEngine extends DriverEngine {
+// 	constructor(driver, frameRate = 10) {
+// 		super(driver, 1000 / frameRate);
+// 	}
+// }
 
-	#actions = [];
-	#keyMap = null;
+// export class KeyboardEngine extends InputEngine {
+// 	constructor(frameRate = 10) {
+// 		super(new KeyboardDriver(), 1000 / frameRate);
+// 	}
+// }
 
-	constructor(keyMap) {
-		super();
-		if (keyMap instanceof KeyMap)
-			this.#keyMap = keyMap;
+export class KeyboardInput extends IInput {
+	#event = new GameEvent();
+	#keyb = new KeyboardDriver((name, data) => this.#event.call(name, data));
 
-		window.addEventListener('keydown', e => {
-			const act = this.#keyMap.get(e.keyCode);
-			// console.log(act);
-
-			if (act && !this.#actions.includes(act))
-				this.#actions.push(act);
-		});
-
-		window.addEventListener('keyup', e => {
-			const actions = [];
-			for (let i = 0; i < this.#actions.length; i++) {
-				const action = this.#actions[i];
-				if (action != this.#keyMap.get(e.keyCode))
-					actions.push(action);
-			}
-			this.#actions = actions;
-		});
+	getData() {
+		return this.#keyb.get();
 	}
 
-	get() {
-		// console.log(this.#actions);
-		return this.#actions;
+	listen(callback) {
+		this.#event.subscribe(callback);
 	}
 }
+
+// export class KeyboardInput extends Input {
+
+// 	#actions = [];
+// 	#keyMap = null;
+
+// 	constructor(keyMap) {
+// 		super();
+// 		if (keyMap instanceof KeyMap)
+// 			this.#keyMap = keyMap;
+
+// 		window.addEventListener('keydown', e => {
+// 			const act = this.#keyMap.get(e.keyCode);
+// 			// console.log(act);
+
+// 			if (act && !this.#actions.includes(act))
+// 				this.#actions.push(act);
+// 		});
+
+// 		window.addEventListener('keyup', e => {
+// 			const actions = [];
+// 			for (let i = 0; i < this.#actions.length; i++) {
+// 				const action = this.#actions[i];
+// 				if (action != this.#keyMap.get(e.keyCode))
+// 					actions.push(action);
+// 			}
+// 			this.#actions = actions;
+// 		});
+// 	}
+
+// 	get() {
+// 		// console.log(this.#actions);
+// 		return this.#actions;
+// 	}
+// }
 
 
 // export class AltKeyBoardInput extends Input {

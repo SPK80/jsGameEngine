@@ -1,10 +1,9 @@
 import { Settings } from "./settings.js";
-import { loadImage } from "./image.js";
 import { TestScene } from "./scenes/testScene.js";
-import { RenderEngine, InputEngine } from "./engines/RenderEngine.js";
-// import { TaskInput } from "./inputs/TaskInput";
+import { RenderEngine } from "./engines/RenderEngine.js";
 import { CanvasRender } from "./graphics/canvasRender.js";
-import { KeyboardDriver } from "./inputs/keyboardDriver.js";
+import { loadImage } from "./graphics/image.js";
+import { KeyboardInput } from "./inputs/keyboardInput.js";
 
 (async function game() {
 
@@ -17,7 +16,6 @@ import { KeyboardDriver } from "./inputs/keyboardDriver.js";
 		console.log('save', settings);
 		settings.save();
 	}
-
 
 	// try {
 	const tiles = await loadImage('tiles.png');
@@ -32,11 +30,10 @@ import { KeyboardDriver } from "./inputs/keyboardDriver.js";
 		settings.render.backgroundColor,
 		settings.render.scale);
 
-	const keyboard = new KeyboardDriver();
-	const inputEngine = new InputEngine(keyboard);
+	const keyboardInput = new KeyboardInput();
 
 	const renderEngine = new RenderEngine(canvasRender);
-	const scene = new TestScene(renderEngine, inputEngine);
+	const scene = new TestScene(renderEngine, keyboardInput);
 	renderEngine.start();
-	inputEngine.start();
+	// keyboardInput.start();
 })()

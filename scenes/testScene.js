@@ -2,7 +2,7 @@ import { Vector3, Vector2 } from "../geometry/vectors.js";
 import { FrameScene } from "./scene.js";
 import { KeybToTaskMapper } from "../inputs/TaskInput.js";
 import { Body } from "../gameObjects/bodies.js";
-import { IDrawing, IGameObject } from "../gameObjects/common.js";
+import { IDrawing, IGameObject, IInput } from "../gameObjects/common.js";
 
 export class TestScene extends FrameScene {
 	constructor(renderEngine, inputEngine) {
@@ -10,7 +10,7 @@ export class TestScene extends FrameScene {
 		super(renderEngine, inputEngine);
 		const tasksMap = {};
 
-		this.decorateInput(KeybToTaskMapper,);
+		// this.decorateInput(KeybToTaskMapper,);
 
 		const redRect = new RedRect(new Vector3(100, 200, 1), new Vector2(150, 100));
 		this.addObject(redRect);
@@ -36,6 +36,7 @@ export class RedRect extends IGameObject {
 		const body = new Body(pos.x, pos.y, 1, size.x, size.y);
 		this.#accessories.push(body);
 		this.#accessories.push(new RectDrawing(body, '#F00000'));
+		this.#accessories.push(new RectInput());
 		// this.#body = new Body(pos.x, pos.y, 1, size.x, size.y);
 
 		// if (!(object instanceof IGameObject)) throw (`${object} must be instanceof IGameObject`)
@@ -47,6 +48,16 @@ export class RedRect extends IGameObject {
 
 	// 	render.rect(pos.x, pos.y, size.x, size.y, '#F00000', true);
 	// }
+}
+
+class RectInput extends IInput{
+	getData() {
+		return this.#keyb.get();
+	}
+
+	listen(callback) {
+		this.#event.subscribe(callback);
+	}
 }
 
 class RectDrawing extends IDrawing {

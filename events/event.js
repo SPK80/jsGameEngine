@@ -1,4 +1,4 @@
-export class Event {
+export class GameEvent {
 	#name = '';
 	get name() { return this.#name }
 

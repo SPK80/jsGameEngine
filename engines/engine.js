@@ -1,7 +1,4 @@
-export class IDriverEngine {
-	get interface() { throw ('get driver must be implemented') }
-	setCallback(callback) { throw ('setCallback must be implemented') }
-}
+import { IDriverEngine } from "../gameObjects/common.js";
 
 export class DriverEngine extends IDriverEngine {
 	#frameTime;
@@ -12,7 +9,7 @@ export class DriverEngine extends IDriverEngine {
 
 	#callback = () => { };
 
-	setCallback(callback) {
+	listen(callback) {
 		if (!callback) throw ('callback undifined!');
 		this.#callback = callback;
 	}

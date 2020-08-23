@@ -31,7 +31,15 @@ export class IComposite extends IUpdating {
 }
 
 export class IInput {
-	get() { throw ('get must be implemented') };
-	setCallback(callback) { throw ('setCallback must be implemented') }
+	getData() { throw ('get must be implemented') }
+	listen(callback) { throw ('listen must be implemented') }
 }
 
+export class IController {
+	send() { throw ('send must be implemented') }
+}
+
+export class IDriverEngine {
+	get interface() { throw ('get driver must be implemented') }
+	listen(callback) { throw ('setCallback must be implemented') }
+}

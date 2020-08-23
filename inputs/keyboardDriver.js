@@ -2,17 +2,21 @@
 export class KeyboardDriver {
 	#buffer = [];
 
-	constructor() {
+	constructor(callback) {
 		window.addEventListener('keydown', e => {
-			if (!this.#buffer.includes(e.keyCode))
+			if (!this.#buffer.includes(e.keyCode)) {
 				this.#buffer.push(e.keyCode);
+				callback('keydown', e.keyCode);
+			}
+
 		});
 
 		window.addEventListener('keyup', e => {
 			const i = this.#buffer.indexOf(e.keyCode);
-			if (i >= 0)
+			if (i >= 0) {
 				this.#buffer.splice(i, 1);
-			//delete this.#buffer[i];
+				callback('keyup', e.keyCode);
+			}
 		});
 	}
 
@@ -20,7 +24,7 @@ export class KeyboardDriver {
 		return this.#buffer.slice();
 	}
 
-	
+
 	static KEYS = {
 		UP: 38,
 		DOWN: 40,

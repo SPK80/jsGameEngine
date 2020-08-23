@@ -1,6 +1,4 @@
-import { IDriverEngine } from "../engines/engine.js";
-import { IGameObject, IDrawing, IInput } from "../gameObjects/common.js";
-
+import { IGameObject, IDrawing, IInput, IController, IDriverEngine } from "../gameObjects/common.js";
 
 export class FrameScene {
 	#render;
@@ -15,43 +13,50 @@ export class FrameScene {
 		this.#input = new _class(...params, this.#input);
 	}
 
-	#controlleds = [];
-
 	#drawings = [];
 	decorateDrawings(_class, ...params) {
 		if (!_class) throw (`${_class} must be defined`);
 		this.#drawings = new _class(...params, this.#drawings);
 	}
 
-	constructor(renderEngine, inputEngine) {
+	#controllers = {};
+
+	constructor(renderEngine, input) {
 		if (!(renderEngine instanceof IDriverEngine)) throw (`${renderEngine} must be instanceof DriverEngine`)
 		this.#render = renderEngine.interface;
-		renderEngine.setCallback(() => { this.draw() });
+		renderEngine.listen(() => { this.draw() });
 
-		// if (!(inputEngine instanceof IInput)) throw (`${inputEngine} must be instanceof IInput`)
-		// this.#input = inputEngine.interface;
-		// inputEngine.setCallback(() => { this.input() });
+		if (!(input instanceof IInput)) throw (`${input} must be instanceof IInput`)
+		this.#input = input;
+		this.#input.listen(() => { this.input() });
 
 	}
 
 	input() {
-		const tasks = this.#input.get();
-		tasks.forEach(task => {
-			this.parseAndTransferTask(task);
-		})
+		// const tasks = this.#input.get();
+		// tasks.forEach(task => {
+		// 	this.parseAndTransferTask(task);
+		// })
+		const task = this.#input.getData();
+		console.log(task);
+
+		this.#controllers.forEach((controller) => {
+			controller.send(task);
+		});
 	}
 
-	parseAndTransferTask(task) {
+	parseInput(task) {
 		if (!task || task == '') return;
 
 		const [name, action] = task.split('.');
 
 		if (name && action) {
-			const controlled = this.#controlleds.find(o => { o.name == name });
-			if (controlled)
-				controlled.input(action);
+			const controller = this.#controllers.find(o => { o.name == name });
+			if (controller)
+				controlled.send(action);
 		}
 	}
+
 
 	draw() {
 		this.#render.clear();
@@ -66,8 +71,9 @@ export class FrameScene {
 		accessories.forEach(accessory => {
 			if (accessory instanceof IDrawing) {
 				this.#drawings.push(accessory);
-				// } else if (accessory instanceof Input) {
-				// 	this.#inputs.push(accessory);
+			} else if (accessory instanceof IController) {
+				this.#controllers.push(accessory);
+				console.log(this.#controllers);
 			}
 		});
 
@@ -81,3 +87,8 @@ export class FrameScene {
 // class IDrawingGameObject extends IGameObject {
 // 	draw(render) { throw ('draw must be implemented') }
 // }
+class Accessories{
+	add(objName, accessory){
+
+	}
+}
