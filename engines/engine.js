@@ -1,22 +1,23 @@
-import { IDriverEngine } from "../gameObjects/common.js";
+// import { IDriverEngine } from "../gameObjects/common.js";
 
-export class DriverEngine extends IDriverEngine {
+export class Engine {
 	#frameTime;
 	// get frameTime() { return this.#frameTime }
 
-	#driver;
-	get interface() { return this.#driver; }
+	// #driver;
+	// get interface() { return this.#driver; }
 
 	#callback = () => { };
 
-	listen(callback) {
-		if (!callback) throw ('callback undifined!');
-		this.#callback = callback;
-	}
+	// listen(callback) {
+	// 	if (!callback) throw ('callback undifined!');
+	// 	this.#callback = callback;
+	// }
 
-	constructor(driver, frameTime) {
-		super();
-		this.#driver = driver;
+	constructor(frameTime, callback) {
+		// super();
+		// this.#driver = driver;
+		this.#callback = callback;
 		this.#frameTime = frameTime;
 	}
 

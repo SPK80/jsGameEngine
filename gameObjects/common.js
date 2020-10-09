@@ -18,6 +18,7 @@ export class IGameObject { //extends IUpdating {
 	get name() { throw ('name must be implemented') };
 	//get body() { throw ('body must be implemented') };
 	get accessories() { throw ('accessories must be implemented') };//may includ body, drawing, interactor and over
+	init(drivers) { throw ('init must be implemented') };//using in addObject to scene
 }
 
 export class InteractGameObject extends IGameObject {
@@ -30,16 +31,11 @@ export class IComposite extends IUpdating {
 	remove(item) { throw ('remove must be implemented') };
 }
 
-export class IInput {
-	getData() { throw ('get must be implemented') }
-	listen(callback) { throw ('listen must be implemented') }
-}
-
 export class IController {
 	send() { throw ('send must be implemented') }
 }
 
-export class IDriverEngine {
-	get interface() { throw ('get driver must be implemented') }
-	listen(callback) { throw ('setCallback must be implemented') }
-}
+// export class IDriverEngine {
+// 	// get interface() { throw ('get driver must be implemented') }
+// 	listen(callback) { throw ('setCallback must be implemented') }
+// }

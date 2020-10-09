@@ -5,21 +5,20 @@ import { Body } from "../gameObjects/bodies.js";
 import { IDrawing, IGameObject, IInput } from "../gameObjects/common.js";
 
 export class TestScene extends FrameScene {
-	constructor(renderEngine, inputEngine) {
+	constructor(render, input) {
 
-		super(renderEngine, inputEngine);
-		const tasksMap = {};
+		super(render, input);
 
-		// this.decorateInput(KeybToTaskMapper,);
+		const redRect = new RedRect(
+			new Vector3(100, 200, 1),
+			new Vector2(150, 100),
+			input);
 
-		const redRect = new RedRect(new Vector3(100, 200, 1), new Vector2(150, 100));
 		this.addObject(redRect);
 	}
 }
 
 export class RedRect extends IGameObject {
-
-	// #object;
 
 	get name() { return 'RedRect' };
 
@@ -28,37 +27,39 @@ export class RedRect extends IGameObject {
 		return this.#accessories.slice();
 	}
 
-	// #body;
-	// get body() { return this.#body };
-
-	constructor(pos, size) {
+	constructor(pos, size, input) {
 		super();
 		const body = new Body(pos.x, pos.y, 1, size.x, size.y);
 		this.#accessories.push(body);
 		this.#accessories.push(new RectDrawing(body, '#F00000'));
-		this.#accessories.push(new RectInput());
-		// this.#body = new Body(pos.x, pos.y, 1, size.x, size.y);
+		this.#accessories.push(input);
 
-		// if (!(object instanceof IGameObject)) throw (`${object} must be instanceof IGameObject`)
-		// this.#object = gameObject;
-	}
-	// draw(render) {
-	// 	const pos = this.#body.pos;
-	// 	const size = this.#body.size;
-
-	// 	render.rect(pos.x, pos.y, size.x, size.y, '#F00000', true);
-	// }
-}
-
-class RectInput extends IInput{
-	getData() {
-		return this.#keyb.get();
-	}
-
-	listen(callback) {
-		this.#event.subscribe(callback);
 	}
 }
+class Function {
+	#type = 'unknown';
+	#func = () => { };
+	constructor(type, func) {
+		this.#type = type;
+		this.#func = func;
+	}
+}
+
+// class RectInput extends IInput {
+// 	#input;
+// 	constructor(input) {
+// 		if (!(input instanceof IInput)) throw (`${input} must be instanceof IInput`);
+// 		this.#input = input;
+// 	}
+
+// 	getData() {
+// 		return this.#input.getData();
+// 	}
+
+// 	listen(callback) {
+// 		this.#input.listen(callback);
+// 	}
+// }
 
 class RectDrawing extends IDrawing {
 	#body;

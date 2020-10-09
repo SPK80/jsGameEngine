@@ -1,28 +1,31 @@
-// import { Input } from "./input.js";
-// import { KeyMap } from "./keyMap.js";
-// import { KeyboardDriver } from "./keyboardDriver.js";
-import { IInput } from "../gameObjects/common.js";
-import { GameEvent } from "../events/event.js";
-import { KeyboardDriver } from "./keyboardDriver.js";
-
-// export class InputEngine extends DriverEngine {
-// 	constructor(driver, frameRate = 10) {
-// 		super(driver, 1000 / frameRate);
-// 	}
-// }
-
-// export class KeyboardEngine extends InputEngine {
-// 	constructor(frameRate = 10) {
-// 		super(new KeyboardDriver(), 1000 / frameRate);
-// 	}
-// }
+import { GameEvent } from "../../events/event.js";
+import { KeyboardDriver } from "../../inputs/keyboardDriver.js";
+import { IInput } from "./iinput.js";
 
 export class KeyboardInput extends IInput {
 	#event = new GameEvent();
-	#keyb = new KeyboardDriver((name, data) => this.#event.call(name, data));
+	// #keyb = new KeyboardDriver((name, data) => this.#event.call(name, data));
+	#buffer = [];
+
+	constructor() {
+		window.addEventListener('keydown', e => {
+			if (!this.#buffer.includes(e.keyCode)) {
+				this.#buffer.push(e.keyCode);
+				this.#event.call('keydown', e.keyCode);
+			}
+		});
+
+		window.addEventListener('keyup', e => {
+			const i = this.#buffer.indexOf(e.keyCode);
+			if (i >= 0) {
+				this.#buffer.splice(i, 1);
+				this.#event.call('keyup', e.keyCode);
+			}
+		});
+	}
 
 	getData() {
-		return this.#keyb.get();
+		return this.#buffer.slice();
 	}
 
 	listen(callback) {

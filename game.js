@@ -1,9 +1,9 @@
 import { Settings } from "./settings.js";
 import { TestScene } from "./scenes/testScene.js";
-import { RenderEngine } from "./engines/RenderEngine.js";
 import { CanvasRender } from "./graphics/canvasRender.js";
 import { loadImage } from "./graphics/image.js";
 import { KeyboardInput } from "./inputs/keyboardInput.js";
+import { Engine } from "./engines/engine.js";
 
 (async function game() {
 
@@ -30,10 +30,12 @@ import { KeyboardInput } from "./inputs/keyboardInput.js";
 		settings.render.backgroundColor,
 		settings.render.scale);
 
+		
 	const keyboardInput = new KeyboardInput();
+	const scene = new TestScene(canvasRender, keyboardInput);
 
-	const renderEngine = new RenderEngine(canvasRender);
-	const scene = new TestScene(renderEngine, keyboardInput);
+	const renderEngine = new Engine(1000 / 60, () => { scene.draw() });
+
 	renderEngine.start();
 	// keyboardInput.start();
 })()

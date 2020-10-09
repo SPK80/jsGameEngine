@@ -1,6 +1,8 @@
-import { IGameObject, IDrawing, IInput, IController, IDriverEngine } from "../gameObjects/common.js";
+import { IGameObject, IDrawing, IController } from "../gameObjects/common.js";
+import { AbstractRender } from "../graphics/abstractRender.js";
 
 export class FrameScene {
+	
 	#render;
 	decorateRender(_class, ...params) {
 		if (!_class) throw (`${_class} must be defined`);
@@ -13,73 +15,55 @@ export class FrameScene {
 		this.#input = new _class(...params, this.#input);
 	}
 
-	#drawings = [];
-	decorateDrawings(_class, ...params) {
-		if (!_class) throw (`${_class} must be defined`);
-		this.#drawings = new _class(...params, this.#drawings);
+	//Accessories of all objects
+	#drawings = new Accessories();
+	#controllers = new Accessories();
+
+	constructor(render, input) {
+
+		if (!(render instanceof AbstractRender)) throw (`${render} must be instanceof AbstractRender`)
+		this.#render = render;
+
+		input.listen(() => { this.input(input.getData()) });
 	}
 
-	#controllers = {};
-
-	constructor(renderEngine, input) {
-		if (!(renderEngine instanceof IDriverEngine)) throw (`${renderEngine} must be instanceof DriverEngine`)
-		this.#render = renderEngine.interface;
-		renderEngine.listen(() => { this.draw() });
-
-		if (!(input instanceof IInput)) throw (`${input} must be instanceof IInput`)
-		this.#input = input;
-		this.#input.listen(() => { this.input() });
-
+	input(inputData) {
+		console.log(inputData);
 	}
 
-	input() {
-		// const tasks = this.#input.get();
-		// tasks.forEach(task => {
-		// 	this.parseAndTransferTask(task);
-		// })
-		const task = this.#input.getData();
-		console.log(task);
+	// parseInput(task) {
+	// 	if (!task || task == '') return;
 
-		this.#controllers.forEach((controller) => {
-			controller.send(task);
-		});
-	}
+	// 	const [name, action] = task.split('.');
 
-	parseInput(task) {
-		if (!task || task == '') return;
-
-		const [name, action] = task.split('.');
-
-		if (name && action) {
-			const controller = this.#controllers.find(o => { o.name == name });
-			if (controller)
-				controlled.send(action);
-		}
-	}
-
+	// 	if (name && action) {
+	// 		const controller = this.#controllers.find(o => { o.name == name });
+	// 		if (controller)
+	// 			controlled.send(action);
+	// 	}
+	// }
 
 	draw() {
 		this.#render.clear();
-		this.#drawings.forEach(dr => {
+		this.#drawings.asArray.forEach(dr => {
 			dr.draw(this.#render);
 		});
 	}
 
 	addObject(object) {
 		if (!(object instanceof IGameObject)) throw (`${object} must be instanceof IGameObject`)
+
 		const accessories = object.accessories;
+
+		//group accessories of object by Interface :
 		accessories.forEach(accessory => {
 			if (accessory instanceof IDrawing) {
-				this.#drawings.push(accessory);
-			} else if (accessory instanceof IController) {
-				this.#controllers.push(accessory);
-				console.log(this.#controllers);
+				this.#drawings.add(object.name, accessory);
+			}
+			else if (accessory instanceof IController) {
+				this.#controllers.add(object.name, accessory);
 			}
 		});
-
-		// if (object instanceof IDrawingGameObject) {
-		// 	this.#drawings.push(object);
-		// }
 
 	}
 }
@@ -87,8 +71,25 @@ export class FrameScene {
 // class IDrawingGameObject extends IGameObject {
 // 	draw(render) { throw ('draw must be implemented') }
 // }
-class Accessories{
-	add(objName, accessory){
 
+class Accessories {
+	#accessories = {};
+
+	add(objName, accessory) {
+		this.#accessories[objName] = accessory;
 	}
+
+	get(objName) {
+		if (objName) return this.#accessories[objName];
+		else return Object.assign({}, this.#accessories);
+	}
+
+	get asArray() {
+		return Object.values(this.#accessories);
+	}
+
+	delete(objName) {
+		delete this.#accessories[objName];
+	}
+
 }
