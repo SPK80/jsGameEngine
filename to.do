@@ -1,28 +1,13 @@
-Engine{
-start(){}
-stop(){}
-onUpdate
-}
+Rename Accessores to Abilites
 
-RenderEngine extends Engine{
-render
-}
+Drawings extends Abilites{
+add()
 
-Scene{
-Constructor(onRender, onPhisics, on...){
-onRender.listen(this.draw)
-onPhisics.listen(this.interact)
-_render = ShiftedRender(this.pos, render)
-}
+delete()
 
-objects
+get()
+
 draw(){
 
-objects.Forech(o.draw(_render))
 }
-
-interact(){
-
-}
-
 }
