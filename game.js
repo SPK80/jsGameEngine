@@ -53,28 +53,28 @@ tiles.addEventListener("load", () => {
 	scene.addObject(viewPort);
 	scene.addObject(ui);
 
-	// new Spawner(10, () => 2000, (i) => {
-	// 	scene.addObject(
-	// 		new WhiteWolker(
-	// 			"WhiteWolker" + i,
-	// 			Math.random() * wm.body.size.x * 2 + wm.body.pos.x - wm.body.size.x,
-	// 			Math.random() * wm.body.size.y * 2 + wm.body.pos.y - wm.body.size.y,
-	// 			new RndWolk(),
-	// 			tiles,
-	// 			render
-	// 		)
-	// 	);
-	// }).start();
-	scene.addObject(
-		new WhiteWolker(
-			"WhiteWolker1",
-			Math.random() * wm.body.size.x * 2 + wm.body.pos.x - wm.body.size.x,
-			Math.random() * wm.body.size.y * 2 + wm.body.pos.y - wm.body.size.y,
-			new RndWolk(),
-			tiles,
-			render
-		)
-	);
+	new Spawner(10, () => 2000, (i) => {
+		scene.addObject(
+			new WhiteWolker(
+				"WhiteWolker" + i,
+				Math.random() * wm.body.size.x * 2 + wm.body.pos.x - wm.body.size.x,
+				Math.random() * wm.body.size.y * 2 + wm.body.pos.y - wm.body.size.y,
+				new RndWolk(),
+				tiles,
+				render
+			)
+		);
+	}).start();
+	// scene.addObject(
+	// 	new WhiteWolker(
+	// 		"WhiteWolker1",
+	// 		Math.random() * wm.body.size.x * 2 + wm.body.pos.x - wm.body.size.x,
+	// 		Math.random() * wm.body.size.y * 2 + wm.body.pos.y - wm.body.size.y,
+	// 		new RndWolk(),
+	// 		tiles,
+	// 		render
+	// 	)
+	// );
 	engine.start(scene);
 
 }, false);
